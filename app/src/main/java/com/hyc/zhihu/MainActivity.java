@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements TestView,LoaderMa
     }
 
     @Override
-    public void dissmissLoading() {
+    public void dismissLoading() {
 
     }
 }

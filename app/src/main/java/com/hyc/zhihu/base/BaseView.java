@@ -5,5 +5,5 @@ package com.hyc.zhihu.base;
  */
 public interface BaseView {
     void showLoading();
-    void dissmissLoading();
+    void dismissLoading();
 }
