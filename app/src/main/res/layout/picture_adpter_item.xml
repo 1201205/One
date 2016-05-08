@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.hyc.zhihu.MainActivity">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@android:color/holo_red_light"
+              android:orientation="vertical"
+              android:paddingBottom="@dimen/activity_vertical_margin"
+              android:paddingLeft="@dimen/activity_horizontal_margin"
+              android:paddingRight="@dimen/activity_horizontal_margin"
+              android:paddingTop="@dimen/activity_vertical_margin"
+              tools:context=".ui.MainActivity">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:background="@android:color/holo_red_light"
         android:foreground="?attr/selectableItemBackground"
         android:padding="10dp"
         app:cardCornerRadius="4dp"
@@ -24,11 +26,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.facebook.drawee.view.SimpleDraweeView
+            <View
                 android:id="@+id/picture_sdv"
                 android:layout_width="match_parent"
-                android:layout_height="260dp"
-                android:background="@color/cardview_dark_background" />
+                android:layout_height="260dp"/>
 
             <LinearLayout
                 android:id="@+id/des_ll"
@@ -37,35 +38,37 @@
                 android:layout_below="@id/picture_sdv">
 
                 <TextView
-                    android:text="vol.1306"
                     android:id="@+id/vol_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="left" />
+                    android:gravity="left"
+                    android:text="vol.1306"/>
 
                 <TextView
-                    android:text="过去的四月 龚琳悬 作品"
                     android:id="@+id/name_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.5"
-                    android:gravity="right" />
+                    android:gravity="right"
+                    android:text="过去的四月 龚琳悬 作品"/>
             </LinearLayout>
+
             <TextView
-                android:layout_marginTop="30dp"
-                android:text="11111"
-                android:layout_below="@id/des_ll"
                 android:id="@+id/main_tv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_below="@id/des_ll"
+                android:layout_marginTop="30dp"
+                android:text="11111"/>
+
             <TextView
-                android:gravity="right"
-                android:text="wed 04 May.2016"
-                android:layout_alignParentBottom="true"
                 android:id="@+id/date_tv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:gravity="right"
+                android:text="wed 04 May.2016"/>
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
@@ -81,20 +84,20 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="6dp"
             android:text="小记"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:text="喜欢"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="分享"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
     </RelativeLayout>
 </LinearLayout>

@@ -14,5 +14,6 @@ public interface PicturePresenter {
     void getPictureIdsAndFirstItem();
     Picture getPictureById(String id);
     void checkAndGetPictureIds();
+    void gotoPosition(int position);
 
 }

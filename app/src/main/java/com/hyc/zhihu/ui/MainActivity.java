@@ -1,12 +1,13 @@
-package com.hyc.zhihu;
+package com.hyc.zhihu.ui;
 
-import android.app.LoaderManager;
-import android.content.Loader;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.hyc.zhihu.R;
 import com.hyc.zhihu.base.BasePresenter;
 import com.hyc.zhihu.base.PresenterFactory;
 import com.hyc.zhihu.base.PresenterLoader;
@@ -14,6 +15,7 @@ import com.hyc.zhihu.beans.OnePicture;
 import com.hyc.zhihu.beans.OnePictureList;
 import com.hyc.zhihu.net.Request;
 import com.hyc.zhihu.presenter.MainPresenter;
+import com.hyc.zhihu.ui.fragment.PictureFragment;
 import com.hyc.zhihu.view.TestView;
 
 import rx.Observable;
@@ -30,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements TestView,LoaderMa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getLoaderManager().initLoader(ID, null, this);
+        getSupportLoaderManager().initLoader(ID, null, this);
         Log.d("act-hyc","onCreate");
     }
 
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements TestView,LoaderMa
     protected void onResume() {
         super.onResume();
         mPresenter.onLoadFinished();
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_content,new PictureFragment()).commit();
         Log.d("act-hyc","onResume----"+mPresenter.toString());
 
     }
