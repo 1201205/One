@@ -1,35 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@android:color/holo_red_light"
-              android:orientation="vertical"
-              android:paddingBottom="@dimen/activity_vertical_margin"
-              android:paddingLeft="@dimen/activity_horizontal_margin"
-              android:paddingRight="@dimen/activity_horizontal_margin"
-              android:paddingTop="@dimen/activity_vertical_margin"
-              tools:context=".ui.MainActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="12dp"
+    tools:context=".ui.MainActivity">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_margin="4dp"
         android:layout_weight="1"
-        android:background="@android:color/holo_red_light"
         android:foreground="?attr/selectableItemBackground"
         android:padding="10dp"
+        app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="4dp"
-        app:cardElevation="4dp">
+        app:cardElevation="2dp"
+        app:contentPadding="6dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <View
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/picture_sdv"
                 android:layout_width="match_parent"
-                android:layout_height="260dp"/>
+                android:layout_height="260dp" />
 
             <LinearLayout
                 android:id="@+id/des_ll"
@@ -43,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="left"
-                    android:text="vol.1306"/>
+                    android:text="vol.1306" />
 
                 <TextView
                     android:id="@+id/name_tv"
@@ -51,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1.5"
                     android:gravity="right"
-                    android:text="过去的四月 龚琳悬 作品"/>
+                    android:text="过去的四月 龚琳悬 作品" />
             </LinearLayout>
 
             <TextView
@@ -60,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/des_ll"
                 android:layout_marginTop="30dp"
-                android:text="11111"/>
+                android:text="11111" />
 
             <TextView
                 android:id="@+id/date_tv"
@@ -68,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:gravity="right"
-                android:text="wed 04 May.2016"/>
+                android:text="wed 04 May.2016" />
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
@@ -84,20 +82,20 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="6dp"
             android:text="小记"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:text="喜欢"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="分享"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
     </RelativeLayout>
 </LinearLayout>

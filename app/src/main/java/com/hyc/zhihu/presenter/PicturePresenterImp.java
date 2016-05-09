@@ -62,8 +62,11 @@ public class PicturePresenterImp extends BasePresenter<PictureView> implements P
                                 mView.dismissLoading();
 //                                Log.e("tes1",onePicture.getData().getHp_content());
                                 viewBeans = new ArrayList<PictureViewBean>();
-                                for (int i = 0; i < mIds.size(); i++) {
+                                for (int i = 0; i <= mIds.size(); i++) {
                                     PictureViewBean bean = new PictureViewBean(mIds.get(i), PictureViewBean.NORESULT, null);
+                                    if (i==mIds.size()) {
+                                        bean.state=PictureViewBean.LIST;
+                                    }
                                     viewBeans.add(bean);
                                 }
                                 mView.setAdapter(viewBeans);

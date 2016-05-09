@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,7 @@ public class PictureFragment extends Fragment implements PictureView,LoaderManag
             public void onPageSelected(int position) {
                 mPictureAdapter.setCurrentPage(position);
                 mPresenter.gotoPosition(position);
+                Log.e("test1","选中位置--"+position);
             }
 
             @Override
@@ -70,8 +72,14 @@ public class PictureFragment extends Fragment implements PictureView,LoaderManag
     }
 
     @Override
-    public void showPicture(String id, OnePictureData data) {
-        mPictureAdapter.setCurrentItem(id,data);
+    public void showPicture(final String id, final OnePictureData data) {
+        mViewPager.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mPictureAdapter.setCurrentItem(id,data);
+            }
+        },0);
+
     }
 
     @Override

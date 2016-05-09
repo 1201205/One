@@ -7,6 +7,7 @@ public class PictureViewBean {
     public static final int NORMAL = 100;
     public static final int NORESULT = 101;
     public static final int ERROR = 102;
+    public static final int LIST = 103;
     public String id;
     public int state;
     public OnePictureData data;
