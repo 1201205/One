@@ -1,9 +1,11 @@
 package com.hyc.zhihu.beans;
 
+import io.realm.RealmObject;
+
 /**
  * Created by ray on 16/5/4.
  */
-public class BaseBean<T> {
+public class BaseBean<T>{
     protected int res;
     protected T data;
 

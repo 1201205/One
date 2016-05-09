@@ -6,4 +6,9 @@ package com.hyc.zhihu.beans;
 public class DateBean {
     public String date;
     public String realDate;
+
+    public DateBean(String date, String realDate) {
+        this.date = date;
+        this.realDate = realDate;
+    }
 }

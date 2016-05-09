@@ -44,19 +44,20 @@ public class DateAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.date_item, null);
             holder = new ViewHolder();
+            holder.date= (TextView) convertView.findViewById(R.id.date_tv);
             convertView.setTag(holder);
         } else {
             holder= (ViewHolder) convertView.getTag();
         }
         DateBean dateBean=dateBeans.get(position);
-        holder.date.setText(dateBeans.get(position).realDate);
+        holder.date.setText(dateBeans.get(position).date);
         holder.date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent());
+//                context.startActivity(new Intent());
             }
         });
-        return null;
+        return convertView;
     }
    static class ViewHolder{
         TextView date;

@@ -18,7 +18,12 @@ import com.hyc.zhihu.beans.OnePictureData;
 import com.hyc.zhihu.beans.PictureViewBean;
 import com.hyc.zhihu.view.TestView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -69,7 +74,7 @@ public class PictureAdapter extends PagerAdapter {
         if (position == viewBeans.size() - 1) {
             view=LayoutInflater.from(mContext).inflate(R.layout.date_list,null);
             ListView listView= (ListView) view.findViewById(R.id.date_list);
-            listView.se
+            listView.setAdapter(new DateAdapter(getDateBeans(),mContext));
         } else {
             view = LayoutInflater.from(mContext).inflate(R.layout.picture_adpter_item, null);
             SimpleDraweeView picture =  (SimpleDraweeView)view.findViewById(R.id.picture_sdv);
@@ -112,10 +117,31 @@ public class PictureAdapter extends PagerAdapter {
     public void setCurrentPage(int page){
         mCurrentPage=page;
     }
-    private List<DateBean> getDateBeans(){
-//        GregorianCalendar calendar=new GregorianCalendar();
-//        calendar.
-//        Date date=new Date();
-//        date.getYear()
+    private List<DateBean> getDateBeans() {
+        List<DateBean> dateBeans=new ArrayList<>();
+        GregorianCalendar calendar=new GregorianCalendar();
+        GregorianCalendar temp=new GregorianCalendar(2012,9,1);
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+        while (temp.before(calendar)){
+            String s=format.format(temp.getTime());
+            dateBeans.add(new DateBean(s,s+"%2000:00:00"));
+            temp.add(GregorianCalendar.MONTH,1);
+        }
+        Collections.reverse(dateBeans);
+        dateBeans.get(0).date="本月";
+        return dateBeans;
     }
+    public static void main(String[] args){
+        GregorianCalendar calendar=new GregorianCalendar();
+        GregorianCalendar temp=new GregorianCalendar(2012,9,1);
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+        while (temp.before(calendar)){
+            System.out.println(format.format(temp.getTime()));
+            temp.add(GregorianCalendar.MONTH,1);
+        }
+
+    }
+
 }

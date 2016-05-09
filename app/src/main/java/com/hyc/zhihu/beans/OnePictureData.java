@@ -1,11 +1,13 @@
 package com.hyc.zhihu.beans;
 
-public class OnePictureData implements java.io.Serializable {
+import io.realm.RealmObject;
+
+public class OnePictureData extends RealmObject implements java.io.Serializable {
     private static final long serialVersionUID = -2547328266503746477L;
     private String hp_makettime;
     private String hp_img_url;
     private String hp_title;
-    private Object push_id;
+    private String push_id;
     private int praisenum;
     private int sharenum;
     private String hp_author;
@@ -47,7 +49,7 @@ public class OnePictureData implements java.io.Serializable {
         return this.push_id;
     }
 
-    public void setPush_id(Object push_id) {
+    public void setPush_id(String push_id) {
         this.push_id = push_id;
     }
 

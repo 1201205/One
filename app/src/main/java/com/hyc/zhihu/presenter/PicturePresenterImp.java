@@ -3,17 +3,24 @@ package com.hyc.zhihu.presenter;
 import android.graphics.Picture;
 import android.util.Log;
 
+import com.hyc.zhihu.MainApplication;
 import com.hyc.zhihu.base.BasePresenter;
 import com.hyc.zhihu.beans.OnePicture;
+import com.hyc.zhihu.beans.OnePictureData;
 import com.hyc.zhihu.beans.OnePictureList;
 import com.hyc.zhihu.beans.PictureViewBean;
 import com.hyc.zhihu.net.Request;
 import com.hyc.zhihu.presenter.base.PicturePresenter;
 import com.hyc.zhihu.view.PictureView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -49,27 +56,47 @@ public class PicturePresenterImp extends BasePresenter<PictureView> implements P
                 if (mIds == null || mIds.size() == 0) {
                     return null;
                 }
+               File userFolder = new File(MainApplication.getApplication().getCacheDir() + "/" + "zhihu1");
 
+                RealmConfiguration configuration= new RealmConfiguration.Builder(userFolder)
+                        .name("test1")
+                        .schemaVersion(2)
+                        .build();
+                Realm.setDefaultConfiguration(configuration );
+                Realm realm1=Realm.getDefaultInstance();
+                realm1.beginTransaction();
+                RealmResults<OnePictureData> datas = realm1.where(OnePictureData.class).equalTo("hpcontent_id",mIds.get(0)).findAll();
+                realm1.commitTransaction();
+                if (datas.size()>0) {
+                    Log.e("test1","获取到保存的数据");
+                }
                 return Request.getApi().getPictureById(mIds.get(0));
             }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
                 subscribe(new Action1<Observable<OnePicture>>() {
                     @Override
                     public void call(Observable<OnePicture> onePictureObservable) {
+
                         onePictureObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<OnePicture>() {
                             @Override
                             public void call(OnePicture onePicture) {
                                 mView.dismissLoading();
 //                                Log.e("tes1",onePicture.getData().getHp_content());
                                 viewBeans = new ArrayList<PictureViewBean>();
-                                for (int i = 0; i <= mIds.size(); i++) {
+                                for (int i = 0; i < mIds.size(); i++) {
                                     PictureViewBean bean = new PictureViewBean(mIds.get(i), PictureViewBean.NORESULT, null);
                                     if (i==mIds.size()) {
                                         bean.state=PictureViewBean.LIST;
                                     }
                                     viewBeans.add(bean);
                                 }
+                                PictureViewBean bean = new PictureViewBean("list", PictureViewBean.LIST, null);
+                                viewBeans.add(bean);
                                 mView.setAdapter(viewBeans);
+                                Realm realm = Realm.getDefaultInstance();
+                                realm.beginTransaction();
+                                realm.copyToRealm(onePicture.getData());
+                                realm.commitTransaction();
                                 mView.showPicture(mIds.get(0), onePicture.getData());
                             }
                         });
@@ -113,6 +140,9 @@ public class PicturePresenterImp extends BasePresenter<PictureView> implements P
 
     @Override
     public void gotoPosition(int position) {
+        if (position==mIds.size()) {
+            return;
+        }
         if (viewBeans.get(position).state != PictureViewBean.NORMAL) {
             getPictureById(mIds.get(position));
         }

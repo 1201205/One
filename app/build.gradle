@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
-
-android {
+apply plugin: 'realm-android'
+     android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
 
