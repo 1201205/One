@@ -1,6 +1,7 @@
 package com.hyc.zhihu.beans;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class OnePictureData extends RealmObject implements java.io.Serializable {
     private static final long serialVersionUID = -2547328266503746477L;
@@ -15,6 +16,7 @@ public class OnePictureData extends RealmObject implements java.io.Serializable 
     private String ipad_url;
     private String wb_img_url;
     private String web_url;
+    @PrimaryKey
     private String hpcontent_id;
     private String hp_img_original_url;
     private String author_id;

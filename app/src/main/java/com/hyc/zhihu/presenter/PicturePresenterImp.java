@@ -11,6 +11,7 @@ import com.hyc.zhihu.beans.OnePictureList;
 import com.hyc.zhihu.beans.PictureViewBean;
 import com.hyc.zhihu.net.Request;
 import com.hyc.zhihu.presenter.base.PicturePresenter;
+import com.hyc.zhihu.utils.RealmUtil;
 import com.hyc.zhihu.view.PictureView;
 
 import java.io.File;
@@ -22,6 +23,7 @@ import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -49,63 +51,112 @@ public class PicturePresenterImp extends BasePresenter<PictureView> implements P
     @Override
     public void getPictureIdsAndFirstItem() {
         mView.showLoading();
-        Request.getApi().getPictureIds("0").map(new Func1<OnePictureList, Observable<OnePicture>>() {
+        Request.getApi().getPictureIds("0").observeOn(Schedulers.io()).map(new Func1<OnePictureList, String>() {
             @Override
-            public Observable<OnePicture> call(OnePictureList onePictureList) {
+            public String call(OnePictureList onePictureList) {
                 mIds = onePictureList.getData();
                 if (mIds == null || mIds.size() == 0) {
                     return null;
                 }
-               File userFolder = new File(MainApplication.getApplication().getCacheDir() + "/" + "zhihu1");
-
-                RealmConfiguration configuration= new RealmConfiguration.Builder(userFolder)
-                        .name("test1")
-                        .schemaVersion(2)
-                        .build();
-                Realm.setDefaultConfiguration(configuration );
-                Realm realm1=Realm.getDefaultInstance();
-                realm1.beginTransaction();
-                RealmResults<OnePictureData> datas = realm1.where(OnePictureData.class).equalTo("hpcontent_id",mIds.get(0)).findAll();
-                realm1.commitTransaction();
-                if (datas.size()>0) {
+                RealmResults<OnePictureData> d=RealmUtil.findByKey(OnePictureData.class,"hpcontent_id",mIds.get(0));
+                if (d.size()>0) {
                     Log.e("test1","获取到保存的数据");
                 }
-                return Request.getApi().getPictureById(mIds.get(0));
+                return mIds.get(0);
             }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
-                subscribe(new Action1<Observable<OnePicture>>() {
+        }).doOnNext(new Action1<String>() {
+            @Override
+            public void call(final String s) {
+                Observable<OnePictureData> orm=Observable.create(new Observable.OnSubscribe<OnePictureData>() {
                     @Override
-                    public void call(Observable<OnePicture> onePictureObservable) {
-
-                        onePictureObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<OnePicture>() {
+                    public void call(Subscriber<? super OnePictureData> subscriber) {
+                        RealmResults<OnePictureData> datas=RealmUtil.findByKey(OnePictureData.class,"hpcontent_id",s);
+                        if (datas == null||datas.size()==0) {
+                            subscriber.onNext(null);
+                        } else {
+                            subscriber.onNext(datas.first());
+                        }
+                        Log.e("test---","从数据库获取数据成功");
+                        subscriber.onCompleted();
+//                        RealmResults<OnePictureData> d=RealmUtil.findByKey(OnePictureData.class,"hpcontent_id",s);
+                    }
+                }).observeOn(Schedulers.io());
+                Observable<OnePictureData> net=Observable.create(new Observable.OnSubscribe<OnePictureData>() {
+                    @Override
+                    public void call(final Subscriber<? super OnePictureData> subscriber) {
+                        Request.getApi().getPictureById(s).map(new Func1<OnePicture, OnePicture>() {
                             @Override
-                            public void call(OnePicture onePicture) {
-                                mView.dismissLoading();
-//                                Log.e("tes1",onePicture.getData().getHp_content());
-                                viewBeans = new ArrayList<PictureViewBean>();
-                                for (int i = 0; i < mIds.size(); i++) {
-                                    PictureViewBean bean = new PictureViewBean(mIds.get(i), PictureViewBean.NORESULT, null);
-                                    if (i==mIds.size()) {
-                                        bean.state=PictureViewBean.LIST;
-                                    }
-                                    viewBeans.add(bean);
-                                }
-                                PictureViewBean bean = new PictureViewBean("list", PictureViewBean.LIST, null);
-                                viewBeans.add(bean);
-                                mView.setAdapter(viewBeans);
-                                Realm realm = Realm.getDefaultInstance();
-                                realm.beginTransaction();
-                                realm.copyToRealm(onePicture.getData());
-                                realm.commitTransaction();
-                                mView.showPicture(mIds.get(0), onePicture.getData());
+                            public OnePicture call(OnePicture onePicture) {
+                                subscriber.onNext(onePicture.getData());
+                                Log.e("test---","从网络获取数据成功");
+                                return onePicture;
                             }
                         });
                     }
+                }).observeOn(Schedulers.io());
+                Observable.concat(orm,net).first(new Func1<OnePictureData, Boolean>() {
+                    @Override
+                    public Boolean call(OnePictureData onePictureData) {
+                        return onePictureData!=null;
+                    }
+                }).observeOn(Schedulers.io()).subscribeOn(Schedulers.io()).subscribe(new Action1<OnePictureData>() {
+                    @Override
+                    public void call(OnePictureData onePictureData) {
+                        Log.e("test---","call-调用");
+//                        mView.showPicture(mIds.get(0), onePictureData);
+
+                    }
                 });
+            }
+        }).observeOn(Schedulers.io()).subscribeOn(Schedulers.io()).subscribe();
+//        Request.getApi().getPictureIds("0").map(new Func1<OnePictureList, String>() {
+//            @Override
+//            public String call(OnePictureList onePictureList) {
+//                mIds = onePictureList.getData();
+//                if (mIds == null || mIds.size() == 0) {
+//                    return null;
+//                }
+//                RealmResults<OnePictureData> d=RealmUtil.findByKey(OnePictureData.class,"hpcontent_id",mIds.get(0));
+//                if (d.size()>0) {
+//                    Log.e("test1","获取到保存的数据");
+//                }
+//                return mIds.get(0);
+//            }
+//        }).map(new Func1<String, Object>() {
+//        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
+//                subscribe(new Action1<Observable<OnePicture>>() {
+//                    @Override
+//                    public void call(Observable<OnePicture> onePictureObservable) {
+//
+//                        onePictureObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<OnePicture>() {
+//                            @Override
+//                            public void call(OnePicture onePicture) {
+//                                mView.dismissLoading();
+////                                Log.e("tes1",onePicture.getData().getHp_content());
+//                                viewBeans = new ArrayList<PictureViewBean>();
+//                                for (int i = 0; i < mIds.size(); i++) {
+//                                    PictureViewBean bean = new PictureViewBean(mIds.get(i), PictureViewBean.NORESULT, null);
+//                                    if (i==mIds.size()) {
+//                                        bean.state=PictureViewBean.LIST;
+//                                    }
+//                                    viewBeans.add(bean);
+//                                }
+//                                PictureViewBean bean = new PictureViewBean("list", PictureViewBean.LIST, null);
+//                                viewBeans.add(bean);
+//                                mView.setAdapter(viewBeans);
+//                                for (int i=0;i<100000;i++) {
+//                                    RealmUtil.save(onePicture.getData());
+//                                }
+//
+//                                mView.showPicture(mIds.get(0), onePicture.getData());
+//                            }
+//                        });
+//                    }
+//                });
     }
 
     @Override
-    public Picture getPictureById(final String id) {
+    public OnePictureData getPictureById(final String id) {
         Log.e("test1","获取信息--"+id);
         mView.showLoading();
         Request.getApi().getPictureById(id).subscribeOn(Schedulers.io()).subscribe(new Action1<OnePicture>() {
