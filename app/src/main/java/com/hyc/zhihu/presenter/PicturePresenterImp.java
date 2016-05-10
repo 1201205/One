@@ -64,20 +64,21 @@ public class PicturePresenterImp extends BasePresenter<PictureView> implements P
                 }
                 return mIds.get(0);
             }
-        }).doOnNext(new Action1<String>() {
+        }).map(new Func1<String, Observable<OnePictureData>>() {
             @Override
-            public void call(final String s) {
+            public Observable<OnePictureData> call(final String s) {
                 Observable<OnePictureData> orm=Observable.create(new Observable.OnSubscribe<OnePictureData>() {
                     @Override
                     public void call(Subscriber<? super OnePictureData> subscriber) {
                         RealmResults<OnePictureData> datas=RealmUtil.findByKey(OnePictureData.class,"hpcontent_id",s);
                         if (datas == null||datas.size()==0) {
-                            subscriber.onNext(null);
+//                            subscriber.onNext(null);
                         } else {
                             subscriber.onNext(datas.first());
+                            subscriber.onCompleted();
                         }
                         Log.e("test---","从数据库获取数据成功");
-                        subscriber.onCompleted();
+
 //                        RealmResults<OnePictureData> d=RealmUtil.findByKey(OnePictureData.class,"hpcontent_id",s);
                     }
                 }).observeOn(Schedulers.io());
@@ -94,21 +95,20 @@ public class PicturePresenterImp extends BasePresenter<PictureView> implements P
                         });
                     }
                 }).observeOn(Schedulers.io());
-                Observable.concat(orm,net).first(new Func1<OnePictureData, Boolean>() {
+                return Observable.concat(orm,net).first(new Func1<OnePictureData, Boolean>() {
                     @Override
                     public Boolean call(OnePictureData onePictureData) {
+                        Log.e("test--","data"+onePictureData);
                         return onePictureData!=null;
-                    }
-                }).observeOn(Schedulers.io()).subscribeOn(Schedulers.io()).subscribe(new Action1<OnePictureData>() {
-                    @Override
-                    public void call(OnePictureData onePictureData) {
-                        Log.e("test---","call-调用");
-//                        mView.showPicture(mIds.get(0), onePictureData);
-
                     }
                 });
             }
-        }).observeOn(Schedulers.io()).subscribeOn(Schedulers.io()).subscribe();
+        }).observeOn(Schedulers.io()).subscribeOn(Schedulers.io()).subscribe(new Action1<Observable<OnePictureData>>() {
+            @Override
+            public void call(Observable<OnePictureData> onePictureDataObservable) {
+                onePictureDataObservable.subscribe();
+            }
+        });
 //        Request.getApi().getPictureIds("0").map(new Func1<OnePictureList, String>() {
 //            @Override
 //            public String call(OnePictureList onePictureList) {
