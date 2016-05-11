@@ -71,5 +71,14 @@ public class RealmUtil {
         temp.commitTransaction();
         return realmResults;
     }
-
+    public static <E extends RealmModel> E findByKeyOne(final Class<E> clazz, final String fieldName, final String value) {
+        Realm temp=Realm.getDefaultInstance();
+        temp.beginTransaction();
+        RealmResults<E> realmResults = temp.where(clazz).equalTo(fieldName, value).findAll();
+        temp.commitTransaction();
+        if (realmResults!=null&&realmResults.size()>0) {
+            return realmResults.first();
+        }
+        return null;
+    }
 }
