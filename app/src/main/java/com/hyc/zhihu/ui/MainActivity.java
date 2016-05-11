@@ -11,18 +11,9 @@ import com.hyc.zhihu.R;
 import com.hyc.zhihu.base.BasePresenter;
 import com.hyc.zhihu.base.PresenterFactory;
 import com.hyc.zhihu.base.PresenterLoader;
-import com.hyc.zhihu.beans.OnePicture;
-import com.hyc.zhihu.beans.OnePictureList;
-import com.hyc.zhihu.net.Request;
 import com.hyc.zhihu.presenter.MainPresenter;
 import com.hyc.zhihu.ui.fragment.PictureFragment;
 import com.hyc.zhihu.view.TestView;
-
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity implements TestView,LoaderManager.LoaderCallbacks<MainPresenter> {
     private int ID = 1001;
@@ -40,29 +31,34 @@ public class MainActivity extends AppCompatActivity implements TestView,LoaderMa
     protected void onStart() {
         super.onStart();
         Log.d("act-hyc","onStart");
-        Request.getApi().getPictureIds("0").map(new Func1<OnePictureList, Observable<OnePicture>>() {
-            @Override
-            public Observable<OnePicture> call(OnePictureList onePictureList) {
-                return Request.getApi().getPictureById(onePictureList.getData().get(0));
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
-                subscribe(new Action1<Observable<OnePicture>>() {
-            @Override
-            public void call(Observable<OnePicture> onePictureObservable) {
-                onePictureObservable.subscribeOn(Schedulers.io()).subscribe(new Action1<OnePicture>() {
-                    @Override
-                    public void call(OnePicture onePicture) {
-                        Log.e("tes1",onePicture.getData().getHp_content());
-                    }
-                });
-            }
-        });
-         Request.getApi().getPictureIds("0").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<OnePictureList>() {
-             @Override
-             public void call(OnePictureList onePictureList) {
-                 Log.e("test1",onePictureList.getData().get(0));
-             }
-         });
+//        Requests.getApi().getPictureIds("0").map(new Func1<OnePictureList, Observable<OnePicture>>() {
+//            @Override
+//            public Observable<OnePicture> call(OnePictureList onePictureList) {
+//                return Requests.getApi().getPictureById(onePictureList.getData().get(0));
+//            }
+//        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
+//                subscribe(new Action1<Observable<OnePicture>>() {
+//            @Override
+//            public void call(Observable<OnePicture> onePictureObservable) {
+//                onePictureObservable.subscribeOn(Schedulers.io()).subscribe(new Action1<OnePicture>() {
+//                    @Override
+//                    public void call(OnePicture onePicture) {
+//                        Log.e("tes1",onePicture.getData().getHp_content());
+//                    }
+//                });
+//            }
+//        });
+//         Requests.getApi().getPictureIds("0").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<OnePictureList>() {
+//             @Override
+//             public void call(OnePictureList onePictureList) {
+//                 Log.e("test1", onePictureList.getData().get(0));
+//             }
+//         }, new Action1<Throwable>() {
+//             @Override
+//             public void call(Throwable throwable) {
+//                 Log.e("test1",throwable.getMessage());
+//             }
+//         });
     }
 
     @Override

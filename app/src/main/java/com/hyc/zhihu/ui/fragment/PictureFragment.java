@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.base.BasePresenter;
@@ -68,6 +69,7 @@ public class PictureFragment extends Fragment implements PictureView,LoaderManag
     @Override
     public void onResume() {
         super.onResume();
+        Log.e("test10",Thread.currentThread().getName());
         mPresenter.getPictureIdsAndFirstItem();
     }
 
@@ -89,7 +91,7 @@ public class PictureFragment extends Fragment implements PictureView,LoaderManag
 
     @Override
     public void showNetWorkError() {
-
+        Toast.makeText(getActivity(),"网络错误，请检查",Toast.LENGTH_LONG).show();
     }
 
     @Override
