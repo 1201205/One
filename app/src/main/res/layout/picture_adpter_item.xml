@@ -24,7 +24,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.facebook.drawee.view.SimpleDraweeView
+            <ImageView
+                android:transitionName="test"
                 android:id="@+id/picture_sdv"
                 android:layout_width="match_parent"
                 android:layout_height="260dp" />

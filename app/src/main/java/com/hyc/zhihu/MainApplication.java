@@ -2,15 +2,11 @@ package com.hyc.zhihu;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.hyc.zhihu.helper.FrescoHelper;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.utils.SPUtil;
 
 import java.io.File;
-import java.io.IOException;
 
 import io.realm.DynamicRealm;
 import io.realm.Realm;
@@ -26,7 +22,6 @@ public class MainApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        FrescoHelper.initialize(this);
         sContext = this;
         initRealm();
     }

@@ -40,6 +40,13 @@ public class PictureFragment extends Fragment implements PictureView,LoaderManag
         getLoaderManager().initLoader(111111, null, this);
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+//        if (isVisibleToUser) {
+//        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -67,10 +74,19 @@ public class PictureFragment extends Fragment implements PictureView,LoaderManag
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         Log.e("test10",Thread.currentThread().getName());
-        mPresenter.getPictureIdsAndFirstItem();
+//        mPresenter.getPictureIdsAndFirstItem();
+        mViewPager.setOffscreenPageLimit(3);
+
     }
 
     @Override
@@ -130,7 +146,7 @@ public class PictureFragment extends Fragment implements PictureView,LoaderManag
     @Override
     public void onLoadFinished(Loader<PicturePresenter> loader, PicturePresenter data) {
         mPresenter = data;
-    }
+        mPresenter.getPictureIdsAndFirstItem();    }
 
     @Override
     public void onLoaderReset(Loader<PicturePresenter> loader) {

@@ -1,22 +1,31 @@
 package com.hyc.zhihu.ui.adpter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.transition.ChangeImageTransform;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.beans.DateBean;
 import com.hyc.zhihu.beans.OnePictureData;
 import com.hyc.zhihu.beans.PictureViewBean;
+import com.hyc.zhihu.ui.MainActivity;
+import com.hyc.zhihu.ui.PictureActivity;
 import com.hyc.zhihu.view.TestView;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -35,6 +44,7 @@ public class PictureAdapter extends PagerAdapter {
     private String mCurrentId;
     private List<PictureViewBean> viewBeans;
     private Context mContext;
+    private int mRefreshIndex=-1;
 
     @Override
     public int getCount() {
@@ -70,6 +80,11 @@ public class PictureAdapter extends PagerAdapter {
 
     @Override
     public View instantiateItem(ViewGroup container, int position) {
+//        int delay=0;
+//        if (mRefreshIndex==position) {
+//            mRefreshIndex=-1;
+//            delay=50;
+//        }
         View view;
         if (position == viewBeans.size() - 1) {
             view=LayoutInflater.from(mContext).inflate(R.layout.date_list,null);
@@ -77,20 +92,39 @@ public class PictureAdapter extends PagerAdapter {
             listView.setAdapter(new DateAdapter(getDateBeans(),mContext));
         } else {
             view = LayoutInflater.from(mContext).inflate(R.layout.picture_adpter_item, null);
-            SimpleDraweeView picture =  (SimpleDraweeView)view.findViewById(R.id.picture_sdv);
-            TextView vol = (TextView) view.findViewById(R.id.vol_tv);
-            TextView name = (TextView) view.findViewById(R.id.name_tv);
-            TextView content = (TextView) view.findViewById(R.id.main_tv);
-            TextView date = (TextView) view.findViewById(R.id.date_tv);
-            PictureViewBean viewBean=viewBeans.get(position);
+            final ImageView picture =  (ImageView)view.findViewById(R.id.picture_sdv);
+            final TextView vol = (TextView) view.findViewById(R.id.vol_tv);
+            final TextView name = (TextView) view.findViewById(R.id.name_tv);
+            final TextView content = (TextView) view.findViewById(R.id.main_tv);
+            final TextView date = (TextView) view.findViewById(R.id.date_tv);
+            final PictureViewBean viewBean=viewBeans.get(position);
             Log.e("test1","重新刷新view"+position);
             if (viewBean.state==PictureViewBean.NORMAL) {
-                OnePictureData bean=viewBeans.get(position).data;
-                picture.setImageURI(Uri.parse(bean.getHp_img_original_url()));
-                name.setText(bean.getHp_author());
-                vol.setText(bean.getHp_title());
-                content.setText(bean.getHp_content());
-                date.setText(bean.getLast_update_date());
+               final OnePictureData bean=viewBeans.get(position).data;
+//                picture.setImageURI(Uri.parse(bean.getHp_img_original_url()));
+                picture.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ActivityOptionsCompat compat=ActivityOptionsCompat.makeSceneTransitionAnimation((MainActivity)mContext,picture,"test");
+
+//                        ((MainActivity) mContext).getWindow().setSharedElementEnterTransition(new ChangeImageTransform(mContext, null));
+                        Intent intent=PictureActivity.newIntent(mContext,bean.getHp_img_original_url());
+                        ActivityCompat.startActivity((MainActivity) mContext,intent,compat.toBundle());
+//                        mContext.startActivity(intent);
+                    }
+                });
+                name.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        name.setText(bean.getHp_author());
+                        vol.setText(bean.getHp_title());
+                        content.setText(bean.getHp_content());
+                        date.setText(bean.getLast_update_date());
+                        Picasso.with(mContext).load(bean.getHp_img_original_url()).into(picture);
+                    }
+                },0);
+
+
             }
             view.setTag(viewBean.id);
         }
@@ -99,6 +133,22 @@ public class PictureAdapter extends PagerAdapter {
         return view;
 
     }
+
+//    private View.OnClickListener getOnclickListener(){
+//        return new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        };
+//    }
+    private Handler mHandler=new Handler(){
+    @Override
+    public void handleMessage(Message msg) {
+        super.handleMessage(msg);
+        notifyDataSetChanged();
+    }
+};
     public void setCurrentItem(String id,OnePictureData data){
         Log.e("test1","显示信息");
         mCurrentId=id;
@@ -107,7 +157,8 @@ public class PictureAdapter extends PagerAdapter {
                 viewBeans.get(i).data=data;
                 viewBeans.get(i).state=PictureViewBean.NORMAL;
                 Log.e("test1","notifyDataSetChanged");
-                notifyDataSetChanged();
+                mRefreshIndex=i;
+                mHandler.sendEmptyMessageDelayed(0,150);
                 break;
             }
         }

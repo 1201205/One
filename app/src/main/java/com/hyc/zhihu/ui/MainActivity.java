@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements TestView,LoaderMa
         setContentView(R.layout.activity_main);
         getSupportLoaderManager().initLoader(ID, null, this);
         Log.d("act-hyc","onCreate");
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_content,new PictureFragment()).commit();
+
     }
 
     @Override
@@ -65,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements TestView,LoaderMa
     protected void onResume() {
         super.onResume();
         mPresenter.onLoadFinished();
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_content,new PictureFragment()).commit();
         Log.d("act-hyc","onResume----"+mPresenter.toString());
 
     }
