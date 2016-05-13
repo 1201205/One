@@ -8,7 +8,7 @@ import com.hyc.zhihu.beans.OnePictureData;
 import com.hyc.zhihu.beans.OnePictureList;
 import com.hyc.zhihu.beans.PictureViewBean;
 import com.hyc.zhihu.net.Requests;
-import com.hyc.zhihu.presenter.base.PicturePresenter;
+import com.hyc.zhihu.presenter.base.IPicturePresenter;
 import com.hyc.zhihu.utils.RealmUtil;
 import com.hyc.zhihu.view.PictureView;
 
@@ -27,7 +27,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by ray on 16/5/5.
  */
-public class PicturePresenterImp extends BasePresenter<PictureView> implements PicturePresenter {
+public class PicturePresenterImp extends BasePresenter<PictureView> implements IPicturePresenter {
     private List<String> mIds;
     private int mCurrentPage;
     ArrayList<PictureViewBean> viewBeans;

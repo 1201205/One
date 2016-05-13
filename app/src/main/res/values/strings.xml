@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">zhihu</string>
+    <string name="net_error">网络错误，请检查网络连接情况</string>
 </resources>

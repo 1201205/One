@@ -18,9 +18,8 @@ import com.hyc.zhihu.base.PresenterFactory;
 import com.hyc.zhihu.base.PresenterLoader;
 import com.hyc.zhihu.beans.OnePictureData;
 import com.hyc.zhihu.beans.PictureViewBean;
-import com.hyc.zhihu.presenter.MainPresenter;
 import com.hyc.zhihu.presenter.PicturePresenterImp;
-import com.hyc.zhihu.presenter.base.PicturePresenter;
+import com.hyc.zhihu.presenter.base.IPicturePresenter;
 import com.hyc.zhihu.ui.adpter.PictureAdapter;
 import com.hyc.zhihu.view.PictureView;
 
@@ -29,8 +28,8 @@ import java.util.List;
 /**
  * Created by ray on 16/5/5.
  */
-public class PictureFragment extends Fragment implements PictureView,LoaderManager.LoaderCallbacks<PicturePresenter> {
-    private PicturePresenter mPresenter;
+public class PictureFragment extends Fragment implements PictureView,LoaderManager.LoaderCallbacks<IPicturePresenter> {
+    private IPicturePresenter mPresenter;
     private ViewPager mViewPager;
     private PictureAdapter mPictureAdapter;
 
@@ -134,7 +133,7 @@ public class PictureFragment extends Fragment implements PictureView,LoaderManag
     }
 
     @Override
-    public Loader<PicturePresenter> onCreateLoader(int id, Bundle args) {
+    public Loader<IPicturePresenter> onCreateLoader(int id, Bundle args) {
         return new PresenterLoader(getContext(), new PresenterFactory() {
             @Override
             public BasePresenter create() {
@@ -144,12 +143,12 @@ public class PictureFragment extends Fragment implements PictureView,LoaderManag
     }
 
     @Override
-    public void onLoadFinished(Loader<PicturePresenter> loader, PicturePresenter data) {
+    public void onLoadFinished(Loader<IPicturePresenter> loader, IPicturePresenter data) {
         mPresenter = data;
         mPresenter.getPictureIdsAndFirstItem();    }
 
     @Override
-    public void onLoaderReset(Loader<PicturePresenter> loader) {
+    public void onLoaderReset(Loader<IPicturePresenter> loader) {
         mPresenter = null;
     }
 }

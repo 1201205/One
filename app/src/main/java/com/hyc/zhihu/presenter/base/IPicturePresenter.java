@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by ray on 16/4/19.
  */
-public interface PicturePresenter {
+public interface IPicturePresenter {
     void getPictureIdsAndFirstItem();
     OnePictureData getPictureById(String id);
     void checkAndGetPictureIds();

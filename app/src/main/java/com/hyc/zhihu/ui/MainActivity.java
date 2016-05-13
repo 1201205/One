@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.hyc.zhihu.R;
+import com.hyc.zhihu.base.BaseActivity;
 import com.hyc.zhihu.base.BasePresenter;
 import com.hyc.zhihu.base.PresenterFactory;
 import com.hyc.zhihu.base.PresenterLoader;
@@ -15,19 +16,29 @@ import com.hyc.zhihu.presenter.MainPresenter;
 import com.hyc.zhihu.ui.fragment.PictureFragment;
 import com.hyc.zhihu.view.TestView;
 
-public class MainActivity extends AppCompatActivity implements TestView,LoaderManager.LoaderCallbacks<MainPresenter> {
+public class MainActivity extends BaseActivity implements TestView,LoaderManager.LoaderCallbacks<MainPresenter> {
     private int ID = 1001;
     private MainPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         getSupportLoaderManager().initLoader(ID, null, this);
         Log.d("act-hyc","onCreate");
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_content,new PictureFragment()).commit();
 
     }
+
+    @Override
+    protected void handleIntent() {
+
+    }
+
+    @Override
+    protected int getLayoutID() {
+        return R.layout.activity_main;
+    }
+
 
     @Override
     protected void onStart() {

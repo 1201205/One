@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.beans.DateBean;
+import com.hyc.zhihu.ui.MonthPictureActivity;
 
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class DateAdapter extends BaseAdapter {
         holder.date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                context.startActivity(new Intent());
+                context.startActivity(new Intent(context, MonthPictureActivity.class));
             }
         });
         return convertView;
