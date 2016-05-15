@@ -50,12 +50,14 @@ public class DateAdapter extends BaseAdapter {
         } else {
             holder= (ViewHolder) convertView.getTag();
         }
-        DateBean dateBean=dateBeans.get(position);
+        final DateBean dateBean=dateBeans.get(position);
         holder.date.setText(dateBeans.get(position).date);
         holder.date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent(context, MonthPictureActivity.class));
+                Intent intent=new Intent(context, MonthPictureActivity.class);
+                intent.putExtra(MonthPictureActivity.DATE,dateBean.realDate);
+                context.startActivity(intent);
             }
         });
         return convertView;

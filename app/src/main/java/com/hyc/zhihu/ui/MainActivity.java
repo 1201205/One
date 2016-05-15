@@ -4,6 +4,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import com.hyc.zhihu.view.TestView;
 public class MainActivity extends BaseActivity implements TestView,LoaderManager.LoaderCallbacks<MainPresenter> {
     private int ID = 1001;
     private MainPresenter mPresenter;
+    private RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +28,16 @@ public class MainActivity extends BaseActivity implements TestView,LoaderManager
         getSupportLoaderManager().initLoader(ID, null, this);
         Log.d("act-hyc","onCreate");
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_content,new PictureFragment()).commit();
-
+        mRecyclerView= (RecyclerView) findViewById(R.id.picture_rv);
     }
 
     @Override
     protected void handleIntent() {
+
+    }
+
+    @Override
+    protected void initView() {
 
     }
 

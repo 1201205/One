@@ -25,12 +25,12 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:transitionName="test"
                 android:id="@+id/picture_sdv"
                 android:layout_width="match_parent"
                 android:layout_height="260dp" />
 
             <LinearLayout
+
                 android:id="@+id/des_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

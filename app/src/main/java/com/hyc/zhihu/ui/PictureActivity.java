@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
@@ -41,8 +42,8 @@ public class PictureActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDraweeView= (ImageView) findViewById(R.id.picture_sdv);
-//        ViewCompat.setTransitionName(mDraweeView,"test");
-        ActivityOptionsCompat.makeSceneTransitionAnimation(this,new Pair( mTitleView, SHARE_TITLE),new Pair( mDraweeView, SHARE_PICTURE));
+        ViewCompat.setTransitionName(mDraweeView,SHARE_PICTURE);
+//        ActivityOptionsCompat.makeSceneTransitionAnimation(this,new Pair( mTitleView, SHARE_TITLE),new Pair( mDraweeView, SHARE_PICTURE));
         mTitleView.setText(mTitle);
         Picasso.with(PictureActivity.this).load(mUrl).into(mDraweeView);
         PhotoViewAttacher mPhotoViewAttacher = new PhotoViewAttacher(mDraweeView);
@@ -53,6 +54,11 @@ public class PictureActivity extends BaseActivity {
         Intent intent=getIntent();
         mTitle=intent.getStringExtra(TITLE_STRING);
         mUrl=intent.getStringExtra(EXTRA_IMAGE_URL);
+    }
+
+    @Override
+    protected void initView() {
+
     }
 
     @Override
