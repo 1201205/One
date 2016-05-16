@@ -48,6 +48,11 @@ public class ReadingActivity extends BaseActivity implements ReadingView,LoaderM
     }
 
     @Override
+    protected void initView() {
+
+    }
+
+    @Override
     protected int getLayoutID() {
         return R.layout.activity_reading;
     }
