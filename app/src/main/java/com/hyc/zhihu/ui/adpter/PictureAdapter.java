@@ -112,8 +112,6 @@ public class PictureAdapter extends PagerAdapter {
                 content.setText(bean.getHp_content());
                 date.setText(bean.getLast_update_date());
                 Picasso.with(mContext).load(bean.getHp_img_original_url()).into(picture);
-
-
             }
             view.setTag(viewBean.id);
         }

@@ -1,8 +1,10 @@
 package com.hyc.zhihu.net;
 
+import com.hyc.zhihu.beans.HeadItems;
 import com.hyc.zhihu.beans.OnePicture;
 import com.hyc.zhihu.beans.OnePictureByMonth;
 import com.hyc.zhihu.beans.OnePictureList;
+import com.hyc.zhihu.beans.Readings;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -30,10 +32,17 @@ public interface Api {
     //http://v3.wufazhuce.com:8000/api/question/1335?
     //获取连载的内容
     //http://v3.wufazhuce.com:8000/api/serialcontent/104?
+    //获取阅读list
+    //http://v3.wufazhuce.com:8000/api/reading/index/0?
     @GET("/api/hp/idlist/{id}")
     Observable<OnePictureList> getPictureIds(@Path("id") String id );
     @GET("/api/hp/detail/{id}")
     Observable<OnePicture> getPictureById(@Path("id") String id );
     @GET("/api/hp/bymonth/{date}")
     Observable<OnePictureByMonth> getPictureByMonth(@Path("date") String date );
+    @GET("/api/reading/carousel/")
+    Observable<HeadItems> getScrollHeads();
+    @GET("/api/reading/index/{index}")
+    Observable<Readings> getReadingList(@Path("index") int index );
+
 }

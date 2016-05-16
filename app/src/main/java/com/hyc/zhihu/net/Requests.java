@@ -2,6 +2,8 @@ package com.hyc.zhihu.net;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.hyc.zhihu.MainApplication;
 import com.hyc.zhihu.utils.NetUtil;
 
