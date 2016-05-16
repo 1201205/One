@@ -1,12 +1,14 @@
 package com.hyc.zhihu.beans;
 
+import com.google.gson.JsonElement;
+
 /**
  * Created by ray on 16/5/4.
  */
 public class Reading {
     private String time;
     private int type;
-    private String content;
+    private JsonElement content;
 
     public String getTime() {
         return time;
@@ -24,11 +26,11 @@ public class Reading {
         this.type = type;
     }
 
-    public String getContent() {
+    public JsonElement getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(JsonElement content) {
         this.content = content;
     }
 }

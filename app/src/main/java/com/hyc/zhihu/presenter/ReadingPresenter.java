@@ -2,6 +2,8 @@ package com.hyc.zhihu.presenter;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.hyc.zhihu.base.BasePresenter;
 import com.hyc.zhihu.beans.DateReading;
 import com.hyc.zhihu.beans.HeadItems;
@@ -38,8 +40,8 @@ public class ReadingPresenter extends BasePresenter<ReadingView> implements IRea
 
     @Override
     public void showContent() {
-        getAndShowHead();
-//        getAndShowList(0);
+//        getAndShowHead();
+        getAndShowList(0);
     }
 
     @Override
@@ -54,37 +56,35 @@ public class ReadingPresenter extends BasePresenter<ReadingView> implements IRea
 
     @Override
     public void getAndShowList(int index) {
-        Requests.getApi().getReadingList(index).subscribeOn(Schedulers.io()).observeOn(Schedulers.io()).subscribe(new Action1<Readings>() {
+        Requests.getApi().getReadingList(index).map(new Func1<Readings, List<RealReading>>() {
             @Override
-            public void call(Readings readings) {
-                Log.e("test",readings.toString());
+            public List<RealReading> call(Readings readings) {
+                List<RealReading> realReadings=new ArrayList<RealReading>();
+                List<DateReading> dateReading=readings.getData();
+                if (mDate==null) {
+                    mDate=new ArrayList<String>();
+                }
+                int dateCount=dateReading.size();
+                for (int i=0;i<dateCount;i++) {
+                    List<Reading> readingList=dateReading.get(i).getItems();
+                    mDate.add(readingList.get(0).getTime());
+                    int readingCount=readingList.size();
+                    for (int j=0;j<readingCount;j++) {
+                        RealReading r=getRealReading(readingList.get(j));
+                        realReadings.add(r);
+                        if (j==0) {
+                            mDate.add(r.getContent().getTitle());
+                        }
+                    }
+                }
+                return realReadings;
+            }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<List<RealReading>>() {
+            @Override
+            public void call(List<RealReading> realReadings) {
+                mView.showList(realReadings,mDate);
             }
         });
-//        Requests.getApi().getReadingList(index).map(new Func1<Readings, List<RealReading>>() {
-//            @Override
-//            public List<RealReading> call(Readings readings) {
-//                List<RealReading> realReadings=new ArrayList<RealReading>();
-//                List<DateReading> dateReading=readings.getData();
-//                if (mDate==null) {
-//                    mDate=new ArrayList<String>();
-//                }
-//                int dateCount=dateReading.size();
-//                for (int i=0;i<dateCount;i++) {
-//                    List<Reading> readingList=dateReading.get(i).getItems();
-//                    mDate.add(readingList.get(0).getTime());
-//                    int readingCount=readingList.size();
-//                    for (int j=0;j<readingCount;j++) {
-//                        realReadings.add(getRealReading(readingList.get(j)));
-//                    }
-//                }
-//                return realReadings;
-//            }
-//        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<List<RealReading>>() {
-//            @Override
-//            public void call(List<RealReading> realReadings) {
-////                mView.showList(realReadings,mDate);
-//            }
-//        });
     }
     private RealReading getRealReading(Reading r){
         ReadingContent content=new ReadingContent();
@@ -100,7 +100,7 @@ public class ReadingPresenter extends BasePresenter<ReadingView> implements IRea
             case 2:
                 SerialContent s= (SerialContent) JsonUtil.fromJson(r.getContent(),SerialContent.class);
                 content.setTitle(s.getTitle());
-                content.setAuthor(s.getAuthor().get(0).getUser_name());
+                content.setAuthor(s.getAuthor().getUser_name());
                 content.setContent(s.getExcerpt());
                 content.setId(s.getId());
                 break;

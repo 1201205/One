@@ -166,13 +166,13 @@ public class SerialContent implements java.io.Serializable {
     public void setCommentnum(int commentnum) {
         this.commentnum = commentnum;
     }
-    public List<RealArticleAuthor> getAuthor() {
+    public RealArticleAuthor getAuthor() {
         return this.author;
     }
 
-    public void setAuthor(List<RealArticleAuthor> author) {
+    public void setAuthor(RealArticleAuthor author) {
         this.author = author;
     }
-    private List<RealArticleAuthor> author;
+    private RealArticleAuthor author;
 
 }

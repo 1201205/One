@@ -26,20 +26,20 @@ import java.util.List;
  * Created by Administrator on 2016/5/16.
  */
 public class ReadingActivity extends BaseActivity implements ReadingView,LoaderManager.LoaderCallbacks<ReadingPresenter>{
-    private ListView mPictureLV;
+    private ListView mListView;
     private ReadingAdapter mReadingAdapter;
     View v;
     private ReadingPresenter mPresenter;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPictureLV= (ListView) findViewById(R.id.picture_lv);
+        mListView = (ListView) findViewById(R.id.picture_lv);
         getSupportLoaderManager().initLoader(121,null, this);
         v=LayoutInflater.from(this).inflate(R.layout.reading_header,null);
-        mPictureLV.addHeaderView(LayoutInflater.from(this).inflate(R.layout.reading_header,null));
-        mPictureLV.getHeaderViewsCount();
+        mListView.addHeaderView(LayoutInflater.from(this).inflate(R.layout.reading_header,null));
+        mListView.getHeaderViewsCount();
 
-        Log.e("test", mPictureLV.getHeaderViewsCount()+"");
+        Log.e("test", mListView.getHeaderViewsCount()+"");
     }
 
     @Override
@@ -66,6 +66,7 @@ public class ReadingActivity extends BaseActivity implements ReadingView,LoaderM
     public void showList(List<RealReading> realReadings, List<String> date) {
         if (mReadingAdapter == null) {
             mReadingAdapter = new ReadingAdapter(this, realReadings, date);
+            mListView.setAdapter(mReadingAdapter);
         } else {
             mReadingAdapter.refreshList(realReadings,date);
         }
@@ -94,7 +95,7 @@ public class ReadingActivity extends BaseActivity implements ReadingView,LoaderM
     @Override
     public void onLoadFinished(Loader<ReadingPresenter> loader, ReadingPresenter data) {
         mPresenter=data;
-//        mPresenter.showContent();
+        mPresenter.showContent();
     }
 
     @Override

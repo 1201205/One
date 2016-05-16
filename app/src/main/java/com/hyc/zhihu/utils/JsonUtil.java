@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -332,7 +333,18 @@ public class JsonUtil {
     public static <T> T fromJson(String json, Class<T> clazz) {
         return fromJson(json, clazz, null);
     }
-
+    public static <T> T fromJson(JsonElement json, Class<T> clazz) {
+            if (json==null) {
+                return null;
+            }
+            Gson gson = new Gson();
+            try {
+                return gson.fromJson(json, clazz);
+            } catch (Exception ex) {
+                Log.e(json + " 无法转换为 " + clazz.getName() + " 对象!", ex.getMessage());
+                return null;
+            }
+    }
     /**
       * 将给定的目标对象根据{@code GsonBuilder} 所指定的条件参数转换成 {@code JSON} 格式的字符串。
       * <p />

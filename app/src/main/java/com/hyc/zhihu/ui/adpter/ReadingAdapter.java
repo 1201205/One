@@ -61,10 +61,10 @@ public class ReadingAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         ReadingContent realReading = mRealReadings.get(position).getContent();
-        String time = mRealReadings.get(position).getTime();
-        if (mDates.contains(time)) {
+        String title = mRealReadings.get(position).getContent().getTitle();
+        if (mDates.contains(title)) {
             holder.dateTV.setVisibility(View.VISIBLE);
-            holder.dateTV.setText(time);
+            holder.dateTV.setText(mRealReadings.get(position).getTime());
         } else {
             holder.dateTV.setVisibility(View.GONE);
         }
