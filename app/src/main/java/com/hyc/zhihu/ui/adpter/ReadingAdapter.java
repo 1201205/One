@@ -2,6 +2,7 @@ package com.hyc.zhihu.ui.adpter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,8 +77,9 @@ public class ReadingAdapter extends BaseAdapter implements SectionIndexer {
         }
         ReadingContent realReading = mRealReadings.get(position).getContent();
         String title = mRealReadings.get(position).getContent().getTitle();
-        int section=getSectionForPosition(position);
-        if (section!=-1) {
+        int section = getSectionForPosition(position);
+        int p=getPositionForSection(section);
+        if (p==position) {
             holder.dateTV.setVisibility(View.VISIBLE);
             holder.dateTV.setText(mIndexer.get(position));
         } else {
@@ -119,7 +121,7 @@ public class ReadingAdapter extends BaseAdapter implements SectionIndexer {
 
     @Override
     public int getPositionForSection(int section) {
-        if (section < 0 || section >= mIndexer.size()) {
+        if (mIndexer == null || section < 0 || section >= mIndexer.size()) {
             return -1;
         }
         int count = 0;
@@ -134,22 +136,36 @@ public class ReadingAdapter extends BaseAdapter implements SectionIndexer {
         return key;
     }
 
-    @Override
-    public int getSectionForPosition(int position) {
-        if (position < 0) {
-            return -1;
+    public String getDateBySection(int section) {
+
+        if (mIndexer==null) {
+            return "";
         }
-        int count=0;
+        int count = 0;
         for (Integer d : mIndexer.keySet()) {
-            if (mIndexer.get(d).equals(position)) {
-                return count;
+            if (section == count) {
+                return mIndexer.get(d);
             }
             count++;
         }
+        return "";
+    }
+    @Override
+    public int getSectionForPosition(int position) {
+        if (mIndexer == null || position < 0) {
+            return -1;
+        }
+        int count = 0;
+        for (Integer d : mIndexer.keySet()) {
+            if (d==position) {
+                return count;
+            } else if (d>position) {
+                return count-1;
+            }
+            count++;
+        }
+
         return -1;
-        // 注意这个方法的返回值，它就是index<0时，返回-index-2的原因
-        // 解释Arrays.binarySearch，如果搜索结果在数组中，刚返回它在数组中的索引，如果不在，刚返回第一个比它大的索引的负数-1
-        // 如果没弄明白，请自己想查看api
     }
 
     static class ViewHolder {

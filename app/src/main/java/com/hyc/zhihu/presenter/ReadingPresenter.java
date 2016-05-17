@@ -31,6 +31,7 @@ import rx.schedulers.Schedulers;
 public class ReadingPresenter extends BasePresenter<ReadingView> implements IReadingPresenter {
     private List<String> mTitle;
     private LinkedHashMap<Integer,String> mIndexer;
+    private int mLastCount;
     public ReadingPresenter(ReadingView view) {
         super(view);
 
@@ -66,18 +67,19 @@ public class ReadingPresenter extends BasePresenter<ReadingView> implements IRea
                 int count=0;
                 for (int i=0;i<dateCount;i++) {
                     List<Reading> readingList=dateReading.get(i).getItems();
-                    mIndexer.put(i,dateReading.get(i).getDate());
+                    mIndexer.put(count+mLastCount,dateReading.get(i).getDate());
 //                    mTitle.add(readingList.get(0).getTime());
                     int readingCount=readingList.size();
                     for (int j=0;j<readingCount;j++) {
                         RealReading r=getRealReading(readingList.get(j));
                         realReadings.add(r);
-                        if (j==0) {
-                            mTitle.add(r.getContent().getTitle());
-                        }
+//                        if (j==0) {
+//                            mTitle.add(r.getContent().getTitle());
+//                        }
                         count++;
                     }
                 }
+                mLastCount+=realReadings.size();
                 return realReadings;
             }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<List<RealReading>>() {

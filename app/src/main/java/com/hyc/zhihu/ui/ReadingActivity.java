@@ -6,13 +6,14 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
@@ -26,6 +27,7 @@ import com.hyc.zhihu.beans.RealReading;
 import com.hyc.zhihu.presenter.ReadingPresenter;
 import com.hyc.zhihu.ui.adpter.LoopViewPagerAdapter;
 import com.hyc.zhihu.ui.adpter.ReadingAdapter;
+import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.view.ReadingView;
 
 import java.util.ArrayList;
@@ -40,6 +42,7 @@ public class ReadingActivity extends BaseActivity implements ReadingView, Loader
     private SwipeToLoadLayout swipeToLoadLayout;
 
     private ListView listView;
+    private TextView titleLayout;
 
     private ViewPager viewPager;
 
@@ -48,6 +51,7 @@ public class ReadingActivity extends BaseActivity implements ReadingView, Loader
     private ReadingAdapter mReadingAdapter;
     private ReadingPresenter mPresenter;
     private int mIndex;
+    private int lastFirstVisibleItem = -1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,6 +66,7 @@ public class ReadingActivity extends BaseActivity implements ReadingView, Loader
         listView.addHeaderView(v);
         indicators = (ViewGroup) v.findViewById(R.id.indicators);
         viewPager.addOnPageChangeListener(mPagerAdapter);
+        titleLayout = (TextView) findViewById(R.id.title);
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -78,12 +83,55 @@ public class ReadingActivity extends BaseActivity implements ReadingView, Loader
                     if (mPagerAdapter != null) {
                         mPagerAdapter.start();
                     }
-
                 } else {
                     if (mPagerAdapter != null) {
                         mPagerAdapter.stop();
                     }
                 }
+                int section = mReadingAdapter.getSectionForPosition(firstVisibleItem - 1);
+                int nextSecPosition = mReadingAdapter.getPositionForSection(section+1) + 1;
+
+                if (firstVisibleItem != lastFirstVisibleItem) {
+
+                    ViewGroup.MarginLayoutParams params =
+                            (ViewGroup.MarginLayoutParams) titleLayout
+                                    .getLayoutParams();
+                    params.topMargin = 0;
+                    titleLayout.setLayoutParams(params);
+                    String date = mReadingAdapter.getDateBySection(section);
+                    if (TextUtils.isEmpty(date)) {
+                        titleLayout.setVisibility(View.GONE);
+                    } else {
+                        titleLayout.setText(date);
+                        titleLayout.setVisibility(View.VISIBLE);
+
+                    }
+
+                }
+                if (nextSecPosition == firstVisibleItem+1) {
+
+                    int titleHeight = titleLayout.getHeight();
+                    View childView = view.getChildAt(0);
+                    if (childView == null) {
+                        return;
+                    }
+                    int bottom = childView.getBottom();
+                    ViewGroup.MarginLayoutParams params =
+                            (ViewGroup.MarginLayoutParams) titleLayout
+                                    .getLayoutParams();
+                    if (bottom < titleHeight) {
+                        float pushedDistance = bottom - titleHeight;
+                        params.topMargin = (int) pushedDistance;
+                        titleLayout.setLayoutParams(params);
+                    } else {
+
+                        if (params.topMargin != 0) {
+                            params.topMargin = 0;
+                            titleLayout.setLayoutParams(params);
+                        }
+                    }
+                }
+                lastFirstVisibleItem = firstVisibleItem;
             }
         });
         swipeToLoadLayout.setOnLoadMoreListener(this);
@@ -154,6 +202,6 @@ public class ReadingActivity extends BaseActivity implements ReadingView, Loader
 
     @Override
     public void onLoadMore() {
-        mPresenter.getAndShowList(mIndex++);
+        mPresenter.getAndShowList(++mIndex);
     }
 }
