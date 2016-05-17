@@ -7,7 +7,7 @@ apply plugin: 'android-apt'
 
     defaultConfig {
         applicationId "com.hyc.zhihu"
-        minSdkVersion 21
+        minSdkVersion 19
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -41,6 +41,8 @@ dependencies {
 //    compile 'pub.devrel:easypermissions:0.1.5'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.chrisbanes.photoview:library:1.2.3'
+    compile project(':library')
+
 
 
 

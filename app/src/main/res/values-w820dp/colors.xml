@@ -12,9 +12,7 @@
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="red">#ff0000</color>
-    <color name="gray">#f8f8f8</color>
-    <color name="gray_tv">#9c9c9c</color>
-    <color name="black_tv">#333333</color>
+
     <color name="google_blue">#4285F4</color>
     <color name="google_red">#EA4335</color>
     <color name="google_green">#34A853</color>
