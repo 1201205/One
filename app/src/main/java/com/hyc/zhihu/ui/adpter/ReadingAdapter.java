@@ -76,10 +76,10 @@ public class ReadingAdapter extends BaseAdapter implements SectionIndexer {
         }
         ReadingContent realReading = mRealReadings.get(position).getContent();
         String title = mRealReadings.get(position).getContent().getTitle();
-        getSectionForPosition(position);
-        if (mDates.contains(title)) {
+        int section=getSectionForPosition(position);
+        if (section!=-1) {
             holder.dateTV.setVisibility(View.VISIBLE);
-            holder.dateTV.setText(mRealReadings.get(position).getTime());
+            holder.dateTV.setText(mIndexer.get(position));
         } else {
             holder.dateTV.setVisibility(View.GONE);
         }

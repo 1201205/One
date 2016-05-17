@@ -30,6 +30,7 @@ import com.hyc.zhihu.view.ReadingView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -113,10 +114,11 @@ public class ReadingActivity extends BaseActivity implements ReadingView, Loader
     }
 
     @Override
-    public void showList(List<RealReading> realReadings, HashMap<Integer,Integer> indexer) {
+    public void showList(List<RealReading> realReadings, LinkedHashMap<Integer, String> indexer) {
         mReadingAdapter.refreshList(realReadings, indexer);
         swipeToLoadLayout.setLoadingMore(false);
     }
+
 
     @Override
     public void showLoading() {
