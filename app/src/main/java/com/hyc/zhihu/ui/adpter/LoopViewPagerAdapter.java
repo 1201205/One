@@ -20,9 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LoopViewPagerAdapter extends BaseLoopPagerAdapter {
-
     private final List<HeadScrollItem> mDatas;
 
+    public void setItemClickListener(ItemClickListener itemClickListener) {
+        this.mItemClickListener = itemClickListener;
+    }
+
+    private ItemClickListener mItemClickListener;
     private final ViewGroup mIndicators;
 
     private int mLastPosition;
@@ -90,7 +94,16 @@ public class LoopViewPagerAdapter extends BaseLoopPagerAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        HeadScrollItem data = mDatas.get(position);
+        final HeadScrollItem data = mDatas.get(position);
+        if (mItemClickListener!=null) {
+            holder.ivBanner.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mItemClickListener.itemClicked(data);
+                }
+            });
+        }
+
         Picasso.with(parent.getContext()).load(data.getCover()).fit().into(holder.ivBanner);
         return convertView;
     }
@@ -106,5 +119,8 @@ public class LoopViewPagerAdapter extends BaseLoopPagerAdapter {
 
     public static class ViewHolder {
         ImageView ivBanner;
+    }
+    public interface  ItemClickListener{
+        void itemClicked(HeadScrollItem data);
     }
 }

@@ -1,5 +1,6 @@
 package com.hyc.zhihu.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
@@ -10,7 +11,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -27,11 +27,8 @@ import com.hyc.zhihu.beans.RealReading;
 import com.hyc.zhihu.presenter.ReadingPresenter;
 import com.hyc.zhihu.ui.adpter.LoopViewPagerAdapter;
 import com.hyc.zhihu.ui.adpter.ReadingAdapter;
-import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.view.ReadingView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -89,7 +86,7 @@ public class ReadingActivity extends BaseActivity implements ReadingView, Loader
                     }
                 }
                 int section = mReadingAdapter.getSectionForPosition(firstVisibleItem - 1);
-                int nextSecPosition = mReadingAdapter.getPositionForSection(section+1) + 1;
+                int nextSecPosition = mReadingAdapter.getPositionForSection(section + 1) + 1;
 
                 if (firstVisibleItem != lastFirstVisibleItem) {
 
@@ -108,7 +105,7 @@ public class ReadingActivity extends BaseActivity implements ReadingView, Loader
                     }
 
                 }
-                if (nextSecPosition == firstVisibleItem+1) {
+                if (nextSecPosition == firstVisibleItem + 1) {
 
                     int titleHeight = titleLayout.getHeight();
                     View childView = view.getChildAt(0);
@@ -159,6 +156,15 @@ public class ReadingActivity extends BaseActivity implements ReadingView, Loader
         viewPager.setAdapter(mPagerAdapter);
         viewPager.addOnPageChangeListener(mPagerAdapter);
         mPagerAdapter.setList(headScrollItems);
+        mPagerAdapter.setItemClickListener(new LoopViewPagerAdapter.ItemClickListener() {
+            @Override
+            public void itemClicked(HeadScrollItem data) {
+                Intent intent = new Intent(ReadingActivity.this, ReadingListActivity.class);
+                intent.putExtra(ReadingListActivity.HEAD_ITEM, data);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override

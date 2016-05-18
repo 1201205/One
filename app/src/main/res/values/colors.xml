@@ -20,8 +20,6 @@
     <color name="google_green">#34A853</color>
     <color name="google_yellow">#FBBC05</color>
 
-    <color name="yalantis_saffron">#F4B63E</color>
-    <color name="yalantis_eggplant">#663D4E</color>
-    <color name="yalantis_sienna">#EB6460</color>
-
+    <color name="reading_list_gray">#DDE1E3</color>
+    <color name="transparent">#00000000</color>
 </resources>

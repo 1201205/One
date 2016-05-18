@@ -19,11 +19,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutID());
-        initView();
         if (getIntent()!=null) {
             handleIntent();
         }
-        
+        initView();
         initActionBar();
 
     }
@@ -35,6 +34,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private void initActionBar() {
         ActionBar mActionBar = getSupportActionBar();
+        mActionBar.setElevation(0);
         mActionBar.setDisplayShowCustomEnabled(true);
         mActionBar.setDisplayShowHomeEnabled(false);
         mActionBar.setDisplayShowTitleEnabled(false);
