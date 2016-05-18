@@ -1,6 +1,9 @@
 package com.hyc.zhihu.net;
 
+import com.hyc.zhihu.beans.Comments;
 import com.hyc.zhihu.beans.QuestionContent;
+import com.hyc.zhihu.beans.QuestionWrapper;
+import com.hyc.zhihu.beans.Questions;
 import com.hyc.zhihu.beans.ReadingListItems;
 import com.hyc.zhihu.beans.HeadItems;
 import com.hyc.zhihu.beans.OnePicture;
@@ -56,6 +59,7 @@ public interface Api {
 //    @GET("/api/reading/carousel/")
 //    Observable<ReadingListItems> getEssayList();
     //点击问题需要发送的请求有：
+
     /**
      * 点击问题需要发送的请求有：
      * http://v3.wufazhuce.com:8000/api/question/1356  查看问题内容
@@ -63,7 +67,7 @@ public interface Api {
      * http://v3.wufazhuce.com:8000/api/related/question/1356  查看与之相关的推荐
      * http://v3.wufazhuce.com:8000/api/comment/praiseandtime/question/1356/0 评论列表
      * http://v3.wufazhuce.com:8000/api/comment/praiseandtime/question/1356/16697 在16697后面的评论
-     *
+     * <p/>
      * 点击连载需要发送的请求：
      * http://v3.wufazhuce.com:8000/api/serialcontent/111  查看连载内容
      * http://v3.wufazhuce.com:8000/api/serialcontent/update/111/2016-05-12%2017:59:40 更新连载的评论数量和查看数量
@@ -71,12 +75,18 @@ public interface Api {
      * http://v3.wufazhuce.com:8000/api/comment/praiseandtime/serial/111/0 评论列表
      * http://v3.wufazhuce.com:8000/api/comment/praiseandtime/serial/111/15635
      * 点击短篇需要发送的请求：
-     *http://v3.wufazhuce.com:8000/api/essay/1411 内容
+     * http://v3.wufazhuce.com:8000/api/essay/1411 内容
      * http://v3.wufazhuce.com:8000/api/essay/update/1411/2016-05-17%2020:30:47 更新
      * http://v3.wufazhuce.com:8000/api/related/essay/1411 推荐
      * http://v3.wufazhuce.com:8000/api/comment/praiseandtime/essay/1411/0 评论
-     *http://v3.wufazhuce.com:8000/api/comment/praiseandtime/essay/1411/14582 评论
+     * http://v3.wufazhuce.com:8000/api/comment/praiseandtime/essay/1411/14582 评论
      */
     @GET("/api/question/{id}")
-    Observable<QuestionContent> getQuestionContenByID(@Path("id") String id);
+    Observable<QuestionWrapper> getQuestionContentByID(@Path("id") String id);
+
+    @GET("/api/related/question/{id}")
+    Observable<Questions> getQuestionRelateByID(@Path("id") String id);
+
+    @GET("/api/comment/praiseandtime/question/{id}/{index}")
+    Observable<Comments> getQuestionCommentsByIndex(@Path("id") String id, @Path("index") String index);
 }

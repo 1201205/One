@@ -5,6 +5,6 @@ package com.hyc.zhihu.presenter.base;
  */
 public interface IQuestionContentPresenter {
     void getAndShowContent(String id);
-    void getAndShowCommentList(String type,String id);
+    void getAndShowCommentList();
     void getAndShowRelate(String id);
 }

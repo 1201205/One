@@ -1,9 +1,11 @@
 package com.hyc.zhihu.utils;
 
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.widget.Toast;
 
 import com.hyc.zhihu.MainApplication;
+import com.hyc.zhihu.R;
 
 /**
  * Created by ray on 16/5/13.
@@ -21,5 +23,8 @@ public class AppUtil {
     public static int dip2px(float dipValue) {
         final float scale = MainApplication.getApplication().getResources().getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
+    }
+    public static int getColor(int id){
+        return MainApplication.getApplication().getResources().getColor(R.color.google_blue);
     }
 }

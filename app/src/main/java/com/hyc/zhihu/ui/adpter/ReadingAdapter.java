@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
@@ -27,6 +28,12 @@ public class ReadingAdapter extends BaseAdapter implements SectionIndexer {
     private Context mContext;
     private List<RealReading> mRealReadings;
     private LinkedHashMap<Integer, String> mIndexer;
+
+    public void setItemClickListener(OnReadingItemClickListener clickListener) {
+        mClickListener = clickListener;
+    }
+
+    private OnReadingItemClickListener mClickListener;
 
     public ReadingAdapter(Context context, List<RealReading> realReadings, LinkedHashMap<Integer, String> indexer) {
         this.mContext = context;
@@ -61,11 +68,12 @@ public class ReadingAdapter extends BaseAdapter implements SectionIndexer {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.reading_item, null);
             holder = new ViewHolder();
+            holder.item= (LinearLayout) convertView.findViewById(R.id.item);
             holder.authorTV = (TextView) convertView.findViewById(R.id.author_tv);
             holder.contentTV = (TextView) convertView.findViewById(R.id.content_tv);
             holder.dateTV = (TextView) convertView.findViewById(R.id.date_tv);
@@ -75,7 +83,7 @@ public class ReadingAdapter extends BaseAdapter implements SectionIndexer {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        ReadingContent realReading = mRealReadings.get(position).getContent();
+        final ReadingContent realReading = mRealReadings.get(position).getContent();
         String title = mRealReadings.get(position).getContent().getTitle();
         int section = getSectionForPosition(position);
         int p=getPositionForSection(section);
@@ -108,7 +116,14 @@ public class ReadingAdapter extends BaseAdapter implements SectionIndexer {
             holder.titleTV.setCompoundDrawables(null, null, null, null);
 
         }
-
+        if (mClickListener!=null) {
+            holder.item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mClickListener.onItemClicked(mRealReadings.get(position));
+                }
+            });
+        }
         holder.contentTV.setText(realReading.getContent());
         holder.authorTV.setText(realReading.getAuthor());
         return convertView;
@@ -174,5 +189,9 @@ public class ReadingAdapter extends BaseAdapter implements SectionIndexer {
         private TextView dateTV;
         private TextView contentTV;
         private ImageView tag;
+        private LinearLayout item;
+    }
+    public interface OnReadingItemClickListener{
+        void onItemClicked(RealReading reading);
     }
 }

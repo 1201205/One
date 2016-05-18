@@ -132,8 +132,26 @@ public class ReadingActivity extends BaseActivity implements ReadingView, Loader
             }
         });
         swipeToLoadLayout.setOnLoadMoreListener(this);
+        mReadingAdapter.setItemClickListener(new ReadingAdapter.OnReadingItemClickListener() {
+            @Override
+            public void onItemClicked(RealReading reading) {
+                jumpToContent(reading);
+            }
+        });
+    }
 
-
+    private void jumpToContent(RealReading reading) {
+        switch (reading.getType()){
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                Intent question=new Intent(this,QuestionActivity.class);
+                question.putExtra(QuestionActivity.ID,reading.getContent().getId());
+                startActivity(question);
+                break;
+        }
     }
 
     @Override

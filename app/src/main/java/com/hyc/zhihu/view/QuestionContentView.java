@@ -14,4 +14,5 @@ public interface QuestionContentView extends BaseView{
     void showContent(QuestionContent content);
     void showRelate(List<Question> questions);
     void refreshCommentList(List<Comment> comments);
+    void showHotComments(List<Comment> comments);
 }

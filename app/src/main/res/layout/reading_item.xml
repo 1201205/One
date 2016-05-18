@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:orientation="vertical"
-    tools:context=".ui.MainActivity">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/item"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="vertical"
+              tools:context=".ui.MainActivity">
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/date_tv"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -15,39 +17,39 @@
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
         android:textColor="@color/gray_tv"
-        android:textSize="13sp" />
+        android:textSize="13sp"/>
 
     <ImageView
-        android:layout_marginTop="10dp"
+        android:id="@+id/tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="20dp"
-        android:id="@+id/tag"
-        android:src="@drawable/question_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_marginTop="10dp"
+        android:src="@drawable/question_image"/>
 
     <TextView
-        android:layout_marginLeft="20dp"
         android:id="@+id/title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
         android:textColor="@color/black"
-        android:textSize="17sp" />
+        android:textSize="17sp"/>
 
     <TextView
-        android:layout_marginLeft="20dp"
         android:id="@+id/author_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
         android:textColor="@color/black_tv"
-        android:textSize="15sp" />
+        android:textSize="15sp"/>
 
     <TextView
-        android:layout_marginLeft="20dp"
         android:id="@+id/content_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black_tv"
         android:layout_marginBottom="10dp"
-        android:textSize="15sp" />
+        android:layout_marginLeft="20dp"
+        android:textColor="@color/black_tv"
+        android:textSize="15sp"/>
 </LinearLayout>

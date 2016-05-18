@@ -27,6 +27,8 @@
         <activity android:name=".ui.MonthPictureActivity"></activity>
         <activity android:theme="@style/AppTheme.Details" android:name=".ui.PictureDetailActivity"></activity>
         <activity android:name=".ui.ReadingListActivity"></activity>
+        <activity  android:name=".ui.QuestionActivity"></activity>
+
 
     </application>
 
