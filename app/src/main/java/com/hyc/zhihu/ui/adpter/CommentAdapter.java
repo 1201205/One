@@ -16,12 +16,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.hyc.zhihu.MainApplication;
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.beans.Comment;
 import com.hyc.zhihu.beans.User;
 import com.hyc.zhihu.utils.AppUtil;
+import com.hyc.zhihu.widget.CircleImageView;
 import com.hyc.zhihu.widget.CircleTransform;
 import com.squareup.picasso.Picasso;
 
@@ -67,7 +67,7 @@ public class CommentAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.comment_item, null);
             holder = new ViewHolder();
-            holder.head = (ImageView) convertView.findViewById(R.id.head_iv);
+            holder.head = (CircleImageView) convertView.findViewById(R.id.head_iv);
             holder.name = (TextView) convertView.findViewById(R.id.name_tv);
             holder.num = (TextView) convertView.findViewById(R.id.num_tv);
             holder.date = (TextView) convertView.findViewById(R.id.date_tv);
@@ -79,7 +79,11 @@ public class CommentAdapter extends BaseAdapter {
         }
         Comment comment = mComments.get(position);
         User user=comment.getUser();
-        Picasso.with(mContext).load(user.getWeb_url()).transform(mTransform).into(holder.head);
+        if (!TextUtils.isEmpty(user.getWeb_url())) {
+            Picasso.with(mContext).load(user.getWeb_url()).placeholder(R.drawable.head).into(holder.head);
+        } else {
+            holder.head.setBackgroundResource(R.drawable.head);
+        }
         holder.name.setText(user.getUser_name());
         holder.date.setText(comment.getInput_date());
         holder.num.setText(comment.getPraisenum()+"");
@@ -101,7 +105,7 @@ public class CommentAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
-        private ImageView head;
+        private CircleImageView head;
         private TextView name;
         private TextView date;
         private TextView num;

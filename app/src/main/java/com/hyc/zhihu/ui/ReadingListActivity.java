@@ -1,5 +1,6 @@
 package com.hyc.zhihu.ui;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -84,7 +85,36 @@ public class ReadingListActivity extends BaseActivity implements ReadingListView
     public void showList(List<ReadingListItem> readingListItems) {
         ReadingListAdapter adapter = new ReadingListAdapter(this, readingListItems);
         mReadingLV.setAdapter(adapter);
+        adapter.setOnItemClickListener(new ReadingListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClicked(ReadingListItem item) {
+                jumpToContent(item);
+            }
+
+
+        });
     }
+
+    private void jumpToContent(ReadingListItem item) {
+        switch (item.getType()){
+            case "1":
+                Intent essay=new Intent(this,EssayActivity.class);
+                essay.putExtra(EssayActivity.ID,item.getItem_id());
+                startActivity(essay);
+                break;
+            case "2":
+                Intent serial=new Intent(this,SerialActivity.class);
+                serial.putExtra(SerialActivity.ID,item.getItem_id());
+                startActivity(serial);
+                break;
+            case "3":
+                Intent question=new Intent(this,QuestionActivity.class);
+                question.putExtra(QuestionActivity.ID,item.getItem_id());
+                startActivity(question);
+                break;
+        }
+    }
+
 
     @Override
     public void showLoading() {

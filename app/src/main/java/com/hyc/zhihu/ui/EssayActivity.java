@@ -1,17 +1,19 @@
 package com.hyc.zhihu.ui;
 
 import android.content.Intent;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.ViewCompat;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,32 +26,41 @@ import com.hyc.zhihu.base.BasePresenter;
 import com.hyc.zhihu.base.PresenterFactory;
 import com.hyc.zhihu.base.PresenterLoader;
 import com.hyc.zhihu.beans.Comment;
+import com.hyc.zhihu.beans.Essay;
 import com.hyc.zhihu.beans.Question;
-import com.hyc.zhihu.beans.QuestionContent;
-import com.hyc.zhihu.beans.Serial;
-import com.hyc.zhihu.presenter.QuestionContentPresenter;
+import com.hyc.zhihu.beans.RealArticle;
+import com.hyc.zhihu.beans.RealArticleAuthor;
+import com.hyc.zhihu.presenter.EssayContentPresenter;
 import com.hyc.zhihu.ui.adpter.CommentAdapter;
-import com.hyc.zhihu.ui.adpter.QuestionAdapter;
+import com.hyc.zhihu.ui.adpter.EssayAdapter;
 import com.hyc.zhihu.utils.AppUtil;
-import com.hyc.zhihu.view.QuestionContentView;
 import com.hyc.zhihu.view.ReadingContentView;
+import com.hyc.zhihu.widget.CircleImageView;
+import com.hyc.zhihu.widget.CircleTransform;
 import com.hyc.zhihu.widget.ListViewForScrollView;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 /**
  * Created by ray on 16/5/18.
  */
-public class QuestionActivity extends BaseActivity implements ReadingContentView<QuestionContent,Question>, OnLoadMoreListener, LoaderManager.LoaderCallbacks<QuestionContentPresenter> {
+public class EssayActivity extends BaseActivity implements ReadingContentView<Essay, RealArticle>, OnLoadMoreListener, LoaderManager.LoaderCallbacks<EssayContentPresenter> {
     private SwipeToLoadLayout swipeToLoadLayout;
     private View mHeader;
     private TextView mTitleTV;
-    private TextView mDesTV;
+    private TextView mAuthorDesTV;
     private TextView mAuthorTV;
     private TextView mDateTV;
     private TextView mContentTV;
     private TextView mEditorTV;
-    private QuestionContentPresenter mPresenter;
+    private TextView mAuthorNameTV;
+    private TextView mDesTV;
+    private TextView mListenTV;
+    private Button mPlayBt;
+    private EssayContentPresenter mPresenter;
+    private CircleImageView mHeaderIV;
+    private CircleImageView mAuthorHeaderIV;
     private ListView listView;
     private ListViewForScrollView mRelateLV;
     private ListViewForScrollView mHotCommentsLV;
@@ -57,11 +68,13 @@ public class QuestionActivity extends BaseActivity implements ReadingContentView
     private CommentAdapter mCommentAdapter;
     private String mID;
     public static final String ID = "id";
-    private boolean mHasMoreComments=true;
+    private boolean mHasMoreComments = true;
+    private CircleTransform mTransform = new CircleTransform();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportLoaderManager().initLoader(123, null, this);
+        getSupportLoaderManager().initLoader(125, null, this);
 
     }
 
@@ -77,8 +90,8 @@ public class QuestionActivity extends BaseActivity implements ReadingContentView
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if (mHasMoreComments&&scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
-                    if (view.getLastVisiblePosition() == view.getCount() - 1 && !ViewCompat.canScrollVertically(view, 1)) {
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                    if (mHasMoreComments && view.getLastVisiblePosition() == view.getCount() - 1 && !ViewCompat.canScrollVertically(view, 1)) {
                         swipeToLoadLayout.setLoadingMore(true);
                     }
                 }
@@ -88,13 +101,19 @@ public class QuestionActivity extends BaseActivity implements ReadingContentView
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
             }
         });
-        mHeader = LayoutInflater.from(this).inflate(R.layout.qustion_header, null);
+        mHeader = LayoutInflater.from(this).inflate(R.layout.essay_header, null);
         mTitleTV = (TextView) mHeader.findViewById(R.id.title_tv);
-        mAuthorTV = (TextView) mHeader.findViewById(R.id.author_tv);
-        mContentTV = (TextView) mHeader.findViewById(R.id.content_tv);
+        mPlayBt = (Button) mHeader.findViewById(R.id.play_bt);
+        mListenTV = (TextView) mHeader.findViewById(R.id.listen_tv);
         mDesTV = (TextView) mHeader.findViewById(R.id.des_tv);
+        mAuthorTV = (TextView) mHeader.findViewById(R.id.name_tv);
+        mContentTV = (TextView) mHeader.findViewById(R.id.content_tv);
+        mAuthorDesTV = (TextView) mHeader.findViewById(R.id.author_des_tv);
         mDateTV = (TextView) mHeader.findViewById(R.id.date_tv);
+        mAuthorHeaderIV = (CircleImageView) mHeader.findViewById(R.id.author_head_iv);
+        mHeaderIV = (CircleImageView) mHeader.findViewById(R.id.head_iv);
         mEditorTV = (TextView) mHeader.findViewById(R.id.editor_tv);
+        mAuthorNameTV = (TextView) mHeader.findViewById(R.id.author_name_tv);
         mRelateLV = (ListViewForScrollView) mHeader.findViewById(R.id.relate_lv);
         mRelateLL = (LinearLayout) mHeader.findViewById(R.id.relate_ll);
         mHotCommentsLV = (ListViewForScrollView) mHeader.findViewById(R.id.hot_lv);
@@ -111,46 +130,63 @@ public class QuestionActivity extends BaseActivity implements ReadingContentView
 
 
     @Override
-    public void showContent(QuestionContent content) {
-        mTitleTV.setText(content.getQuestion_title());
-        mDesTV.setText(content.getQuestion_content());
-        mContentTV.setText(Html.fromHtml(content.getAnswer_content()));
-        mEditorTV.setText(content.getCharge_edt());
-        mAuthorTV.setText(content.getAnswer_title());
+    public void showContent(Essay content) {
+        RealArticleAuthor author = content.getAuthor().get(0);
+        if (!TextUtils.isEmpty(author.getWeb_url())) {
+            Picasso.with(this).load(author.getWeb_url()).placeholder(R.drawable.head).into(mHeaderIV);
+            Picasso.with(this).load(author.getWeb_url()).placeholder(R.drawable.head).into(mAuthorHeaderIV);
+        }else {
+            mHeaderIV.setImageResource(R.drawable.head);
+            mAuthorHeaderIV.setImageResource(R.drawable.head);
+        }
+        if (TextUtils.isEmpty(content.getSub_title())) {
+            mDesTV.setVisibility(View.GONE);
+        } else {
+            mDesTV.setText(content.getSub_title());
+        }
+        if (TextUtils.isEmpty(content.getAudio())) {
+            mListenTV.setVisibility(View.GONE);
+            mPlayBt.setVisibility(View.GONE);
+        }
+        mTitleTV.setText(content.getHp_title());
+        mAuthorDesTV.setText(author.getDesc());
+        mDateTV.setText(content.getHp_makettime());
+        mContentTV.setText(Html.fromHtml(content.getHp_content()));
+        mEditorTV.setText(content.getHp_author_introduce());
+        mAuthorTV.setText(content.getHp_author());
+        mAuthorNameTV.setText(content.getHp_author());
     }
 
     @Override
-    public void showRelate(List<Question> questions) {
-        if (questions == null || questions.size() == 0) {
+    public void showRelate(List<RealArticle> realArticles) {
+        if (realArticles == null || realArticles.size() == 0) {
             mRelateLL.setVisibility(View.GONE);
         } else {
-            QuestionAdapter adapter = new QuestionAdapter(this, questions);
+            EssayAdapter adapter = new EssayAdapter(this, realArticles);
             mRelateLV.setAdapter(adapter);
-            adapter.setItemClickListener(new QuestionAdapter.OnReadingItemClickListener() {
+            adapter.setItemClickListener(new EssayAdapter.OnReadingItemClickListener() {
                 @Override
-                public void onItemClicked(Question question) {
-                    jumpToNewQuestion(question);
+                public void onItemClicked(RealArticle s) {
+                    jumpToNewEssay(s);
                 }
             });
         }
     }
-    @Override
-    protected String getTitleString() {
-        return "问题";
-    }
-    private void jumpToNewQuestion(Question s) {
-        Intent i=new Intent(this,QuestionActivity.class);
-        i.putExtra(QuestionActivity.ID,s.getQuestion_id());
+    private void jumpToNewEssay(RealArticle s) {
+        Intent i=new Intent(this,EssayActivity.class);
+        i.putExtra(EssayActivity.ID,s.getContent_id());
         startActivity(i);
     }
-
     @Override
     public void refreshCommentList(List<Comment> comments) {
         mCommentAdapter.refreshComments(comments);
         swipeToLoadLayout.setLoadingMore(false);
 
     }
-
+    @Override
+    protected String getTitleString() {
+        return "短篇";
+    }
     @Override
     public void showHotComments(List<Comment> comments) {
         CommentAdapter adapter = new CommentAdapter(this);
@@ -161,7 +197,7 @@ public class QuestionActivity extends BaseActivity implements ReadingContentView
     @Override
     public void showNoComments() {
         AppUtil.showToast("没有更多评论啦~~~");
-        mHasMoreComments=false;
+        mHasMoreComments = false;
     }
 
     @Override
@@ -175,23 +211,23 @@ public class QuestionActivity extends BaseActivity implements ReadingContentView
     }
 
     @Override
-    public Loader<QuestionContentPresenter> onCreateLoader(int id, Bundle args) {
-        return new PresenterLoader<QuestionContentPresenter>(this, new PresenterFactory() {
+    public Loader<EssayContentPresenter> onCreateLoader(int id, Bundle args) {
+        return new PresenterLoader<EssayContentPresenter>(this, new PresenterFactory() {
             @Override
             public BasePresenter create() {
-                return new QuestionContentPresenter(QuestionActivity.this);
+                return new EssayContentPresenter(EssayActivity.this);
             }
         });
     }
 
     @Override
-    public void onLoadFinished(Loader<QuestionContentPresenter> loader, QuestionContentPresenter data) {
+    public void onLoadFinished(Loader<EssayContentPresenter> loader, EssayContentPresenter data) {
         mPresenter = data;
         mPresenter.getAndShowContent(mID);
     }
 
     @Override
-    public void onLoaderReset(Loader<QuestionContentPresenter> loader) {
+    public void onLoaderReset(Loader<EssayContentPresenter> loader) {
         mPresenter = null;
     }
 
@@ -228,7 +264,7 @@ public class QuestionActivity extends BaseActivity implements ReadingContentView
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder h = null;
             if (convertView == null) {
-                convertView = LayoutInflater.from(QuestionActivity.this).inflate(R.layout.layout_title, null);
+                convertView = LayoutInflater.from(EssayActivity.this).inflate(R.layout.layout_title, null);
                 h = new ViewHolder();
                 h.tv = (TextView) convertView.findViewById(R.id.title);
                 convertView.setTag(h);

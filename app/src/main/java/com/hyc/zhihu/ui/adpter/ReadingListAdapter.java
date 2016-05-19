@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hyc.zhihu.R;
@@ -18,6 +19,11 @@ import java.util.List;
 public class ReadingListAdapter extends BaseAdapter {
     private List<ReadingListItem> mReadingListItems;
     private Context mContext;
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
+    }
+
+    private OnItemClickListener mOnItemClickListener;
 
     public ReadingListAdapter(Context context, List<ReadingListItem> items) {
         mContext = context;
@@ -49,22 +55,35 @@ public class ReadingListAdapter extends BaseAdapter {
             holder.author = (TextView) convertView.findViewById(R.id.author_tv);
             holder.content = (TextView) convertView.findViewById(R.id.content_tv);
             holder.title = (TextView) convertView.findViewById(R.id.title_tv);
+            holder.item= (RelativeLayout) convertView.findViewById(R.id.item_rl);
             convertView.setTag(holder);
         } else {
             holder= (ViewHolder) convertView.getTag();
         }
-        ReadingListItem item=mReadingListItems.get(position);
+        final ReadingListItem item=mReadingListItems.get(position);
         holder.index.setText((position+1)+"");
         holder.title.setText(item.getTitle());
         holder.content.setText(item.getIntroduction());
         holder.author.setText(item.getAuthor());
+        if (mOnItemClickListener!=null) {
+            holder.item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnItemClickListener.onItemClicked(item);
+                }
+            });
+        }
         return convertView;
     }
 
     static class ViewHolder {
+        private RelativeLayout item;
         private TextView index;
         private TextView title;
         private TextView author;
         private TextView content;
+    }
+    public interface OnItemClickListener{
+        void onItemClicked( ReadingListItem item);
     }
 }

@@ -2,6 +2,9 @@ package com.hyc.zhihu.beans;
 
 import java.util.List;
 
+/**
+ * 短篇
+ */
 public class RealArticle implements java.io.Serializable {
     private static final long serialVersionUID = 8199897490716043336L;
     private String hp_makettime;

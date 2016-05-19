@@ -3,12 +3,14 @@ package com.hyc.zhihu.presenter;
 import com.hyc.zhihu.base.BasePresenter;
 import com.hyc.zhihu.beans.Comment;
 import com.hyc.zhihu.beans.Comments;
+import com.hyc.zhihu.beans.Question;
 import com.hyc.zhihu.beans.QuestionContent;
 import com.hyc.zhihu.beans.QuestionWrapper;
 import com.hyc.zhihu.beans.Questions;
 import com.hyc.zhihu.net.Requests;
-import com.hyc.zhihu.presenter.base.IQuestionContentPresenter;
+import com.hyc.zhihu.presenter.base.IReadingContentPresenter;
 import com.hyc.zhihu.view.QuestionContentView;
+import com.hyc.zhihu.view.ReadingContentView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +24,9 @@ import rx.schedulers.Schedulers;
 /**
  * Created by Administrator on 2016/5/18.
  */
-public class QuestionContentPresenter extends BasePresenter<QuestionContentView> implements IQuestionContentPresenter {
+public class QuestionContentPresenter extends BasePresenter<ReadingContentView<QuestionContent,Question>> implements IReadingContentPresenter {
     private String mId;
-    public QuestionContentPresenter(QuestionContentView view) {
+    public QuestionContentPresenter(ReadingContentView view) {
         super(view);
     }
     private String mLastIndex;

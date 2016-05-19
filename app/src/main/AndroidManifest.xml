@@ -28,8 +28,9 @@
         <activity android:theme="@style/AppTheme.Details" android:name=".ui.PictureDetailActivity"></activity>
         <activity android:name=".ui.ReadingListActivity"></activity>
         <activity  android:name=".ui.QuestionActivity"></activity>
-
-
+        <activity  android:name=".ui.SerialActivity"></activity>
+        <activity  android:name=".ui.EssayActivity"></activity>
+        <activity  android:name=".ui.SerialListActivity"></activity>
     </application>
 
 </manifest>

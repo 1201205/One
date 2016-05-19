@@ -143,8 +143,14 @@ public class ReadingActivity extends BaseActivity implements ReadingView, Loader
     private void jumpToContent(RealReading reading) {
         switch (reading.getType()){
             case 1:
+                Intent essay=new Intent(this,EssayActivity.class);
+                essay.putExtra(EssayActivity.ID,reading.getContent().getId());
+                startActivity(essay);
                 break;
             case 2:
+                Intent serial=new Intent(this,SerialActivity.class);
+                serial.putExtra(SerialActivity.ID,reading.getContent().getId());
+                startActivity(serial);
                 break;
             case 3:
                 Intent question=new Intent(this,QuestionActivity.class);
@@ -153,6 +159,7 @@ public class ReadingActivity extends BaseActivity implements ReadingView, Loader
                 break;
         }
     }
+
 
     @Override
     protected void handleIntent() {

@@ -2,9 +2,8 @@
 <TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/title"
-    android:text="111111"
-    android:layout_marginTop="20dp"
-    android:background="@color/google_blue"
+    android:paddingTop="10dp"
+    android:paddingBottom="20dp"
     android:layout_width="match_parent"
     android:layout_height="40dp">
 </TextView>

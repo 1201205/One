@@ -1,15 +1,19 @@
 package com.hyc.zhihu.net;
 
 import com.hyc.zhihu.beans.Comments;
-import com.hyc.zhihu.beans.QuestionContent;
-import com.hyc.zhihu.beans.QuestionWrapper;
-import com.hyc.zhihu.beans.Questions;
-import com.hyc.zhihu.beans.ReadingListItems;
+import com.hyc.zhihu.beans.EssayWrapper;
 import com.hyc.zhihu.beans.HeadItems;
 import com.hyc.zhihu.beans.OnePicture;
 import com.hyc.zhihu.beans.OnePictureByMonth;
 import com.hyc.zhihu.beans.OnePictureList;
+import com.hyc.zhihu.beans.QuestionWrapper;
+import com.hyc.zhihu.beans.Questions;
+import com.hyc.zhihu.beans.ReadingListItems;
 import com.hyc.zhihu.beans.Readings;
+import com.hyc.zhihu.beans.RealArticles;
+import com.hyc.zhihu.beans.SerialListWrapper;
+import com.hyc.zhihu.beans.SerialWrapper;
+import com.hyc.zhihu.beans.Serials;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -74,6 +78,7 @@ public interface Api {
      * http://v3.wufazhuce.com:8000/api/related/serial/111 查看与之相关推荐
      * http://v3.wufazhuce.com:8000/api/comment/praiseandtime/serial/111/0 评论列表
      * http://v3.wufazhuce.com:8000/api/comment/praiseandtime/serial/111/15635
+     * http://v3.wufazhuce.com:8000/api/serial/list/29
      * 点击短篇需要发送的请求：
      * http://v3.wufazhuce.com:8000/api/essay/1411 内容
      * http://v3.wufazhuce.com:8000/api/essay/update/1411/2016-05-17%2020:30:47 更新
@@ -84,9 +89,30 @@ public interface Api {
     @GET("/api/question/{id}")
     Observable<QuestionWrapper> getQuestionContentByID(@Path("id") String id);
 
+    @GET("/api/serialcontent/{id}")
+    Observable<SerialWrapper> getSerialContentByID(@Path("id") String id);
+
+    @GET("/api/essay/{id}")
+    Observable<EssayWrapper> getEssayContentByID(@Path("id") String id);
+
     @GET("/api/related/question/{id}")
     Observable<Questions> getQuestionRelateByID(@Path("id") String id);
 
+    @GET("/api/related/serial/{id}")
+    Observable<Serials> getSerialRelateByID(@Path("id") String id);
+
+    @GET("/api/related/essay/{id}")
+    Observable<RealArticles> getEssayRelateByID(@Path("id") String id);
+
     @GET("/api/comment/praiseandtime/question/{id}/{index}")
     Observable<Comments> getQuestionCommentsByIndex(@Path("id") String id, @Path("index") String index);
+
+    @GET("/api/comment/praiseandtime/serial/{id}/{index}")
+    Observable<Comments> getSerialCommentsByIndex(@Path("id") String id, @Path("index") String index);
+
+    @GET("/api/comment/praiseandtime/essay/{id}/{index}")
+    Observable<Comments> getEssayCommentsByIndex(@Path("id") String id, @Path("index") String index);
+
+    @GET("/api/serial/list/{id}")
+    Observable<SerialListWrapper> getSerialListByID(@Path("id") String id);
 }

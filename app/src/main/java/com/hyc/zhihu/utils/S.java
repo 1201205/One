@@ -5,4 +5,5 @@ package com.hyc.zhihu.utils;
  */
 public interface S {
     String FIRST_INIT="first_init";
+    String ID="id";
 }

@@ -29,6 +29,7 @@
         android:src="@drawable/question_image"/>
 
     <TextView
+        android:layout_marginRight="25dp"
         android:id="@+id/title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,6 +38,7 @@
         android:textSize="17sp"/>
 
     <TextView
+        android:layout_marginRight="25dp"
         android:id="@+id/author_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -45,6 +47,7 @@
         android:textSize="15sp"/>
 
     <TextView
+        android:layout_marginRight="25dp"
         android:id="@+id/content_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

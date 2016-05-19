@@ -1,17 +1,19 @@
 package com.hyc.zhihu.ui;
 
 import android.content.Intent;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.ViewCompat;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,23 +26,28 @@ import com.hyc.zhihu.base.BasePresenter;
 import com.hyc.zhihu.base.PresenterFactory;
 import com.hyc.zhihu.base.PresenterLoader;
 import com.hyc.zhihu.beans.Comment;
-import com.hyc.zhihu.beans.Question;
-import com.hyc.zhihu.beans.QuestionContent;
+import com.hyc.zhihu.beans.RealArticleAuthor;
 import com.hyc.zhihu.beans.Serial;
+import com.hyc.zhihu.beans.SerialContent;
+import com.hyc.zhihu.beans.SerialList;
 import com.hyc.zhihu.presenter.QuestionContentPresenter;
+import com.hyc.zhihu.presenter.SerialContentPresenter;
 import com.hyc.zhihu.ui.adpter.CommentAdapter;
-import com.hyc.zhihu.ui.adpter.QuestionAdapter;
+import com.hyc.zhihu.ui.adpter.SerialAdapter;
 import com.hyc.zhihu.utils.AppUtil;
-import com.hyc.zhihu.view.QuestionContentView;
+import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.ReadingContentView;
+import com.hyc.zhihu.widget.CircleImageView;
+import com.hyc.zhihu.widget.CircleTransform;
 import com.hyc.zhihu.widget.ListViewForScrollView;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 /**
  * Created by ray on 16/5/18.
  */
-public class QuestionActivity extends BaseActivity implements ReadingContentView<QuestionContent,Question>, OnLoadMoreListener, LoaderManager.LoaderCallbacks<QuestionContentPresenter> {
+public class SerialActivity extends BaseActivity implements ReadingContentView<SerialContent, Serial>, OnLoadMoreListener, LoaderManager.LoaderCallbacks<SerialContentPresenter> {
     private SwipeToLoadLayout swipeToLoadLayout;
     private View mHeader;
     private TextView mTitleTV;
@@ -49,7 +56,11 @@ public class QuestionActivity extends BaseActivity implements ReadingContentView
     private TextView mDateTV;
     private TextView mContentTV;
     private TextView mEditorTV;
-    private QuestionContentPresenter mPresenter;
+    private TextView mAuthorNameTV;
+    private SerialContentPresenter mPresenter;
+    private CircleImageView mHeaderIV;
+    private CircleImageView mAuthorHeaderIV;
+    private ImageView mSerialIV;
     private ListView listView;
     private ListViewForScrollView mRelateLV;
     private ListViewForScrollView mHotCommentsLV;
@@ -58,10 +69,12 @@ public class QuestionActivity extends BaseActivity implements ReadingContentView
     private String mID;
     public static final String ID = "id";
     private boolean mHasMoreComments=true;
+    private CircleTransform mTransform = new CircleTransform();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportLoaderManager().initLoader(123, null, this);
+        getSupportLoaderManager().initLoader(124, null, this);
 
     }
 
@@ -77,8 +90,8 @@ public class QuestionActivity extends BaseActivity implements ReadingContentView
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if (mHasMoreComments&&scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
-                    if (view.getLastVisiblePosition() == view.getCount() - 1 && !ViewCompat.canScrollVertically(view, 1)) {
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                    if (mHasMoreComments&&view.getLastVisiblePosition() == view.getCount() - 1 && !ViewCompat.canScrollVertically(view, 1)) {
                         swipeToLoadLayout.setLoadingMore(true);
                     }
                 }
@@ -88,13 +101,17 @@ public class QuestionActivity extends BaseActivity implements ReadingContentView
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
             }
         });
-        mHeader = LayoutInflater.from(this).inflate(R.layout.qustion_header, null);
+        mHeader = LayoutInflater.from(this).inflate(R.layout.serial_header, null);
         mTitleTV = (TextView) mHeader.findViewById(R.id.title_tv);
-        mAuthorTV = (TextView) mHeader.findViewById(R.id.author_tv);
+        mAuthorTV = (TextView) mHeader.findViewById(R.id.name_tv);
         mContentTV = (TextView) mHeader.findViewById(R.id.content_tv);
-        mDesTV = (TextView) mHeader.findViewById(R.id.des_tv);
+        mDesTV = (TextView) mHeader.findViewById(R.id.author_des_tv);
         mDateTV = (TextView) mHeader.findViewById(R.id.date_tv);
+        mAuthorHeaderIV = (CircleImageView) mHeader.findViewById(R.id.author_head_iv);
+        mHeaderIV = (CircleImageView) mHeader.findViewById(R.id.head_iv);
+        mSerialIV = (ImageView) mHeader.findViewById(R.id.serial_iv);
         mEditorTV = (TextView) mHeader.findViewById(R.id.editor_tv);
+        mAuthorNameTV = (TextView) mHeader.findViewById(R.id.author_name_tv);
         mRelateLV = (ListViewForScrollView) mHeader.findViewById(R.id.relate_lv);
         mRelateLL = (LinearLayout) mHeader.findViewById(R.id.relate_ll);
         mHotCommentsLV = (ListViewForScrollView) mHeader.findViewById(R.id.hot_lv);
@@ -102,6 +119,7 @@ public class QuestionActivity extends BaseActivity implements ReadingContentView
         mCommentAdapter = new CommentAdapter(this);
         listView.setAdapter(mCommentAdapter);
         swipeToLoadLayout.setOnLoadMoreListener(this);
+
     }
 
     @Override
@@ -111,36 +129,56 @@ public class QuestionActivity extends BaseActivity implements ReadingContentView
 
 
     @Override
-    public void showContent(QuestionContent content) {
-        mTitleTV.setText(content.getQuestion_title());
-        mDesTV.setText(content.getQuestion_content());
-        mContentTV.setText(Html.fromHtml(content.getAnswer_content()));
+    public void showContent(final SerialContent content) {
+        RealArticleAuthor author = content.getAuthor();
+        if (!TextUtils.isEmpty(author.getWeb_url())) {
+            Picasso.with(this).load(author.getWeb_url()).placeholder(R.drawable.head).into(mHeaderIV);
+            Picasso.with(this).load(author.getWeb_url()).placeholder(R.drawable.head).into(mAuthorHeaderIV);
+        } else {
+            mHeaderIV.setImageResource(R.drawable.head);
+            mAuthorHeaderIV.setImageResource(R.drawable.head);
+        }
+        mTitleTV.setText(content.getTitle());
+        mDesTV.setText(author.getDesc());
+        mDateTV.setText(content.getMaketime());
+        mContentTV.setText(Html.fromHtml(content.getContent()));
         mEditorTV.setText(content.getCharge_edt());
-        mAuthorTV.setText(content.getAnswer_title());
+        mAuthorTV.setText(author.getUser_name());
+        mAuthorNameTV.setText(author.getUser_name());
+        mSerialIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(SerialActivity.this, SerialListActivity.class);
+                i.putExtra(S.ID,content.getSerial_id());
+                startActivity(i);
+            }
+        });
     }
 
     @Override
-    public void showRelate(List<Question> questions) {
-        if (questions == null || questions.size() == 0) {
+    public void showRelate(List<Serial> serials) {
+        if (serials == null || serials.size() == 0) {
             mRelateLL.setVisibility(View.GONE);
         } else {
-            QuestionAdapter adapter = new QuestionAdapter(this, questions);
+            SerialAdapter adapter = new SerialAdapter(this, serials);
             mRelateLV.setAdapter(adapter);
-            adapter.setItemClickListener(new QuestionAdapter.OnReadingItemClickListener() {
+            adapter.setItemClickListener(new SerialAdapter.OnReadingItemClickListener() {
                 @Override
-                public void onItemClicked(Question question) {
-                    jumpToNewQuestion(question);
+                public void onItemClicked(Serial s) {
+                    jumpToNewSerial(s);
                 }
             });
         }
     }
+
     @Override
     protected String getTitleString() {
-        return "问题";
+        return "连载";
     }
-    private void jumpToNewQuestion(Question s) {
-        Intent i=new Intent(this,QuestionActivity.class);
-        i.putExtra(QuestionActivity.ID,s.getQuestion_id());
+
+    private void jumpToNewSerial(Serial s) {
+        Intent i=new Intent(this,SerialActivity.class);
+        i.putExtra(SerialActivity.ID,s.getId());
         startActivity(i);
     }
 
@@ -175,23 +213,23 @@ public class QuestionActivity extends BaseActivity implements ReadingContentView
     }
 
     @Override
-    public Loader<QuestionContentPresenter> onCreateLoader(int id, Bundle args) {
-        return new PresenterLoader<QuestionContentPresenter>(this, new PresenterFactory() {
+    public Loader<SerialContentPresenter> onCreateLoader(int id, Bundle args) {
+        return new PresenterLoader<SerialContentPresenter>(this, new PresenterFactory() {
             @Override
             public BasePresenter create() {
-                return new QuestionContentPresenter(QuestionActivity.this);
+                return new SerialContentPresenter(SerialActivity.this);
             }
         });
     }
 
     @Override
-    public void onLoadFinished(Loader<QuestionContentPresenter> loader, QuestionContentPresenter data) {
+    public void onLoadFinished(Loader<SerialContentPresenter> loader, SerialContentPresenter data) {
         mPresenter = data;
         mPresenter.getAndShowContent(mID);
     }
 
     @Override
-    public void onLoaderReset(Loader<QuestionContentPresenter> loader) {
+    public void onLoaderReset(Loader<SerialContentPresenter> loader) {
         mPresenter = null;
     }
 
@@ -228,7 +266,7 @@ public class QuestionActivity extends BaseActivity implements ReadingContentView
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder h = null;
             if (convertView == null) {
-                convertView = LayoutInflater.from(QuestionActivity.this).inflate(R.layout.layout_title, null);
+                convertView = LayoutInflater.from(SerialActivity.this).inflate(R.layout.layout_title, null);
                 h = new ViewHolder();
                 h.tv = (TextView) convertView.findViewById(R.id.title);
                 convertView.setTag(h);
