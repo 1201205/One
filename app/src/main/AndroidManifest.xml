@@ -31,6 +31,7 @@
         <activity  android:name=".ui.SerialActivity"></activity>
         <activity  android:name=".ui.EssayActivity"></activity>
         <activity  android:name=".ui.SerialListActivity"></activity>
+        <service android:name=".player.PlayerService"></service>
     </application>
 
 </manifest>

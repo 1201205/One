@@ -30,6 +30,11 @@ import com.hyc.zhihu.beans.Essay;
 import com.hyc.zhihu.beans.Question;
 import com.hyc.zhihu.beans.RealArticle;
 import com.hyc.zhihu.beans.RealArticleAuthor;
+import com.hyc.zhihu.beans.Song;
+import com.hyc.zhihu.event.PlayCallBackEvent;
+import com.hyc.zhihu.event.PlayEvent;
+import com.hyc.zhihu.player.MyPlayer;
+import com.hyc.zhihu.player.PlayerService;
 import com.hyc.zhihu.presenter.EssayContentPresenter;
 import com.hyc.zhihu.ui.adpter.CommentAdapter;
 import com.hyc.zhihu.ui.adpter.EssayAdapter;
@@ -40,6 +45,10 @@ import com.hyc.zhihu.widget.CircleTransform;
 import com.hyc.zhihu.widget.ListViewForScrollView;
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -70,12 +79,18 @@ public class EssayActivity extends BaseActivity implements ReadingContentView<Es
     public static final String ID = "id";
     private boolean mHasMoreComments = true;
     private CircleTransform mTransform = new CircleTransform();
-
+    private int mMusicState=PlayCallBackEvent.IDLE;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportLoaderManager().initLoader(125, null, this);
+        EventBus.getDefault().register(this);
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -130,7 +145,7 @@ public class EssayActivity extends BaseActivity implements ReadingContentView<Es
 
 
     @Override
-    public void showContent(Essay content) {
+    public void showContent(final Essay content) {
         RealArticleAuthor author = content.getAuthor().get(0);
         if (!TextUtils.isEmpty(author.getWeb_url())) {
             Picasso.with(this).load(author.getWeb_url()).placeholder(R.drawable.head).into(mHeaderIV);
@@ -147,6 +162,27 @@ public class EssayActivity extends BaseActivity implements ReadingContentView<Es
         if (TextUtils.isEmpty(content.getAudio())) {
             mListenTV.setVisibility(View.GONE);
             mPlayBt.setVisibility(View.GONE);
+        }else {
+            mPlayBt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mMusicState == PlayCallBackEvent.PLAY) {
+                        PlayEvent event=new PlayEvent();
+                        event.setAction(PlayEvent.Action.STOP);
+                        EventBus.getDefault().post(event);
+                    } else {
+                        Song song=new Song("",content.getAudio());
+                        List<Song> songs=new ArrayList<>();
+                        songs.add(song);
+                        PlayEvent event=new PlayEvent();
+                        event.setQueue(songs);
+                        event.setAction(PlayEvent.Action.PLAY);
+                        EventBus.getDefault().post(event);
+                    }
+
+                }
+            });
+
         }
         mTitleTV.setText(content.getHp_title());
         mAuthorDesTV.setText(author.getDesc());
@@ -156,7 +192,21 @@ public class EssayActivity extends BaseActivity implements ReadingContentView<Es
         mAuthorTV.setText(content.getHp_author());
         mAuthorNameTV.setText(content.getHp_author());
     }
+    @Subscribe
+    public void onEvent(PlayCallBackEvent playEvent) {
+        mMusicState=playEvent.state;
+        switch (playEvent.state){
+            case PlayCallBackEvent.PLAY:
+                mPlayBt.setBackgroundResource(R.drawable.pause_selector);
+                break;
+            case PlayCallBackEvent.PAUSE:
+                mPlayBt.setBackgroundResource(R.drawable.play_selector);
+                break;
+            default:
+                break;
 
+        }
+    }
     @Override
     public void showRelate(List<RealArticle> realArticles) {
         if (realArticles == null || realArticles.size() == 0) {

@@ -42,6 +42,8 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.chrisbanes.photoview:library:1.2.3'
     compile project(':library')
+    compile 'org.greenrobot:eventbus:3.0.0'
+
 
 
 
