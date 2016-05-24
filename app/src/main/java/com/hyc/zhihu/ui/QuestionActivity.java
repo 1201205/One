@@ -99,7 +99,7 @@ public class QuestionActivity extends BaseActivity implements ReadingContentView
         mRelateLL = (LinearLayout) mHeader.findViewById(R.id.relate_ll);
         mHotCommentsLV = (ListViewForScrollView) mHeader.findViewById(R.id.hot_lv);
         listView.addHeaderView(mHeader);
-        mCommentAdapter = new CommentAdapter(this);
+        mCommentAdapter = new CommentAdapter();
         listView.setAdapter(mCommentAdapter);
         swipeToLoadLayout.setOnLoadMoreListener(this);
     }
@@ -153,7 +153,7 @@ public class QuestionActivity extends BaseActivity implements ReadingContentView
 
     @Override
     public void showHotComments(List<Comment> comments) {
-        CommentAdapter adapter = new CommentAdapter(this);
+        CommentAdapter adapter = new CommentAdapter();
         mHotCommentsLV.setAdapter(adapter);
         adapter.refreshComments(comments);
     }

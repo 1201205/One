@@ -10,12 +10,22 @@ import java.util.List;
 public class PlayEvent {
 
     public enum Action {
-        PLAY, STOP, RESUME, NEXT, PREVIOES, SEEK, PAUSE
+        PLAY, STOP, RESUME, NEXT, PREVIOES, SEEK, PAUSE,ADDLIST,PLAYITEM,PLAYPATH
     }
 
     private Action mAction;
     private Song mSong;
     private List<Song> mQueue;
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    private String path;
     private int seekTo;
 
     public Song getSong() {

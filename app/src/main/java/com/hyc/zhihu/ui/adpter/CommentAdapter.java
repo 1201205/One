@@ -16,10 +16,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyc.zhihu.MainApplication;
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.beans.Comment;
 import com.hyc.zhihu.beans.User;
+import com.hyc.zhihu.helper.FrescoHelper;
 import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.widget.CircleImageView;
 import com.hyc.zhihu.widget.CircleTransform;
@@ -36,8 +39,8 @@ public class CommentAdapter extends BaseAdapter {
     private Context mContext;
     private CircleTransform mTransform = new CircleTransform();
 
-    public CommentAdapter(Context context) {
-        mContext = context;
+    public CommentAdapter() {
+//        mContext = context;
         mComments = new ArrayList<>();
     }
 
@@ -65,9 +68,9 @@ public class CommentAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.comment_item, null);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment_item, null);
             holder = new ViewHolder();
-            holder.head = (CircleImageView) convertView.findViewById(R.id.head_iv);
+            holder.head = (SimpleDraweeView) convertView.findViewById(R.id.head_iv);
             holder.name = (TextView) convertView.findViewById(R.id.name_tv);
             holder.num = (TextView) convertView.findViewById(R.id.num_tv);
             holder.date = (TextView) convertView.findViewById(R.id.date_tv);
@@ -80,9 +83,8 @@ public class CommentAdapter extends BaseAdapter {
         Comment comment = mComments.get(position);
         User user=comment.getUser();
         if (!TextUtils.isEmpty(user.getWeb_url())) {
-            Picasso.with(mContext).load(user.getWeb_url()).placeholder(R.drawable.head).into(holder.head);
-        } else {
-            holder.head.setBackgroundResource(R.drawable.head);
+            FrescoHelper.loadImage(holder.head,user.getWeb_url());
+//            Picasso.with(mContext).load(user.getWeb_url()).placeholder(R.drawable.head).into(holder.head);
         }
         holder.name.setText(user.getUser_name());
         holder.date.setText(comment.getInput_date());
@@ -105,7 +107,7 @@ public class CommentAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
-        private CircleImageView head;
+        private SimpleDraweeView head;
         private TextView name;
         private TextView date;
         private TextView num;

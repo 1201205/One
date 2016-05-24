@@ -11,7 +11,7 @@
         android:background="@drawable/music_cover_light"
         android:layout_width="88dp"
         android:layout_height="82dp">
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/cover_iv"
             android:layout_width="82dp"
             android:layout_height="76dp"

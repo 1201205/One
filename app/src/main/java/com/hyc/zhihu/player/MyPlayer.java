@@ -25,6 +25,7 @@ public class MyPlayer implements MediaPlayer.OnCompletionListener {
     private List<Song> mQueue;
     private int mQueueIndex;
     private PlayMode mPlayMode;
+    private String mPath;
 
 
     private enum PlayMode {
@@ -60,8 +61,8 @@ public class MyPlayer implements MediaPlayer.OnCompletionListener {
     }
 
     public ManagedMediaPlayer.Status getSourceStatus(String path){
-        if (mQueue != null && mQueue.size() > 0) {
-            if (mQueue.get(mQueueIndex).getPath().equals(path)) {
+        if (mQueue != null && mQueue.size() > 0&&mQueueIndex>=0) {
+            if (path.equals(mQueue.get(mQueueIndex).getPath())) {
                 return mMediaPlayer.getState();
             }
         }
@@ -70,11 +71,34 @@ public class MyPlayer implements MediaPlayer.OnCompletionListener {
     public void setQueue(List<Song> queue, int index) {
         mQueue = queue;
         mQueueIndex = index;
-        play(getNowPlaying());
+        if (index!=-1) {
+            play(getNowPlaying());
+        }
     }
 
     public void play(Song song) {
         try {
+            if (mQueue != null && mQueue.size() > 0) {
+                int j = 0;
+                int count = mQueue.size();
+                for (int i = 0; i < count; i++) {
+                    if (mQueue.get(i).getPath().equals(song.getPath())) {
+                        mQueueIndex = i;
+                        j++;
+                        break;
+                    }
+                }
+                if (j == count) {
+                    mQueue.add(song);
+                    mQueueIndex = count;
+                }
+            } else {
+                if (mQueue==null) {
+                    mQueue=new ArrayList<>();
+                }
+                mQueue.add(song);
+                mQueueIndex=0;
+            }
             mMediaPlayer.reset();
             mMediaPlayer.setDataSource(MainApplication.getApplication(), Uri.parse(song.getPath()));
             mMediaPlayer.prepareAsync();
@@ -88,7 +112,22 @@ public class MyPlayer implements MediaPlayer.OnCompletionListener {
             e.printStackTrace();
         }
     }
-
+    public void play(String song) {
+        try {
+            Log.e("test1--",song+"---播放歌曲");
+            mMediaPlayer.reset();
+            mMediaPlayer.setDataSource(MainApplication.getApplication(), Uri.parse(song));
+            mMediaPlayer.prepareAsync();
+            mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mMediaPlayer.start();
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public void pause() {
         mMediaPlayer.pause();
     }

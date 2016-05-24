@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,17 +19,27 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.beans.Comment;
 import com.hyc.zhihu.beans.DateBean;
 import com.hyc.zhihu.beans.OnePictureData;
+import com.hyc.zhihu.beans.Song;
 import com.hyc.zhihu.beans.music.Music;
 import com.hyc.zhihu.beans.music.MusicRelate;
 import com.hyc.zhihu.beans.music.MusicRelateListBean;
+import com.hyc.zhihu.event.PlayCallBackEvent;
+import com.hyc.zhihu.event.PlayEvent;
+import com.hyc.zhihu.helper.FrescoHelper;
+import com.hyc.zhihu.player.ManagedMediaPlayer;
+import com.hyc.zhihu.player.MyPlayer;
 import com.hyc.zhihu.ui.MainActivity;
 import com.hyc.zhihu.ui.PictureActivity;
 import com.hyc.zhihu.widget.ListViewForScrollView;
 import com.squareup.picasso.Picasso;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -46,6 +57,7 @@ public class MusicAdapter extends PagerAdapter {
     private Context mContext;
     private List<MusicRelateListBean> mRelateLists;
     private List<CommentAdapter> mAdapters;
+    private ImageView mPlayView;
 
     public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
         this.mLoadMoreListener = loadMoreListener;
@@ -63,15 +75,16 @@ public class MusicAdapter extends PagerAdapter {
         return view == object;
     }
 
-    public MusicAdapter(List<MusicRelateListBean> relateBeans, List<Music> viewBean, Context context) {
+    public MusicAdapter(List<MusicRelateListBean> relateBeans, List<Music> viewBean) {
         super();
         this.viewBeans = viewBean;
-        this.mContext = context;
+//        this.mContext = context;
         this.mRelateLists = relateBeans;
         mAdapters = new ArrayList<>();
         for (int i = 0; i < relateBeans.size(); i++) {
-            mAdapters.add(new CommentAdapter(mContext));
+            mAdapters.add(new CommentAdapter());
         }
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -86,9 +99,31 @@ public class MusicAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
+        if (position<mRelateLists.size()) {
+            mRelateLists.get(position).setLayout(null);
+        }
         container.removeView((View) object);
+        Log.e("test","destroyItem----"+position);
     }
+    @Subscribe
+    public void onEvent(PlayCallBackEvent playEvent){
+        ManagedMediaPlayer.Status musicState=playEvent.state;
+        if (mPlayView==null) {
+            return;
+        }
+        switch (playEvent.getState()){
+            case STARTED:
+                mPlayView.setImageResource(R.drawable.music_pause_selector);
+                break;
+            case STOPPED:
+            case PAUSED:
+                mPlayView.setImageResource(R.drawable.music_play_selector);
+                break;
+            default:
+                break;
 
+        }
+    }
     @Override
     public View instantiateItem(ViewGroup container, final int position) {
 //        int delay=0;
@@ -96,22 +131,60 @@ public class MusicAdapter extends PagerAdapter {
 //            mRefreshIndex=-1;
 //            delay=50;
 //        }
+        Context c=container.getContext();
         View view;
-        Music music = viewBeans.get(position);
+        final Music music = viewBeans.get(position);
         if (position == viewBeans.size() - 1) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.date_list, null);
+            view = LayoutInflater.from(c).inflate(R.layout.date_list, null);
             ListView listView = (ListView) view.findViewById(R.id.date_list);
-            listView.setAdapter(new DateAdapter(getDateBeans(), mContext));
+            listView.setAdapter(new DateAdapter(getDateBeans()));
         } else {
-            view = LayoutInflater.from(mContext).inflate(R.layout.activity_question, null);
+            view = LayoutInflater.from(c).inflate(R.layout.activity_question, null);
             ListView listView = (ListView) view.findViewById(R.id.swipe_target);
             SwipeToLoadLayout swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
             mRelateLists.get(position).setLayout(swipeToLoadLayout);
-            View mHeader = LayoutInflater.from(mContext).inflate(R.layout.music_header, null);
-            ImageView musicIV = (ImageView) mHeader.findViewById(R.id.music_iv);
-            Picasso.with(mContext).load(music.getCover()).fit().into(musicIV);
-            ImageView headIV = (ImageView) mHeader.findViewById(R.id.head_iv);
-            Picasso.with(mContext).load(music.getAuthor().getWeb_url()).into(headIV);
+            View mHeader = LayoutInflater.from(c).inflate(R.layout.music_header, null);
+            ManagedMediaPlayer.Status s = MyPlayer.getPlayer().getSourceStatus(music.getMusic_id());
+
+            final ImageView playIV = (ImageView) mHeader.findViewById(R.id.play_iv);
+            if (s == ManagedMediaPlayer.Status.STARTED) {
+                playIV.setImageResource(R.drawable.music_pause_selector);
+            } else {
+                playIV.setImageResource(R.drawable.music_play_selector);
+            }
+            playIV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mPlayView!=null&&v!=mPlayView) {
+                        mPlayView.setImageResource(R.drawable.music_play_selector);
+                    }
+                    mPlayView= (ImageView) v;
+                    ManagedMediaPlayer.Status s = MyPlayer.getPlayer().getSourceStatus(music.getMusic_id());
+                    if (s == ManagedMediaPlayer.Status.IDLE || s == ManagedMediaPlayer.Status.STOPPED) {
+                        PlayEvent e = new PlayEvent();
+                        e.setSong(new Song(music.getTitle(),music.getMusic_id()));
+                        e.setAction(PlayEvent.Action.PLAYITEM);
+                        EventBus.getDefault().post(e);
+                        Log.e("test---","点击播放");
+                    } else if (s == ManagedMediaPlayer.Status.PAUSED) {
+                        PlayEvent e = new PlayEvent();
+                        e.setAction(PlayEvent.Action.RESUME);
+                        EventBus.getDefault().post(e);
+                        Log.e("test---","点击恢复");
+                    } else if (s == ManagedMediaPlayer.Status.STARTED) {
+                        PlayEvent e = new PlayEvent();
+                        e.setAction(PlayEvent.Action.PAUSE);
+                        EventBus.getDefault().post(e);
+                        Log.e("test---","点击暂停");
+                    }
+                }
+            });
+            SimpleDraweeView musicIV = (SimpleDraweeView) mHeader.findViewById(R.id.music_iv);
+            FrescoHelper.loadImage(musicIV,music.getCover());
+//            Picasso.with(mContext).load(music.getCover()).fit().into(musicIV);
+            SimpleDraweeView headIV = (SimpleDraweeView) mHeader.findViewById(R.id.head_iv);
+//            Picasso.with(mContext).load(music.getAuthor().getWeb_url()).into(headIV);
+            FrescoHelper.loadImage(headIV,music.getAuthor().getWeb_url());
             TextView mAuthorTV = (TextView) mHeader.findViewById(R.id.name_tv);
             mAuthorTV.setText(music.getAuthor().getUser_name());
             TextView desTV = (TextView) mHeader.findViewById(R.id.des_tv);
@@ -124,7 +197,7 @@ public class MusicAdapter extends PagerAdapter {
             titleTV.setText(music.getStory_title());
             TextView authorNameTV = (TextView) mHeader.findViewById(R.id.author_name_tv);
             authorNameTV.setText(music.getStory_author().getUser_name());
-            final LinearLayout contentLL= (LinearLayout) mHeader.findViewById(R.id.content_ll);
+            final LinearLayout contentLL = (LinearLayout) mHeader.findViewById(R.id.content_ll);
             final TextView contentTV = (TextView) mHeader.findViewById(R.id.content_tv);
             contentTV.setText(Html.fromHtml(music.getStory()));
             final TextView lyricTV = (TextView) mHeader.findViewById(R.id.lyric_tv);
@@ -143,9 +216,9 @@ public class MusicAdapter extends PagerAdapter {
             List<Comment> comments = mRelateLists.get(position).getHotComment();
             if (musicRelates != null && musicRelates.size() > 0) {
                 RecyclerView r = (RecyclerView) mHeader.findViewById(R.id.relate_rv);
-                MusicRelateAdapter a = new MusicRelateAdapter(mContext, musicRelates);
+                MusicRelateAdapter a = new MusicRelateAdapter(musicRelates);
                 r.setAdapter(a);
-                LinearLayoutManager m = new LinearLayoutManager(mContext);
+                LinearLayoutManager m = new LinearLayoutManager(container.getContext());
                 m.setOrientation(LinearLayoutManager.HORIZONTAL);
                 r.setLayoutManager(m);
             } else {
@@ -154,7 +227,7 @@ public class MusicAdapter extends PagerAdapter {
             }
             if (comments != null && comments.size() > 0) {
                 ListViewForScrollView hotCommentsLV = (ListViewForScrollView) mHeader.findViewById(R.id.hot_lv);
-                CommentAdapter adapter = new CommentAdapter(mContext);
+                CommentAdapter adapter = new CommentAdapter();
                 hotCommentsLV.setAdapter(adapter);
                 adapter.refreshComments(comments);
             }
@@ -174,14 +247,14 @@ public class MusicAdapter extends PagerAdapter {
 //            mRelateLL = (LinearLayout) mHeader.findViewById(R.id.relate_ll);
             listView.addHeaderView(mHeader);
             listView.setAdapter(mAdapters.get(position));
-            final ImageView storyIV= (ImageView) mHeader.findViewById(R.id.story_iv);
-            ImageView lyricIV= (ImageView) mHeader.findViewById(R.id.lyric_iv);
-            final ImageView infoIV= (ImageView) mHeader.findViewById(R.id.info_iv);
+            final ImageView storyIV = (ImageView) mHeader.findViewById(R.id.story_iv);
+            ImageView lyricIV = (ImageView) mHeader.findViewById(R.id.lyric_iv);
+            final ImageView infoIV = (ImageView) mHeader.findViewById(R.id.info_iv);
 //            swipeToLoadLayout.setOnLoadMoreListener(this);
             storyIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (contentLL.getVisibility()!=View.VISIBLE) {
+                    if (contentLL.getVisibility() != View.VISIBLE) {
                         contentLL.setVisibility(View.VISIBLE);
                         lyricTV.setVisibility(View.GONE);
                         infoTV.setVisibility(View.GONE);
@@ -191,7 +264,7 @@ public class MusicAdapter extends PagerAdapter {
             lyricIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (lyricTV.getVisibility()!=View.VISIBLE) {
+                    if (lyricTV.getVisibility() != View.VISIBLE) {
                         lyricTV.setVisibility(View.VISIBLE);
                         contentLL.setVisibility(View.GONE);
                         infoTV.setVisibility(View.GONE);
@@ -201,7 +274,7 @@ public class MusicAdapter extends PagerAdapter {
             infoIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (infoTV.getVisibility()!=View.VISIBLE) {
+                    if (infoTV.getVisibility() != View.VISIBLE) {
                         infoTV.setVisibility(View.VISIBLE);
                         lyricTV.setVisibility(View.GONE);
                         contentLL.setVisibility(View.GONE);
@@ -329,11 +402,14 @@ public class MusicAdapter extends PagerAdapter {
         }
 
     }
-    public void clear(){
+
+    public void clear() {
         viewBeans.clear();
         mAdapters.clear();
         mRelateLists.clear();
+        EventBus.getDefault().unregister(this);
     }
+
     public interface OnLoadMoreListener {
         void loadMore(int page, String lastIndex);
     }

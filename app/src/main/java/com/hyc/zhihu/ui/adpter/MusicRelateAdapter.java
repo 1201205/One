@@ -9,8 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.beans.music.MusicRelate;
+import com.hyc.zhihu.helper.FrescoHelper;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -19,17 +21,15 @@ import java.util.List;
  * Created by Administrator on 2016/5/24.
  */
 public class MusicRelateAdapter extends RecyclerView.Adapter<MusicRelateAdapter.ViewHolder> {
-    private Context mContext;
     private List<MusicRelate> mMusicRelates;
 
-    public MusicRelateAdapter(Context context, List<MusicRelate> musicRelates) {
-        mContext = context;
+    public MusicRelateAdapter(List<MusicRelate> musicRelates) {
         mMusicRelates = musicRelates;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v= LayoutInflater.from(mContext).inflate(R.layout.music_relate_item,parent,false);
+        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.music_relate_item,parent,false);
         return new ViewHolder(v);
     }
 
@@ -37,7 +37,8 @@ public class MusicRelateAdapter extends RecyclerView.Adapter<MusicRelateAdapter.
     public void onBindViewHolder(ViewHolder holder, int position) {
         MusicRelate relate=mMusicRelates.get(position);
         Log.e("test1111",position+"----");
-        Picasso.with(mContext).load(relate.getCover()).into(holder.image);
+        FrescoHelper.loadImage(holder.image,relate.getCover());
+//        Picasso.with(mContext).load(relate.getCover()).into(holder.image);
         holder.title.setText(relate.getTitle());
         holder.name.setText(relate.getAuthor().getUser_name());
     }
@@ -49,13 +50,13 @@ public class MusicRelateAdapter extends RecyclerView.Adapter<MusicRelateAdapter.
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        private ImageView image;
+        private SimpleDraweeView image;
         private TextView title;
         private TextView name;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            image = (ImageView) itemView.findViewById(R.id.cover_iv);
+            image = (SimpleDraweeView) itemView.findViewById(R.id.cover_iv);
             title = (TextView) itemView.findViewById(R.id.title_tv);
             name = (TextView) itemView.findViewById(R.id.name_tv);
         }

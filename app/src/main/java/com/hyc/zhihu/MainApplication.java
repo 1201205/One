@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 
+import com.hyc.zhihu.helper.FrescoHelper;
 import com.hyc.zhihu.player.PlayerService;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.utils.SPUtil;
@@ -26,6 +27,7 @@ public class MainApplication extends Application {
         super.onCreate();
         sContext = this;
         initRealm();
+        FrescoHelper.initialize(this);
         startService(new Intent(this, PlayerService.class));
 
     }

@@ -2,6 +2,7 @@ package com.hyc.zhihu.view;
 
 import com.hyc.zhihu.base.BaseView;
 import com.hyc.zhihu.beans.Comment;
+import com.hyc.zhihu.beans.Song;
 import com.hyc.zhihu.beans.music.Music;
 import com.hyc.zhihu.beans.music.MusicRelate;
 import com.hyc.zhihu.beans.music.MusicRelateListBean;
@@ -20,5 +21,5 @@ public interface MusicView extends BaseView{
     void setRelate(int position,List<MusicRelate> musicRelates);
     void setComment(int position, List<Comment> hot, List<Comment> normal);
     void refreshCommentList(int page,List<Comment> comments);
-
+    void setSongList(List<Song> songs);
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white">
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/music_iv"
                 android:layout_width="match_parent"
                 android:layout_height="360dp" />
@@ -39,7 +39,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <com.hyc.zhihu.widget.CircleImageView
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        app:roundAsCircle="true"
                         android:id="@+id/head_iv"
                         android:layout_width="40dp"
                         android:layout_height="40dp" />
@@ -82,6 +83,7 @@
                         android:textColor="@color/gray_tv" />
 
                     <ImageView
+                        android:id="@+id/play_iv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_above="@id/time_tv"

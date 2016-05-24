@@ -85,7 +85,7 @@ public class PictureAdapter extends PagerAdapter {
         if (position == viewBeans.size() - 1) {
             view = LayoutInflater.from(mContext).inflate(R.layout.date_list, null);
             ListView listView = (ListView) view.findViewById(R.id.date_list);
-            listView.setAdapter(new DateAdapter(getDateBeans(), mContext));
+            listView.setAdapter(new DateAdapter(getDateBeans()));
         } else {
             view = LayoutInflater.from(mContext).inflate(R.layout.picture_adpter_item, null);
             final ImageView picture = (ImageView) view.findViewById(R.id.picture_sdv);

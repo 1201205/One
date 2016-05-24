@@ -46,6 +46,15 @@ public class PlayerService extends Service {
             case RESUME:
                 MyPlayer.getPlayer().resume();
                 break;
+            case ADDLIST:
+                MyPlayer.getPlayer().setQueue(playEvent.getQueue(), -1);
+                break;
+            case PLAYITEM:
+                MyPlayer.getPlayer().play(playEvent.getSong());
+                break;
+            case PLAYPATH:
+                MyPlayer.getPlayer().play(playEvent.getPath());
+                break;
         }
     }
 

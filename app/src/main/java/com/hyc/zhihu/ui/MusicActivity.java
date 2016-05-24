@@ -12,13 +12,17 @@ import com.hyc.zhihu.base.BasePresenter;
 import com.hyc.zhihu.base.PresenterFactory;
 import com.hyc.zhihu.base.PresenterLoader;
 import com.hyc.zhihu.beans.Comment;
+import com.hyc.zhihu.beans.Song;
 import com.hyc.zhihu.beans.music.Music;
 import com.hyc.zhihu.beans.music.MusicRelate;
 import com.hyc.zhihu.beans.music.MusicRelateListBean;
+import com.hyc.zhihu.event.PlayEvent;
 import com.hyc.zhihu.helper.DelayHandle;
 import com.hyc.zhihu.presenter.MusicPresenter;
 import com.hyc.zhihu.ui.adpter.MusicAdapter;
 import com.hyc.zhihu.view.MusicView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -52,16 +56,11 @@ public class MusicActivity extends BaseActivity implements MusicView, LoaderMana
 
             @Override
             public void onPageSelected(final int position) {
-                if (position==mAdapter.getCount()-1) {
+                if (position == mAdapter.getCount() - 1) {
                     return;
                 }
                 if (mAdapter.neeRequest(position)) {
-                    DelayHandle.delay(2000, new Runnable() {
-                        @Override
-                        public void run() {
-                            mPresenter.showCurrentCommentAndRelate(position);
-                        }
-                    });
+                    mPresenter.showCurrentCommentAndRelate(position);
                 }
             }
 
@@ -125,7 +124,7 @@ public class MusicActivity extends BaseActivity implements MusicView, LoaderMana
 
     @Override
     public void setAdapter(List<Music> beans, List<MusicRelateListBean> listBeans) {
-        mAdapter = new MusicAdapter(listBeans, beans, this);
+        mAdapter = new MusicAdapter(listBeans, beans);
         mPager.setAdapter(mAdapter);
         mAdapter.setLoadMoreListener(new MusicAdapter.OnLoadMoreListener() {
             @Override
@@ -154,5 +153,13 @@ public class MusicActivity extends BaseActivity implements MusicView, LoaderMana
     @Override
     public void refreshCommentList(int page, List<Comment> comments) {
         mAdapter.refreshComment(page, comments);
+    }
+
+    @Override
+    public void setSongList(List<Song> songs) {
+        PlayEvent playEvent = new PlayEvent();
+        playEvent.setAction(PlayEvent.Action.ADDLIST);
+        playEvent.setQueue(songs);
+        EventBus.getDefault().post(playEvent);
     }
 }

@@ -7,6 +7,7 @@ import com.hyc.zhihu.base.BasePresenter;
 import com.hyc.zhihu.beans.Comment;
 import com.hyc.zhihu.beans.Comments;
 import com.hyc.zhihu.beans.IDList;
+import com.hyc.zhihu.beans.Song;
 import com.hyc.zhihu.beans.music.Music;
 import com.hyc.zhihu.beans.music.MusicRelateListBean;
 import com.hyc.zhihu.beans.music.MusicRelateWrapper;
@@ -37,6 +38,7 @@ public class MusicPresenter extends BasePresenter<MusicView> implements IMusicPr
     }
     @Override
     public void getAndShowContent() {
+        final List<Song> songs=new ArrayList<>();
         Requests.getApi().getMusicIds("0").map(new Func1<IDList, Observable<MusicWrapper>>() {
             @Override
             public Observable<MusicWrapper> call(IDList idList) {
@@ -60,11 +62,13 @@ public class MusicPresenter extends BasePresenter<MusicView> implements IMusicPr
                     @Override
                     public void call(MusicWrapper musicWrapper) {
                         mMusics.add(musicWrapper.getData());
+                        songs.add(new Song(musicWrapper.getData().getTitle(),musicWrapper.getData().getMusic_id()));
                         if (mMusics.size() == mIDs.size()) {
                             mMusics.add(null);
                             mView.setAdapter(mMusics, mRelateBeans);
                             showCurrentRelate(0);
                             showCurrentComment(0);
+                            mView.setSongList(songs);
                         }
                     }
                 });
