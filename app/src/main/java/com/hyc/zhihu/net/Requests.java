@@ -1,6 +1,7 @@
 package com.hyc.zhihu.net;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -9,6 +10,7 @@ import com.hyc.zhihu.utils.NetUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 import okhttp3.Cache;
 import okhttp3.CacheControl;
@@ -25,7 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Requests {
     private static Api sApi = null;
     private static Object sObject = new Object();
-
+    private static String TAG="request";
     public static Api getApi() {
         synchronized (sObject) {
             if (sApi == null) {
@@ -56,12 +58,19 @@ public class Requests {
 //                        }
 //                        return response;
                         Request request = chain.request();
+                        Log.v(TAG, "request:" + request.toString());
+                        long t1 = System.nanoTime();
                         Response response = chain.proceed(request);
-
+                        long t2 = System.nanoTime();
+                        Log.v(TAG, String.format(Locale.getDefault(), "Received response for %s in %.1fms%n%s",
+                                response.request().url(), (t2 - t1) / 1e6d, response.headers()));
                         String cacheControl = request.cacheControl().toString();
                         if (TextUtils.isEmpty(cacheControl)) {
                             cacheControl = "public, max-age=60";
                         }
+//                        okhttp3.MediaType mediaType = response.body().contentType();
+//                        String content = response.body().string();
+//                        Log.i(TAG, "response body:" + content);
                         return response.newBuilder()
                                 .header("Cache-Control", cacheControl)
                                 .removeHeader("Pragma")

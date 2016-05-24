@@ -24,21 +24,21 @@ public class ManagedMediaPlayer extends MediaPlayer implements MediaPlayer.OnCom
 
     public ManagedMediaPlayer() {
         super();
-        mState = Status.IDLE;
+        mState = ManagedMediaPlayer.Status.IDLE;
         super.setOnCompletionListener(this);
     }
 
     @Override
     public void setDataSource(String path) throws IOException, IllegalArgumentException, SecurityException, IllegalStateException {
         super.setDataSource(path);
-        mState = Status.INITIALIZED;
+        mState = ManagedMediaPlayer.Status.INITIALIZED;
     }
 
     @Override
     public void start() {
         super.start();
-        mState = Status.STARTED;
-        EventBus.getDefault().post(new PlayCallBackEvent(PlayCallBackEvent.PLAY));
+        mState = ManagedMediaPlayer.Status.STARTED;
+        EventBus.getDefault().post(new PlayCallBackEvent(mState));
     }
 
     @Override
@@ -48,7 +48,7 @@ public class ManagedMediaPlayer extends MediaPlayer implements MediaPlayer.OnCom
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-        mState = Status.COMPLETED;
+        mState = ManagedMediaPlayer.Status.COMPLETED;
         if (mOnCompletionListener != null) {
             mOnCompletionListener.onCompletion(mp);
         }
@@ -57,15 +57,15 @@ public class ManagedMediaPlayer extends MediaPlayer implements MediaPlayer.OnCom
     @Override
     public void stop() throws IllegalStateException {
         super.stop();
-        mState = Status.STOPPED;
-        EventBus.getDefault().post(new PlayCallBackEvent(PlayCallBackEvent.STOP));
+        mState = ManagedMediaPlayer.Status.STOPPED;
+        EventBus.getDefault().post(new PlayCallBackEvent(mState));
     }
 
     @Override
     public void pause() throws IllegalStateException {
         super.pause();
-        mState = Status.PAUSED;
-        EventBus.getDefault().post(new PlayCallBackEvent(PlayCallBackEvent.PAUSE));
+        mState = ManagedMediaPlayer.Status.PAUSED;
+        EventBus.getDefault().post(new PlayCallBackEvent(mState));
     }
 
     public Status getState() {
@@ -73,6 +73,6 @@ public class ManagedMediaPlayer extends MediaPlayer implements MediaPlayer.OnCom
     }
 
     public boolean isComplete() {
-        return mState == Status.COMPLETED;
+        return mState == ManagedMediaPlayer.Status.COMPLETED;
     }
 }

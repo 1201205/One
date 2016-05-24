@@ -3,9 +3,11 @@ package com.hyc.zhihu.net;
 import com.hyc.zhihu.beans.Comments;
 import com.hyc.zhihu.beans.EssayWrapper;
 import com.hyc.zhihu.beans.HeadItems;
+import com.hyc.zhihu.beans.IDList;
+import com.hyc.zhihu.beans.music.MusicRelateWrapper;
+import com.hyc.zhihu.beans.music.MusicWrapper;
 import com.hyc.zhihu.beans.OnePicture;
 import com.hyc.zhihu.beans.OnePictureByMonth;
-import com.hyc.zhihu.beans.OnePictureList;
 import com.hyc.zhihu.beans.QuestionWrapper;
 import com.hyc.zhihu.beans.Questions;
 import com.hyc.zhihu.beans.ReadingListItems;
@@ -44,7 +46,7 @@ public interface Api {
     //获取阅读list
     //http://v3.wufazhuce.com:8000/api/reading/index/0?
     @GET("/api/hp/idlist/{id}")
-    Observable<OnePictureList> getPictureIds(@Path("id") String id);
+    Observable<IDList> getPictureIds(@Path("id") String id);
 
     @GET("/api/hp/detail/{id}")
     Observable<OnePicture> getPictureById(@Path("id") String id);
@@ -115,4 +117,27 @@ public interface Api {
 
     @GET("/api/serial/list/{id}")
     Observable<SerialListWrapper> getSerialListByID(@Path("id") String id);
+    /**
+     * 音乐相关
+     * http://v3.wufazhuce.com:8000/api/music/idlist/0  获取id
+     * http://v3.wufazhuce.com:8000/api/music/detail/558  获取对应的详情
+     * http://v3.wufazhuce.com:8000/api/related/music/558  获取对应的推荐
+     * http://v3.wufazhuce.com:8000/api/comment/praiseandtime/music/558/0 获取对应的评论
+     *
+     * 电影相关
+     * http://v3.wufazhuce.com:8000/api/movie/list/0 获取id
+     * http://v3.wufazhuce.com:8000/api/movie/detail/69
+     * http://v3.wufazhuce.com:8000/api/movie/69/story/1/0 获取故事
+     * http://v3.wufazhuce.com:8000/api/movie/69/story/0/0 获取全部故事
+     * http://v3.wufazhuce.com:8000/api/comment/praiseandtime/movie/69/0
+     *
+     */
+    @GET("/api/music/idlist/{id}")
+    Observable<IDList> getMusicIds(@Path("id") String id);
+    @GET("/api/music/detail/{id}")
+    Observable<MusicWrapper> getMusicContentByID(@Path("id") String id);
+    @GET("/api/related/music/{id}")
+    Observable<MusicRelateWrapper> getMusicRelateByID(@Path("id") String id);
+    @GET("/api/comment/praiseandtime/music/{id}/{index}")
+    Observable<Comments> getMusicCommentsByIndex(@Path("id") String id, @Path("index") String index);
 }

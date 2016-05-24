@@ -20,7 +20,7 @@ import java.util.Random;
 public class MyPlayer implements MediaPlayer.OnCompletionListener {
     private static MyPlayer player = new MyPlayer();
 
-    private MediaPlayer mMediaPlayer;
+    private ManagedMediaPlayer mMediaPlayer;
     private Context mContext;
     private List<Song> mQueue;
     private int mQueueIndex;
@@ -28,7 +28,7 @@ public class MyPlayer implements MediaPlayer.OnCompletionListener {
 
 
     private enum PlayMode {
-        LOOP, RANDOM, REPEAT
+        LOOP, RANDOM, REPEAT, ORDER
     }
 
     public static MyPlayer getPlayer() {
@@ -49,7 +49,24 @@ public class MyPlayer implements MediaPlayer.OnCompletionListener {
 
         mPlayMode = PlayMode.LOOP;
     }
+    public boolean isPlaying(){
+        return mMediaPlayer.getState()== ManagedMediaPlayer.Status.STARTED;
+    }
+    public boolean isPaused(){
+        return mMediaPlayer.getState()==ManagedMediaPlayer.Status.PAUSED;
+    }
+    public boolean isStoped(){
+        return mMediaPlayer.getState()==ManagedMediaPlayer.Status.STOPPED;
+    }
 
+    public ManagedMediaPlayer.Status getSourceStatus(String path){
+        if (mQueue != null && mQueue.size() > 0) {
+            if (mQueue.get(mQueueIndex).getPath().equals(path)) {
+                return mMediaPlayer.getState();
+            }
+        }
+        return ManagedMediaPlayer.Status.IDLE;
+    }
     public void setQueue(List<Song> queue, int index) {
         mQueue = queue;
         mQueueIndex = index;
@@ -59,7 +76,6 @@ public class MyPlayer implements MediaPlayer.OnCompletionListener {
     public void play(Song song) {
         try {
             mMediaPlayer.reset();
-            Log.e("test1",song.getPath());
             mMediaPlayer.setDataSource(MainApplication.getApplication(), Uri.parse(song.getPath()));
             mMediaPlayer.prepareAsync();
             mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -82,7 +98,10 @@ public class MyPlayer implements MediaPlayer.OnCompletionListener {
     }
 
     public void next() {
-        play(getNextSong());
+        Song song=getNextSong();
+        if (song!=null) {
+            play(song);
+        }
     }
 
     public void previous() {
@@ -112,6 +131,12 @@ public class MyPlayer implements MediaPlayer.OnCompletionListener {
                 return mQueue.get(getRandomIndex());
             case REPEAT:
                 return mQueue.get(mQueueIndex);
+            case ORDER:
+                int index=getNextIndexInOrder();
+                if (index==-1) {
+                    return null;
+                }
+                return mQueue.get(index);
         }
         return null;
     }
@@ -158,7 +183,13 @@ public class MyPlayer implements MediaPlayer.OnCompletionListener {
         mQueueIndex = (mQueueIndex + 1) % mQueue.size();
         return mQueueIndex;
     }
-
+    private int getNextIndexInOrder() {
+        if (mQueueIndex + 1 >= mQueue.size()) {
+            return -1;
+        } else {
+            return mQueueIndex+1;
+        }
+    }
     private int getPreviousIndex() {
         mQueueIndex = (mQueueIndex - 1) % mQueue.size();
         return mQueueIndex;

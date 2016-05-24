@@ -1,10 +1,11 @@
-package com.hyc.zhihu.beans;
+package com.hyc.zhihu.beans.music;
 
-public class MuiscStory_author implements java.io.Serializable {
-    private static final long serialVersionUID = -3172783166651562483L;
+public class MuiscAuthor implements java.io.Serializable {
+    private static final long serialVersionUID = -277336868158803211L;
     private String web_url;
     private String user_id;
     private String user_name;
+    private String desc;
 
     public String getWeb_url() {
         return this.web_url;
@@ -28,5 +29,13 @@ public class MuiscStory_author implements java.io.Serializable {
 
     public void setUser_name(String user_name) {
         this.user_name = user_name;
+    }
+
+    public String getDesc() {
+        return this.desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }

@@ -1,6 +1,8 @@
-package com.hyc.zhihu.beans;
+package com.hyc.zhihu.beans.music;
 
-public class Muisc implements java.io.Serializable {
+import com.hyc.zhihu.beans.RealArticleAuthor;
+
+public class Music implements java.io.Serializable {
     private static final long serialVersionUID = -1936502058486908912L;
     private String charge_edt;
     private String maketime;
@@ -21,7 +23,7 @@ public class Muisc implements java.io.Serializable {
     private String music_id;
     private String id;
     private String isfirst;
-    private MuiscStory_author story_author;
+    private MusicStory_author story_author;
     private String story;
     private String info;
     private String last_update_date;
@@ -179,11 +181,11 @@ public class Muisc implements java.io.Serializable {
         this.isfirst = isfirst;
     }
 
-    public MuiscStory_author getStory_author() {
+    public MusicStory_author getStory_author() {
         return this.story_author;
     }
 
-    public void setStory_author(MuiscStory_author story_author) {
+    public void setStory_author(MusicStory_author story_author) {
         this.story_author = story_author;
     }
 

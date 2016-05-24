@@ -3,9 +3,9 @@ package com.hyc.zhihu.presenter;
 import android.util.Log;
 
 import com.hyc.zhihu.base.BasePresenter;
+import com.hyc.zhihu.beans.IDList;
 import com.hyc.zhihu.beans.OnePicture;
 import com.hyc.zhihu.beans.OnePictureData;
-import com.hyc.zhihu.beans.OnePictureList;
 import com.hyc.zhihu.beans.PictureViewBean;
 import com.hyc.zhihu.net.Requests;
 import com.hyc.zhihu.presenter.base.IPicturePresenter;
@@ -46,11 +46,11 @@ public class PicturePresenterImp extends BasePresenter<PictureView> implements I
     @Override
     public void getPictureIdsAndFirstItem() {
         mView.showLoading();
-        Requests.getApi().getPictureIds("0").map(new Func1<OnePictureList, String>() {
+        Requests.getApi().getPictureIds("0").map(new Func1<IDList, String>() {
             @Override
-            public String call(OnePictureList onePictureList) {
+            public String call(IDList IDList) {
                 Log.e("test12", Thread.currentThread().getName());
-                mIds = onePictureList.getData();
+                mIds = IDList.getData();
                 if (mIds == null || mIds.size() == 0) {
                     return null;
                 }
@@ -153,11 +153,11 @@ public class PicturePresenterImp extends BasePresenter<PictureView> implements I
         }
         int pageCount = mIds.size();
         if (mCurrentPage >= pageCount - 4) {
-            Requests.getApi().getPictureIds(mIds.get(pageCount - 1)).subscribeOn(Schedulers.io()).subscribe(new Action1<OnePictureList>() {
+            Requests.getApi().getPictureIds(mIds.get(pageCount - 1)).subscribeOn(Schedulers.io()).subscribe(new Action1<IDList>() {
                 @Override
-                public void call(OnePictureList onePictureList) {
-                    if (onePictureList != null && onePictureList.getData() != null) {
-                        mIds.addAll(onePictureList.getData());
+                public void call(IDList IDList) {
+                    if (IDList != null && IDList.getData() != null) {
+                        mIds.addAll(IDList.getData());
                     }
                 }
             }, mThrowableAction);

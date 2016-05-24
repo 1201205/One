@@ -1,18 +1,21 @@
 package com.hyc.zhihu.event;
 
+import com.hyc.zhihu.player.ManagedMediaPlayer;
+
 /**
  * Created by ray on 16/5/22.
  */
 public class PlayCallBackEvent {
-    public static final int PLAY=0;
-    public static final int STOP=1;
-    public static final int RESUME=2;
+    public ManagedMediaPlayer.Status state;
+    public PlayCallBackEvent(ManagedMediaPlayer.Status state) {
+        this.state = state;
+    }
 
-    public static final int PAUSE=3;
-    public static final int IDLE=4;
-    public int state;
+    public ManagedMediaPlayer.Status getState() {
+        return state;
+    }
 
-    public PlayCallBackEvent(int state) {
+    public void setState(ManagedMediaPlayer.Status state) {
         this.state = state;
     }
 }

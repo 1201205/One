@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/music_iv"
+                android:layout_width="match_parent"
+                android:layout_height="360dp" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_below="@+id/music_iv"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="-25dp"
+                android:foreground="?attr/selectableItemBackground"
+                android:padding="10dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="4dp"
+                app:cardElevation="2dp"
+                app:contentPadding="6dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.hyc.zhihu.widget.CircleImageView
+                        android:id="@+id/head_iv"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp" />
+
+                    <TextView
+                        android:textColor="@color/google_blue"
+                        android:textSize="13sp"
+                        android:id="@+id/name_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/head_iv" />
+
+                    <TextView
+                        android:textColor="@color/gray_tv"
+                        android:textSize="13sp"
+                        android:id="@+id/des_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/name_tv"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/head_iv" />
+
+                    <TextView
+                        android:id="@+id/music_title_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="15dp"
+                        android:textColor="@color/black_tv"
+                    android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/time_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="5dp"
+                        android:textColor="@color/gray_tv" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@id/time_tv"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="20dp"
+                        android:src="@drawable/music_play_selector" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:layout_below="@id/music_iv"
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:textSize="13sp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="6dp"
+                    android:text="音乐故事" />
+
+                <ImageView
+                    android:id="@+id/story_iv"
+                    android:layout_gravity="bottom"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.42"
+                    android:src="@drawable/music_story_selector" />
+
+                <ImageView
+                    android:id="@+id/lyric_iv"
+                    android:layout_gravity="bottom"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.42"
+                    android:src="@drawable/music_lyric_selector" />
+
+                <ImageView
+                    android:id="@+id/info_iv"
+                    android:layout_gravity="bottom"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.42"
+                    android:src="@drawable/music_about_selector" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <View
+            android:layout_marginTop="-9dp"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/gray_tv" />
+        <LinearLayout
+            android:id="@+id/content_ll"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/title_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black_tv"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/author_name_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/google_blue"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/content_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black_tv"
+                android:textSize="16sp" />
+        </LinearLayout>
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/lyric_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/black_tv"
+            android:textSize="16sp" />
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/info_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/black_tv"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/editor_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/gray_tv"
+            android:textSize="13sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/gray_tv" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+            <Space
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:gravity="center"
+                android:id="@+id/like_num_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/laud" />
+            <Space
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <View
+                android:background="@color/gray_tv"
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp" />
+            <Space
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:gravity="center"
+                android:id="@+id/comment_num_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/comment_image"/>
+            <Space
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <View
+                android:background="@color/gray_tv"
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp" />
+            <Space
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:gravity="center"
+                android:id="@+id/share_num_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/share_image" />
+            <Space
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/relate_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/gray_tv" />
+
+            <com.hyc.zhihu.widget.DrawableClickTextView
+                android:id="@+id/relate_tv"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/gray"
+                android:drawablePadding="16dp"
+                android:drawableRight="@drawable/music_list_play"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="相似歌曲"
+                android:textColor="@color/gray_tv"
+                android:textSize="13sp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/relate_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/gray_tv" />
+
+            <TextView
+                android:id="@+id/comment_tv"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/gray"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="评论列表"
+                android:textColor="@color/gray_tv"
+                android:textSize="13sp" />
+
+            <com.hyc.zhihu.widget.ListViewForScrollView
+                android:id="@+id/hot_lv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1px"
+                android:layout_weight="1"
+                android:background="@color/gray_tv" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:text="以上是热门评论"
+                android:textColor="@color/google_blue"
+                android:textSize="13sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1px"
+                android:layout_weight="1"
+                android:background="@color/gray_tv" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

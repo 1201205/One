@@ -27,14 +27,13 @@ import com.hyc.zhihu.base.PresenterFactory;
 import com.hyc.zhihu.base.PresenterLoader;
 import com.hyc.zhihu.beans.Comment;
 import com.hyc.zhihu.beans.Essay;
-import com.hyc.zhihu.beans.Question;
 import com.hyc.zhihu.beans.RealArticle;
 import com.hyc.zhihu.beans.RealArticleAuthor;
 import com.hyc.zhihu.beans.Song;
 import com.hyc.zhihu.event.PlayCallBackEvent;
 import com.hyc.zhihu.event.PlayEvent;
+import com.hyc.zhihu.player.ManagedMediaPlayer;
 import com.hyc.zhihu.player.MyPlayer;
-import com.hyc.zhihu.player.PlayerService;
 import com.hyc.zhihu.presenter.EssayContentPresenter;
 import com.hyc.zhihu.ui.adpter.CommentAdapter;
 import com.hyc.zhihu.ui.adpter.EssayAdapter;
@@ -79,7 +78,7 @@ public class EssayActivity extends BaseActivity implements ReadingContentView<Es
     public static final String ID = "id";
     private boolean mHasMoreComments = true;
     private CircleTransform mTransform = new CircleTransform();
-    private int mMusicState=PlayCallBackEvent.IDLE;
+    private ManagedMediaPlayer.Status mMusicState= ManagedMediaPlayer.Status.IDLE;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -163,23 +162,31 @@ public class EssayActivity extends BaseActivity implements ReadingContentView<Es
             mListenTV.setVisibility(View.GONE);
             mPlayBt.setVisibility(View.GONE);
         }else {
+            ManagedMediaPlayer.Status status=MyPlayer.getPlayer().getSourceStatus(content.getAudio());
+            mMusicState= status;
+             if (status==ManagedMediaPlayer.Status.STARTED) {
+                mPlayBt.setBackgroundResource(R.drawable.pause_selector);
+             }
             mPlayBt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mMusicState == PlayCallBackEvent.PLAY) {
+                    if (mMusicState == ManagedMediaPlayer.Status.STARTED) {
                         PlayEvent event=new PlayEvent();
-                        event.setAction(PlayEvent.Action.STOP);
+                        event.setAction(PlayEvent.Action.PAUSE);
+                        EventBus.getDefault().post(event);
+                    } else if (mMusicState == ManagedMediaPlayer.Status.PAUSED) {
+                        PlayEvent event=new PlayEvent();
+                        event.setAction(PlayEvent.Action.RESUME);
                         EventBus.getDefault().post(event);
                     } else {
-                        Song song=new Song("",content.getAudio());
-                        List<Song> songs=new ArrayList<>();
+                        Song song = new Song("", content.getAudio());
+                        List<Song> songs = new ArrayList<>();
                         songs.add(song);
-                        PlayEvent event=new PlayEvent();
+                        PlayEvent event = new PlayEvent();
                         event.setQueue(songs);
                         event.setAction(PlayEvent.Action.PLAY);
                         EventBus.getDefault().post(event);
                     }
-
                 }
             });
 
@@ -195,11 +202,12 @@ public class EssayActivity extends BaseActivity implements ReadingContentView<Es
     @Subscribe
     public void onEvent(PlayCallBackEvent playEvent) {
         mMusicState=playEvent.state;
-        switch (playEvent.state){
-            case PlayCallBackEvent.PLAY:
+        switch (playEvent.getState()){
+            case STARTED:
                 mPlayBt.setBackgroundResource(R.drawable.pause_selector);
                 break;
-            case PlayCallBackEvent.PAUSE:
+            case STOPPED:
+            case PAUSED:
                 mPlayBt.setBackgroundResource(R.drawable.play_selector);
                 break;
             default:

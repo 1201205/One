@@ -51,9 +51,9 @@ public class MainActivity extends BaseActivity implements TestView,LoaderManager
     protected void onStart() {
         super.onStart();
         Log.d("act-hyc","onStart");
-//        Requests.getApi().getPictureIds("0").map(new Func1<OnePictureList, Observable<OnePicture>>() {
+//        Requests.getApi().getPictureIds("0").map(new Func1<IDList, Observable<OnePicture>>() {
 //            @Override
-//            public Observable<OnePicture> call(OnePictureList onePictureList) {
+//            public Observable<OnePicture> call(IDList onePictureList) {
 //                return Requests.getApi().getPictureById(onePictureList.getData().get(0));
 //            }
 //        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
@@ -68,9 +68,9 @@ public class MainActivity extends BaseActivity implements TestView,LoaderManager
 //                });
 //            }
 //        });
-//         Requests.getApi().getPictureIds("0").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<OnePictureList>() {
+//         Requests.getApi().getPictureIds("0").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<IDList>() {
 //             @Override
-//             public void call(OnePictureList onePictureList) {
+//             public void call(IDList onePictureList) {
 //                 Log.e("test1", onePictureList.getData().get(0));
 //             }
 //         }, new Action1<Throwable>() {

@@ -40,6 +40,12 @@ public class PlayerService extends Service {
             case NEXT:
                 MyPlayer.getPlayer().next();
                 break;
+            case PAUSE:
+                MyPlayer.getPlayer().pause();
+                break;
+            case RESUME:
+                MyPlayer.getPlayer().resume();
+                break;
         }
     }
 
