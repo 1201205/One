@@ -36,7 +36,6 @@ import com.hyc.zhihu.player.MyPlayer;
 import com.hyc.zhihu.ui.MainActivity;
 import com.hyc.zhihu.ui.PictureActivity;
 import com.hyc.zhihu.widget.ListViewForScrollView;
-import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -58,6 +57,7 @@ public class MusicAdapter extends PagerAdapter {
     private List<MusicRelateListBean> mRelateLists;
     private List<CommentAdapter> mAdapters;
     private ImageView mPlayView;
+    private int mPlayIndex;
 
     public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
         this.mLoadMoreListener = loadMoreListener;
@@ -99,19 +99,23 @@ public class MusicAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        if (position<mRelateLists.size()) {
+        //释放view引用
+        if (position < mRelateLists.size()) {
             mRelateLists.get(position).setLayout(null);
         }
+        if (mPlayIndex == position) {
+            mPlayView = null;
+        }
         container.removeView((View) object);
-        Log.e("test","destroyItem----"+position);
+        Log.e("test", "destroyItem----" + position);
     }
+
     @Subscribe
-    public void onEvent(PlayCallBackEvent playEvent){
-        ManagedMediaPlayer.Status musicState=playEvent.state;
-        if (mPlayView==null) {
+    public void onEvent(PlayCallBackEvent playEvent) {
+        if (mPlayView == null) {
             return;
         }
-        switch (playEvent.getState()){
+        switch (playEvent.getState()) {
             case STARTED:
                 mPlayView.setImageResource(R.drawable.music_pause_selector);
                 break;
@@ -124,6 +128,7 @@ public class MusicAdapter extends PagerAdapter {
 
         }
     }
+
     @Override
     public View instantiateItem(ViewGroup container, final int position) {
 //        int delay=0;
@@ -131,7 +136,7 @@ public class MusicAdapter extends PagerAdapter {
 //            mRefreshIndex=-1;
 //            delay=50;
 //        }
-        Context c=container.getContext();
+        Context c = container.getContext();
         View view;
         final Music music = viewBeans.get(position);
         if (position == viewBeans.size() - 1) {
@@ -155,36 +160,37 @@ public class MusicAdapter extends PagerAdapter {
             playIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mPlayView!=null&&v!=mPlayView) {
+                    if (mPlayView != null && v != mPlayView) {
                         mPlayView.setImageResource(R.drawable.music_play_selector);
                     }
-                    mPlayView= (ImageView) v;
+                    mPlayIndex = position;
+                    mPlayView = (ImageView) v;
                     ManagedMediaPlayer.Status s = MyPlayer.getPlayer().getSourceStatus(music.getMusic_id());
                     if (s == ManagedMediaPlayer.Status.IDLE || s == ManagedMediaPlayer.Status.STOPPED) {
                         PlayEvent e = new PlayEvent();
-                        e.setSong(new Song(music.getTitle(),music.getMusic_id()));
+                        e.setSong(new Song(music.getTitle(), music.getMusic_id()));
                         e.setAction(PlayEvent.Action.PLAYITEM);
                         EventBus.getDefault().post(e);
-                        Log.e("test---","点击播放");
+                        Log.e("test---", "点击播放");
                     } else if (s == ManagedMediaPlayer.Status.PAUSED) {
                         PlayEvent e = new PlayEvent();
                         e.setAction(PlayEvent.Action.RESUME);
                         EventBus.getDefault().post(e);
-                        Log.e("test---","点击恢复");
+                        Log.e("test---", "点击恢复");
                     } else if (s == ManagedMediaPlayer.Status.STARTED) {
                         PlayEvent e = new PlayEvent();
                         e.setAction(PlayEvent.Action.PAUSE);
                         EventBus.getDefault().post(e);
-                        Log.e("test---","点击暂停");
+                        Log.e("test---", "点击暂停");
                     }
                 }
             });
             SimpleDraweeView musicIV = (SimpleDraweeView) mHeader.findViewById(R.id.music_iv);
-            FrescoHelper.loadImage(musicIV,music.getCover());
+            FrescoHelper.loadImage(musicIV, music.getCover());
 //            Picasso.with(mContext).load(music.getCover()).fit().into(musicIV);
             SimpleDraweeView headIV = (SimpleDraweeView) mHeader.findViewById(R.id.head_iv);
 //            Picasso.with(mContext).load(music.getAuthor().getWeb_url()).into(headIV);
-            FrescoHelper.loadImage(headIV,music.getAuthor().getWeb_url());
+            FrescoHelper.loadImage(headIV, music.getAuthor().getWeb_url());
             TextView mAuthorTV = (TextView) mHeader.findViewById(R.id.name_tv);
             mAuthorTV.setText(music.getAuthor().getUser_name());
             TextView desTV = (TextView) mHeader.findViewById(R.id.des_tv);
