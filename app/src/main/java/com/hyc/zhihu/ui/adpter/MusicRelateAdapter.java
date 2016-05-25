@@ -1,6 +1,7 @@
 package com.hyc.zhihu.ui.adpter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.beans.music.MusicRelate;
 import com.hyc.zhihu.helper.FrescoHelper;
+import com.hyc.zhihu.ui.MusicRelateActivity;
+import com.hyc.zhihu.utils.S;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -35,12 +38,19 @@ public class MusicRelateAdapter extends RecyclerView.Adapter<MusicRelateAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        MusicRelate relate=mMusicRelates.get(position);
-        Log.e("test1111",position+"----");
+        final MusicRelate relate=mMusicRelates.get(position);
         FrescoHelper.loadImage(holder.image,relate.getCover());
 //        Picasso.with(mContext).load(relate.getCover()).into(holder.image);
         holder.title.setText(relate.getTitle());
         holder.name.setText(relate.getAuthor().getUser_name());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(v.getContext(), MusicRelateActivity.class);
+                intent.putExtra(S.ID,relate.getId());
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override

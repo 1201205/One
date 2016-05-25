@@ -34,6 +34,7 @@ import com.hyc.zhihu.helper.FrescoHelper;
 import com.hyc.zhihu.player.ManagedMediaPlayer;
 import com.hyc.zhihu.player.MyPlayer;
 import com.hyc.zhihu.ui.MainActivity;
+import com.hyc.zhihu.ui.MusicMonthListActivity;
 import com.hyc.zhihu.ui.PictureActivity;
 import com.hyc.zhihu.widget.ListViewForScrollView;
 
@@ -142,7 +143,7 @@ public class MusicAdapter extends PagerAdapter {
         if (position == viewBeans.size() - 1) {
             view = LayoutInflater.from(c).inflate(R.layout.date_list, null);
             ListView listView = (ListView) view.findViewById(R.id.date_list);
-            listView.setAdapter(new DateAdapter(getDateBeans()));
+            listView.setAdapter(new DateAdapter(getDateBeans(), MusicMonthListActivity.class));
         } else {
             view = LayoutInflater.from(c).inflate(R.layout.activity_question, null);
             ListView listView = (ListView) view.findViewById(R.id.swipe_target);

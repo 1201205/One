@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
@@ -40,7 +41,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         mActionBar.setDisplayShowTitleEnabled(false);
         View mCustomView = getLayoutInflater().inflate(R.layout.layout_actionbar, null);
         mTitleView= (TextView) mCustomView.findViewById(R.id.title);
-        mTitleView.setText(getTitleString());
+        String title=getTitleString();
+        if (!TextUtils.isEmpty(title)) {
+            mTitleView.setText(title);
+        }
         mActionBar.setCustomView(mCustomView, new
                 ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT,
                 ActionBar.LayoutParams.WRAP_CONTENT));

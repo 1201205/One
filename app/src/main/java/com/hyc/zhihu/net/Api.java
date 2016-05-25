@@ -4,6 +4,7 @@ import com.hyc.zhihu.beans.Comments;
 import com.hyc.zhihu.beans.EssayWrapper;
 import com.hyc.zhihu.beans.HeadItems;
 import com.hyc.zhihu.beans.IDList;
+import com.hyc.zhihu.beans.music.MusicMonthWrapper;
 import com.hyc.zhihu.beans.music.MusicRelateWrapper;
 import com.hyc.zhihu.beans.music.MusicWrapper;
 import com.hyc.zhihu.beans.OnePicture;
@@ -123,7 +124,7 @@ public interface Api {
      * http://v3.wufazhuce.com:8000/api/music/detail/558  获取对应的详情
      * http://v3.wufazhuce.com:8000/api/related/music/558  获取对应的推荐
      * http://v3.wufazhuce.com:8000/api/comment/praiseandtime/music/558/0 获取对应的评论
-     *
+     *http://v3.wufazhuce.com:8000/api/music/bymonth/2016-05-01%2000:00:00?
      * 电影相关
      * http://v3.wufazhuce.com:8000/api/movie/list/0 获取id
      * http://v3.wufazhuce.com:8000/api/movie/detail/69
@@ -140,4 +141,7 @@ public interface Api {
     Observable<MusicRelateWrapper> getMusicRelateByID(@Path("id") String id);
     @GET("/api/comment/praiseandtime/music/{id}/{index}")
     Observable<Comments> getMusicCommentsByIndex(@Path("id") String id, @Path("index") String index);
+    @GET("/api/music/bymonth/{date}")
+    Observable<MusicMonthWrapper> getMusicByMonth(@Path("date") String date);
+
 }

@@ -33,6 +33,8 @@
         <activity  android:name=".ui.SerialListActivity"></activity>
         <service android:name=".player.PlayerService"></service>
         <activity android:name=".ui.ReadingActivity"></activity>
+        <activity android:name=".ui.MusicRelateActivity"></activity>
+        <activity android:name=".ui.MusicMonthListActivity"></activity>
     </application>
 
 </manifest>

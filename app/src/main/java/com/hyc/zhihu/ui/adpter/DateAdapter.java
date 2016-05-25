@@ -20,8 +20,13 @@ import java.util.List;
  */
 public class DateAdapter extends BaseAdapter {
     private List<DateBean> dateBeans;
+    private Class mClazz;
     public DateAdapter(List<DateBean> dateBeans){
         this.dateBeans=dateBeans;
+    }
+    public DateAdapter(List<DateBean> dateBeans,Class clazz){
+        this.dateBeans=dateBeans;
+        this.mClazz=clazz;
     }
     @Override
     public int getCount() {
@@ -55,7 +60,7 @@ public class DateAdapter extends BaseAdapter {
         holder.date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(c, MonthPictureActivity.class);
+                Intent intent=new Intent(c, mClazz);
                 intent.putExtra(MonthPictureActivity.DATE,dateBean.realDate);
                 c.startActivity(intent);
             }

@@ -13,7 +13,7 @@ public class Music implements java.io.Serializable {
     private String sort;
     private String title;
     private int sharenum;
-    private String platform;
+    private String platform;//1为虾米音乐
     private String cover;
     private String related_to;
     private String read_num;
