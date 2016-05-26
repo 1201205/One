@@ -18,7 +18,9 @@ import com.hyc.zhihu.beans.OnePictureData;
 import com.hyc.zhihu.beans.music.MusicMonthItem;
 import com.hyc.zhihu.helper.FrescoHelper;
 import com.hyc.zhihu.ui.MonthPictureActivity;
+import com.hyc.zhihu.ui.MusicItemActivity;
 import com.hyc.zhihu.ui.PictureDetailActivity;
+import com.hyc.zhihu.utils.S;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -39,10 +41,18 @@ public class MonthMusicAdapter extends RecyclerView.Adapter <MonthMusicAdapter.V
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        MusicMonthItem item=mDatas.get(position);
+        final MusicMonthItem item=mDatas.get(position);
         FrescoHelper.loadImage(holder.image,item.getCover());
         holder.title.setText(item.getTitle());
         holder.name.setText(item.getAuthor().getUser_name());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(v.getContext(), MusicItemActivity.class);
+                i.putExtra(S.ID,item.getId());
+                v.getContext().startActivity(i);
+            }
+        });
     }
 
     @Override

@@ -18,6 +18,7 @@ import com.hyc.zhihu.ui.MusicRelateActivity;
 import com.hyc.zhihu.utils.S;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,7 +30,13 @@ public class MusicRelateAdapter extends RecyclerView.Adapter<MusicRelateAdapter.
     public MusicRelateAdapter(List<MusicRelate> musicRelates) {
         mMusicRelates = musicRelates;
     }
-
+    public void refresh(List<MusicRelate> musicRelates){
+        mMusicRelates.addAll(musicRelates);
+        notifyDataSetChanged();
+    }
+    public MusicRelateAdapter() {
+        mMusicRelates=new ArrayList<>();
+    }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.music_relate_item,parent,false);

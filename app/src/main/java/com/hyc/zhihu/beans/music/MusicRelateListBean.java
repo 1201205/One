@@ -1,5 +1,7 @@
 package com.hyc.zhihu.beans.music;
 
+import android.support.v7.widget.RecyclerView;
+
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.hyc.zhihu.beans.Comment;
 
@@ -22,6 +24,15 @@ public class MusicRelateListBean {
         return layout;
     }
 
+    public RecyclerView getRecyclerView() {
+        return mRecyclerView;
+    }
+
+    public void setRecyclerView(RecyclerView recyclerView) {
+        mRecyclerView = recyclerView;
+    }
+
+    private RecyclerView mRecyclerView;
     public void setLayout(SwipeToLoadLayout layout) {
         this.layout = layout;
     }
