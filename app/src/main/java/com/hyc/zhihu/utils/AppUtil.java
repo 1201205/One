@@ -28,6 +28,10 @@ public class AppUtil {
         final float scale = MainApplication.getApplication().getResources().getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
     }
+    public static int sp2px(float spValue) {
+        final float fontScale = MainApplication.getApplication().getResources().getDisplayMetrics().scaledDensity;
+        return (int) (spValue * fontScale + 0.5f);
+    }
     public static int getColor(int id){
         return MainApplication.getApplication().getResources().getColor(R.color.google_blue);
     }

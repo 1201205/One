@@ -50,12 +50,21 @@
             android:textColor="@color/gray_tv"/>
 
         <ImageView
+            android:id="@+id/iv"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_centerVertical="true"
             android:src="@drawable/laud"
             android:layout_toLeftOf="@id/num_tv"
             android:textColor="@color/gray_tv"/>
+        <TextView
+            android:visibility="gone"
+            android:layout_centerVertical="true"
+            android:textColor="@color/red"
+            android:layout_toLeftOf="@id/iv"
+            android:textSize="22sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 
     <TextView

@@ -92,7 +92,10 @@ public class CommentAdapter extends BaseAdapter {
         if (TextUtils.isEmpty(comment.getQuote())) {
             holder.other.setVisibility(View.GONE);
         } else {
-            String s=comment.getTouser().getUser_name()+":";
+            String s=null;
+            if(comment.getTouser()!=null){
+                s=comment.getTouser().getUser_name()+":";
+            }
             String all=s+comment.getQuote();
             holder.other.setVisibility(View.VISIBLE);
             holder.other.setText(all);

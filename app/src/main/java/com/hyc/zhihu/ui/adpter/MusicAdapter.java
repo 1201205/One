@@ -414,6 +414,10 @@ public class MusicAdapter extends PagerAdapter {
         viewBeans.clear();
         mAdapters.clear();
         mRelateLists.clear();
+        for (MusicRelateListBean bean:mRelateLists) {
+            bean.setLayout(null);
+        }
+        mPlayView=null;
         EventBus.getDefault().unregister(this);
     }
 

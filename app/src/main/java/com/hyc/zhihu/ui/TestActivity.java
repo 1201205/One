@@ -26,25 +26,25 @@ public class TestActivity extends AppCompatActivity implements OnLoadMoreListene
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_question);
-        final SwipeToLoadLayout swipeToLoadLayout= (SwipeToLoadLayout) findViewById(R.id.swipeToLoadLayout);
-        ListView listView= (ListView) findViewById(R.id.swipe_target);
-       listView.addHeaderView(LayoutInflater.from(this).inflate(R.layout.activity_test,null));
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
-                    if (view.getLastVisiblePosition() == view.getCount() - 1 && !ViewCompat.canScrollVertically(view, 1)) {
-                        swipeToLoadLayout.setLoadingMore(true);
-                    }
-                }
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-            }
-        });
-        listView.setAdapter(new TestAdapter());
+        setContentView(R.layout.header_movie);
+//        final SwipeToLoadLayout swipeToLoadLayout= (SwipeToLoadLayout) findViewById(R.id.swipeToLoadLayout);
+//        ListView listView= (ListView) findViewById(R.id.swipe_target);
+//       listView.addHeaderView(LayoutInflater.from(this).inflate(R.layout.activity_test,null));
+//        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(AbsListView view, int scrollState) {
+//                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+//                    if (view.getLastVisiblePosition() == view.getCount() - 1 && !ViewCompat.canScrollVertically(view, 1)) {
+//                        swipeToLoadLayout.setLoadingMore(true);
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//            }
+//        });
+//        listView.setAdapter(new TestAdapter());
     }
 
     @Override

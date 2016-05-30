@@ -24,6 +24,7 @@ import com.hyc.zhihu.beans.OnePictureData;
 import com.hyc.zhihu.beans.PictureViewBean;
 import com.hyc.zhihu.helper.DelayHandle;
 import com.hyc.zhihu.ui.MainActivity;
+import com.hyc.zhihu.ui.MusicActivity;
 import com.hyc.zhihu.ui.PictureActivity;
 import com.squareup.picasso.Picasso;
 
@@ -126,7 +127,7 @@ public class PictureAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
 //                ActivityOptionsCompat compat=  ActivityOptionsCompat.makeSceneTransitionAnimation((MainActivity) mContext,new Pair<View, String>(v,PictureActivity.SHARE_TITLE),new Pair<View, String>(vol,PictureActivity.SHARE_PICTURE));
-
+                mContext.startActivity(new Intent(mContext, MusicActivity.class));
                 ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation((MainActivity) mContext, v, PictureActivity.SHARE_PICTURE);
                 Intent intent = PictureActivity.newIntent(mContext, url,title);
 //                ((MainActivity) mContext).getWindow().setSharedElementEnterTransition(new ChangeImageTransform(mContext, null));

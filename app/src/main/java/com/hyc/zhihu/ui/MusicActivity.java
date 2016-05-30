@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.base.BaseActivity;
@@ -44,7 +45,6 @@ public class MusicActivity extends BaseActivity implements MusicView, LoaderMana
     protected void handleIntent() {
 
     }
-
     @Override
     protected void initView() {
         mPager = (ViewPager) findViewById(R.id.pager);
@@ -142,6 +142,8 @@ public class MusicActivity extends BaseActivity implements MusicView, LoaderMana
     @Override
     protected void onDestroy() {
         mAdapter.clear();
+        mPager.setAdapter(null);
+        Log.e("test1","ondestory");
         super.onDestroy();
     }
 

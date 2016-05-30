@@ -8,6 +8,7 @@ import com.hyc.zhihu.helper.FrescoHelper;
 import com.hyc.zhihu.player.PlayerService;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.utils.SPUtil;
+import com.squareup.leakcanary.LeakCanary;
 
 import java.io.File;
 
@@ -29,7 +30,7 @@ public class MainApplication extends Application {
         initRealm();
         FrescoHelper.initialize(this);
         startService(new Intent(this, PlayerService.class));
-
+        LeakCanary.install(this);
     }
 
     public static Context getApplication() {

@@ -1,9 +1,11 @@
 package com.hyc.zhihu.net;
 
+import com.hyc.zhihu.beans.BaseBean;
 import com.hyc.zhihu.beans.Comments;
 import com.hyc.zhihu.beans.EssayWrapper;
 import com.hyc.zhihu.beans.HeadItems;
 import com.hyc.zhihu.beans.IDList;
+import com.hyc.zhihu.beans.movie.Movie;
 import com.hyc.zhihu.beans.music.MusicMonthWrapper;
 import com.hyc.zhihu.beans.music.MusicRelateWrapper;
 import com.hyc.zhihu.beans.music.MusicWrapper;
@@ -17,6 +19,8 @@ import com.hyc.zhihu.beans.RealArticles;
 import com.hyc.zhihu.beans.SerialListWrapper;
 import com.hyc.zhihu.beans.SerialWrapper;
 import com.hyc.zhihu.beans.Serials;
+
+import java.util.List;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -143,5 +147,8 @@ public interface Api {
     Observable<Comments> getMusicCommentsByIndex(@Path("id") String id, @Path("index") String index);
     @GET("/api/music/bymonth/{date}")
     Observable<MusicMonthWrapper> getMusicByMonth(@Path("date") String date);
+
+    @GET("/api/movie/list/{id}")
+    Observable<BaseBean<List<Movie>>> getMovieList(@Path("id") String id);
 
 }
