@@ -14,8 +14,9 @@ import com.hyc.zhihu.R;
 /**
  * Created by Administrator on 2016/5/13.
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity<T> extends AppCompatActivity {
     protected TextView mTitleView;
+    protected T mPresenter;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

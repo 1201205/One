@@ -40,8 +40,7 @@ import java.util.List;
 /**
  * Created by ray on 16/5/25.
  */
-public class MusicRelateActivity extends BaseActivity implements MusicRelateView, LoaderManager.LoaderCallbacks<MusicRelatePresenter>, OnLoadMoreListener {
-    private MusicRelatePresenter mPresenter;
+public class MusicRelateActivity extends BaseActivity<MusicRelatePresenter> implements MusicRelateView, LoaderManager.LoaderCallbacks<MusicRelatePresenter>, OnLoadMoreListener {
     private String mID;
     private ListView mListView;
     private SwipeToLoadLayout mSwipeToLoadLayout;

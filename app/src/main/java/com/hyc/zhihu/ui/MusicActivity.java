@@ -30,9 +30,8 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/5/24.
  */
-public class MusicActivity extends BaseActivity implements MusicView, LoaderManager.LoaderCallbacks<MusicPresenter> {
+public class MusicActivity extends BaseActivity<MusicPresenter> implements MusicView, LoaderManager.LoaderCallbacks<MusicPresenter> {
     private ViewPager mPager;
-    private MusicPresenter mPresenter;
     private MusicAdapter mAdapter;
 
     @Override

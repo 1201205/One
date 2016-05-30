@@ -30,9 +30,8 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/5/19.
  */
-public class SerialListActivity extends BaseActivity implements SerialListView,LoaderManager.LoaderCallbacks<SerialListPresenter> {
+public class SerialListActivity extends BaseActivity<SerialListPresenter> implements SerialListView,LoaderManager.LoaderCallbacks<SerialListPresenter> {
     private ListView mListView;
-    private SerialListPresenter mPresenter;
     private  String mID;
     SerialListAdapter mAdapter;
 

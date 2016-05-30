@@ -47,7 +47,7 @@ import java.util.List;
 /**
  * Created by ray on 16/5/18.
  */
-public class SerialActivity extends BaseActivity implements ReadingContentView<SerialContent, Serial>, OnLoadMoreListener, LoaderManager.LoaderCallbacks<SerialContentPresenter> {
+public class SerialActivity extends BaseActivity<SerialContentPresenter> implements ReadingContentView<SerialContent, Serial>, OnLoadMoreListener, LoaderManager.LoaderCallbacks<SerialContentPresenter> {
     private SwipeToLoadLayout swipeToLoadLayout;
     private View mHeader;
     private TextView mTitleTV;
@@ -57,7 +57,6 @@ public class SerialActivity extends BaseActivity implements ReadingContentView<S
     private TextView mContentTV;
     private TextView mEditorTV;
     private TextView mAuthorNameTV;
-    private SerialContentPresenter mPresenter;
     private CircleImageView mHeaderIV;
     private CircleImageView mAuthorHeaderIV;
     private ImageView mSerialIV;

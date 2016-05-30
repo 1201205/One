@@ -58,6 +58,7 @@
             android:layout_toLeftOf="@id/num_tv"
             android:textColor="@color/gray_tv"/>
         <TextView
+            android:id="@+id/score_tv"
             android:visibility="gone"
             android:layout_centerVertical="true"
             android:textColor="@color/red"

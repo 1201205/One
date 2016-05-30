@@ -49,7 +49,7 @@ import java.util.List;
 /**
  * Created by ray on 16/5/26.
  */
-public class MusicItemActivity extends BaseActivity implements MusicItemView, LoaderManager.LoaderCallbacks<MusicItemPresenter> ,OnLoadMoreListener{
+public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implements MusicItemView, LoaderManager.LoaderCallbacks<MusicItemPresenter> ,OnLoadMoreListener{
     private String mID;
 
     @Override
@@ -57,7 +57,6 @@ public class MusicItemActivity extends BaseActivity implements MusicItemView, Lo
         mID = getIntent().getStringExtra(S.ID);
     }
 
-    private MusicItemPresenter mPresenter;
     ListView listView;
     SwipeToLoadLayout swipeToLoadLayout;
     private boolean mHasMoreComments = true;

@@ -21,8 +21,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/5/30.
  */
-public class MovieListActivity extends BaseActivity implements MovieListView, LoaderManager.LoaderCallbacks<MovieListPresenter> {
-    private MovieListPresenter mPresenter;
+public class MovieListActivity extends BaseActivity<MovieListPresenter> implements MovieListView, LoaderManager.LoaderCallbacks<MovieListPresenter> {
     private RecyclerView mRecyclerView;
     private MovieListAdapter mAdapter;
     private LinearLayoutManager mManager;

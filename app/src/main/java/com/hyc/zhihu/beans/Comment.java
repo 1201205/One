@@ -6,6 +6,16 @@ public class Comment implements java.io.Serializable {
     private User touser;//被引用用户
     private int praisenum;//心数量
     private String id;
+
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
+    }
+
+    private String score;
     private String input_date;//时间
     private int type;//0热门1，普通
     private User user;//当前用户

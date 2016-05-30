@@ -17,9 +17,8 @@ import com.hyc.zhihu.presenter.MainPresenter;
 import com.hyc.zhihu.ui.fragment.PictureFragment;
 import com.hyc.zhihu.view.TestView;
 
-public class MainActivity extends BaseActivity implements TestView,LoaderManager.LoaderCallbacks<MainPresenter> {
+public class MainActivity extends BaseActivity<MainPresenter> implements TestView,LoaderManager.LoaderCallbacks<MainPresenter> {
     private int ID = 1001;
-    private MainPresenter mPresenter;
     private RecyclerView mRecyclerView;
 
     @Override

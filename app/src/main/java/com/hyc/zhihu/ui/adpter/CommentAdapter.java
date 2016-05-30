@@ -38,10 +38,18 @@ public class CommentAdapter extends BaseAdapter {
     private List<Comment> mComments;
     private Context mContext;
     private CircleTransform mTransform = new CircleTransform();
+    private boolean mHasScore;
 
     public CommentAdapter() {
 //        mContext = context;
         mComments = new ArrayList<>();
+        mHasScore = false;
+    }
+
+    public CommentAdapter(boolean hasScore) {
+//        mContext = context;
+        mComments = new ArrayList<>();
+        mHasScore = hasScore;
     }
 
     public void refreshComments(List<Comment> comments) {
@@ -76,30 +84,37 @@ public class CommentAdapter extends BaseAdapter {
             holder.date = (TextView) convertView.findViewById(R.id.date_tv);
             holder.other = (TextView) convertView.findViewById(R.id.other_tv);
             holder.content = (TextView) convertView.findViewById(R.id.content_tv);
+            holder.score= (TextView) convertView.findViewById(R.id.score_tv);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
         Comment comment = mComments.get(position);
-        User user=comment.getUser();
+        User user = comment.getUser();
         if (!TextUtils.isEmpty(user.getWeb_url())) {
-            FrescoHelper.loadImage(holder.head,user.getWeb_url());
+            FrescoHelper.loadImage(holder.head, user.getWeb_url());
 //            Picasso.with(mContext).load(user.getWeb_url()).placeholder(R.drawable.head).into(holder.head);
+        }
+        if (mHasScore && !TextUtils.isEmpty(comment.getScore())) {
+            holder.score.setText(comment.getScore());
+            holder.score.setVisibility(View.VISIBLE);
+        } else {
+            holder.score.setVisibility(View.GONE);
         }
         holder.name.setText(user.getUser_name());
         holder.date.setText(comment.getInput_date());
-        holder.num.setText(comment.getPraisenum()+"");
+        holder.num.setText(comment.getPraisenum() + "");
         if (TextUtils.isEmpty(comment.getQuote())) {
             holder.other.setVisibility(View.GONE);
         } else {
-            String s=null;
-            if(comment.getTouser()!=null){
-                s=comment.getTouser().getUser_name()+":";
+            String s = null;
+            if (comment.getTouser() != null) {
+                s = comment.getTouser().getUser_name() + ":";
             }
-            String all=s+comment.getQuote();
+            String all = s + comment.getQuote();
             holder.other.setVisibility(View.VISIBLE);
             holder.other.setText(all);
-            holder.other.setText(getClickableSpan(all,s.length()));
+            holder.other.setText(getClickableSpan(all, s.length()));
             holder.other.setMovementMethod(LinkMovementMethod.getInstance());
         }
 //        if (TextUtils.equals("茉莉",user.getUser_name())) {
@@ -116,12 +131,14 @@ public class CommentAdapter extends BaseAdapter {
         private TextView num;
         private TextView other;
         private TextView content;
+        private TextView score;
     }
-    private SpannableString getClickableSpan(String text,int index) {
+
+    private SpannableString getClickableSpan(String text, int index) {
         View.OnClickListener l = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("test","click");
+                Log.e("test", "click");
             }
         };
 

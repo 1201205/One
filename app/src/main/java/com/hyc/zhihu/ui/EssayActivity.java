@@ -53,7 +53,7 @@ import java.util.List;
 /**
  * Created by ray on 16/5/18.
  */
-public class EssayActivity extends BaseActivity implements ReadingContentView<Essay, RealArticle>, OnLoadMoreListener, LoaderManager.LoaderCallbacks<EssayContentPresenter> {
+public class EssayActivity extends BaseActivity<EssayContentPresenter> implements ReadingContentView<Essay, RealArticle>, OnLoadMoreListener, LoaderManager.LoaderCallbacks<EssayContentPresenter> {
     private SwipeToLoadLayout swipeToLoadLayout;
     private View mHeader;
     private TextView mTitleTV;
@@ -66,7 +66,6 @@ public class EssayActivity extends BaseActivity implements ReadingContentView<Es
     private TextView mDesTV;
     private TextView mListenTV;
     private Button mPlayBt;
-    private EssayContentPresenter mPresenter;
     private CircleImageView mHeaderIV;
     private CircleImageView mAuthorHeaderIV;
     private ListView listView;

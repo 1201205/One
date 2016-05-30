@@ -22,9 +22,8 @@ import java.util.List;
 /**
  * Created by ray on 16/5/26.
  */
-public class MusicMonthListActivity extends BaseActivity implements MusicMonthView,LoaderManager.LoaderCallbacks<MusicMonthPresenter> {
+public class MusicMonthListActivity extends BaseActivity<MusicMonthPresenter> implements MusicMonthView,LoaderManager.LoaderCallbacks<MusicMonthPresenter> {
     private RecyclerView mRecyclerView;
-    private MusicMonthPresenter mPresenter;
     private String mDate;
     public static final String DATE="date";
     @Override

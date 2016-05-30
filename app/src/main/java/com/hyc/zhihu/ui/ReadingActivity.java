@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/5/16.
  */
-public class ReadingActivity extends BaseActivity implements ReadingView, LoaderManager.LoaderCallbacks<ReadingPresenter>, OnLoadMoreListener {
+public class ReadingActivity extends BaseActivity<ReadingPresenter> implements ReadingView, LoaderManager.LoaderCallbacks<ReadingPresenter>, OnLoadMoreListener {
     private SwipeToLoadLayout swipeToLoadLayout;
 
     private ListView listView;
@@ -46,7 +46,6 @@ public class ReadingActivity extends BaseActivity implements ReadingView, Loader
     private ViewGroup indicators;
     private LoopViewPagerAdapter mPagerAdapter;
     private ReadingAdapter mReadingAdapter;
-    private ReadingPresenter mPresenter;
     private int mIndex;
     private int lastFirstVisibleItem = -1;
 

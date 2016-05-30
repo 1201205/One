@@ -30,11 +30,10 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/5/18.
  */
-public class ReadingListActivity extends BaseActivity implements ReadingListView, LoaderManager.LoaderCallbacks<ReadingListPresenter> {
+public class ReadingListActivity extends BaseActivity<ReadingListPresenter> implements ReadingListView, LoaderManager.LoaderCallbacks<ReadingListPresenter> {
     public static final String HEAD_ITEM = "head_item";
     public static final int LOADER_ID = 1003;
     private HeadScrollItem mItem;
-    private ReadingListPresenter mPresenter;
     private ListView mReadingLV;
     private TextView mDesTV;
     private ImageView mPicIV;

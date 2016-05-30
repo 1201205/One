@@ -6,6 +6,8 @@ import com.hyc.zhihu.beans.EssayWrapper;
 import com.hyc.zhihu.beans.HeadItems;
 import com.hyc.zhihu.beans.IDList;
 import com.hyc.zhihu.beans.movie.Movie;
+import com.hyc.zhihu.beans.movie.MovieContent;
+import com.hyc.zhihu.beans.movie.MovieStoryWrapper;
 import com.hyc.zhihu.beans.music.MusicMonthWrapper;
 import com.hyc.zhihu.beans.music.MusicRelateWrapper;
 import com.hyc.zhihu.beans.music.MusicWrapper;
@@ -151,4 +153,10 @@ public interface Api {
     @GET("/api/movie/list/{id}")
     Observable<BaseBean<List<Movie>>> getMovieList(@Path("id") String id);
 
+    @GET("/api/movie/detail/{id}")
+    Observable<BaseBean<MovieContent>> getMovieContentByID(@Path("id") String id);
+    @GET("/api/comment/praiseandtime/music/{id}/{index}")
+    Observable<Comments> getMovieCommentsByIndex(@Path("id") String id, @Path("index") String index);
+    @GET("api/movie/{id}/story/{tag}/{index}")
+    Observable<BaseBean<MovieStoryWrapper>> getMovieStoryByID(@Path("id") String id, @Path("tag") String tag, @Path("index") String index);
 }

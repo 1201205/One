@@ -24,8 +24,7 @@ import java.util.List;
 /**
  * Created by hyc on 2016/5/13.
  */
-public class MonthPictureActivity extends BaseActivity implements MonthPictureView, LoaderManager.LoaderCallbacks<MonthPicturePresenter>{
-    private MonthPicturePresenter mPresenter;
+public class MonthPictureActivity extends BaseActivity<MonthPicturePresenter> implements MonthPictureView, LoaderManager.LoaderCallbacks<MonthPicturePresenter>{
     private String mDate;
     private RecyclerView mRecyclerView;
     public static final String DATE="date";

@@ -40,7 +40,7 @@ import java.util.List;
 /**
  * Created by ray on 16/5/18.
  */
-public class QuestionActivity extends BaseActivity implements ReadingContentView<QuestionContent,Question>, OnLoadMoreListener, LoaderManager.LoaderCallbacks<QuestionContentPresenter> {
+public class QuestionActivity extends BaseActivity<QuestionContentPresenter> implements ReadingContentView<QuestionContent,Question>, OnLoadMoreListener, LoaderManager.LoaderCallbacks<QuestionContentPresenter> {
     private SwipeToLoadLayout swipeToLoadLayout;
     private View mHeader;
     private TextView mTitleTV;
@@ -49,7 +49,6 @@ public class QuestionActivity extends BaseActivity implements ReadingContentView
     private TextView mDateTV;
     private TextView mContentTV;
     private TextView mEditorTV;
-    private QuestionContentPresenter mPresenter;
     private ListView listView;
     private ListViewForScrollView mRelateLV;
     private ListViewForScrollView mHotCommentsLV;
