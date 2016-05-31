@@ -45,7 +45,7 @@ public class MovieContentPresenter extends BasePresenter<MovieContentView> imple
                 mView.showStory(movieStoryWrapperBaseBean.getData());
             }
         });
-        Requests.getApi().getSerialCommentsByIndex(id, "0").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map(new Func1<Comments, List<Comment>[]>() {
+        Requests.getApi().getMovieCommentsByIndex(id, "0").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map(new Func1<Comments, List<Comment>[]>() {
             @Override
             public List<Comment>[] call(Comments comments) {
                 List<Comment> hot = new ArrayList<Comment>();
@@ -79,7 +79,7 @@ public class MovieContentPresenter extends BasePresenter<MovieContentView> imple
 
     @Override
     public void refreshComments() {
-        Requests.getApi().getSerialCommentsByIndex(mID, mLastIndex).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Comments>() {
+        Requests.getApi().getMovieCommentsByIndex(mID, mLastIndex).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Comments>() {
             @Override
             public void call(Comments comments) {
                 if (comments == null || comments.getData() == null || comments.getData().getData() == null || comments.getData().getData().size() == 0) {

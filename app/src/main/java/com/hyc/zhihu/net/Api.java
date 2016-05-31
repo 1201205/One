@@ -155,7 +155,7 @@ public interface Api {
 
     @GET("/api/movie/detail/{id}")
     Observable<BaseBean<MovieContent>> getMovieContentByID(@Path("id") String id);
-    @GET("/api/comment/praiseandtime/music/{id}/{index}")
+    @GET("/api/comment/praiseandtime/movie/{id}/{index}")
     Observable<Comments> getMovieCommentsByIndex(@Path("id") String id, @Path("index") String index);
     @GET("api/movie/{id}/story/{tag}/{index}")
     Observable<BaseBean<MovieStoryWrapper>> getMovieStoryByID(@Path("id") String id, @Path("tag") String tag, @Path("index") String index);
