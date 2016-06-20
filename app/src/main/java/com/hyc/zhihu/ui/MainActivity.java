@@ -1,11 +1,15 @@
 package com.hyc.zhihu.ui;
 
+import android.content.Intent;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.hyc.zhihu.R;
@@ -13,6 +17,7 @@ import com.hyc.zhihu.base.BaseActivity;
 import com.hyc.zhihu.base.BasePresenter;
 import com.hyc.zhihu.base.PresenterFactory;
 import com.hyc.zhihu.base.PresenterLoader;
+import com.hyc.zhihu.beans.movie.Movie;
 import com.hyc.zhihu.presenter.MainPresenter;
 import com.hyc.zhihu.ui.fragment.PictureFragment;
 import com.hyc.zhihu.view.TestView;
@@ -20,6 +25,10 @@ import com.hyc.zhihu.view.TestView;
 public class MainActivity extends BaseActivity<MainPresenter> implements TestView,LoaderManager.LoaderCallbacks<MainPresenter> {
     private int ID = 1001;
     private RecyclerView mRecyclerView;
+    private ActionBarDrawerToggle mActionBarDrawerToggle;
+    DrawerLayout mDrawerLayout;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +37,21 @@ public class MainActivity extends BaseActivity<MainPresenter> implements TestVie
         Log.d("act-hyc","onCreate");
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_content,new PictureFragment()).commit();
         mRecyclerView= (RecyclerView) findViewById(R.id.picture_rv);
+        findViewById(R.id.music_tv).setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,MusicActivity.class));
+            }
+        });
+        findViewById(R.id.movie_tv).setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,MovieListActivity.class));
+            }
+        });
+        findViewById(R.id.reading_tv).setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,ReadingActivity.class));
+            }
+        });
     }
 
     @Override

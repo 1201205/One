@@ -1,5 +1,6 @@
 package com.hyc.zhihu.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
@@ -150,6 +151,14 @@ public class MovieContentActivity extends BaseActivity<MovieContentPresenter> im
         listView.addHeaderView(mHeader);
         listView.setAdapter(mCommentAdapter);
         swipeToLoadLayout.setOnLoadMoreListener(this);
+        mAllTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MovieContentActivity.this,MovieStoryActivity.class);
+                intent.putExtra(S.ID,mID);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

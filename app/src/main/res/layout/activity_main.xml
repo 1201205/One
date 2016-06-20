@@ -1,13 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    android:layout_height="match_parent">
 
-   <FrameLayout
-       android:id="@+id/fragment_content"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"></FrameLayout>
-</RelativeLayout>
+    <FrameLayout
+        android:id="@+id/fragment_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <LinearLayout
+        android:background="@color/google_blue"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:orientation="vertical">
+        <TextView
+            android:textSize="16sp"
+            android:gravity="center"
+            android:text="picture"
+            android:id="@+id/picture_tv"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"/>
+        <TextView
+            android:textSize="16sp"
+            android:gravity="center"
+            android:text="reading"
+            android:id="@+id/reading_tv"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"/>
+        <TextView
+            android:textSize="16sp"
+            android:gravity="center"
+            android:text="music"
+            android:id="@+id/music_tv"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"/>
+        <TextView
+            android:textSize="16sp"
+            android:gravity="center"
+            android:text="movie"
+            android:id="@+id/movie_tv"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"/>
+    </LinearLayout>
+</android.support.v4.widget.DrawerLayout>

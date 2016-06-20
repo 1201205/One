@@ -1,5 +1,7 @@
 package com.hyc.zhihu.base;
 
+import android.app.Activity;
+
 /**
  * Created by ray on 16/4/19.
  */
