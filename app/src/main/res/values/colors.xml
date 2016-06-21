@@ -22,4 +22,6 @@
 
     <color name="reading_list_gray">#DDE1E3</color>
     <color name="transparent">#00000000</color>
+    <color name="loading_yellow">#F6B965</color>
+    <color name="loading_pink">#F04D61</color>
 </resources>
