@@ -38,6 +38,7 @@ public class MusicPresenter extends BasePresenter<MusicView> implements IMusicPr
     }
     @Override
     public void getAndShowContent() {
+        mView.showLoading();
         final List<Song> songs=new ArrayList<>();
         Requests.getApi().getMusicIds("0").map(new Func1<IDList, Observable<MusicWrapper>>() {
             @Override
@@ -70,6 +71,7 @@ public class MusicPresenter extends BasePresenter<MusicView> implements IMusicPr
                             showCurrentComment(0);
                             mView.setSongList(songs);
                         }
+                        mView.showLoading();
                     }
                 });
             }

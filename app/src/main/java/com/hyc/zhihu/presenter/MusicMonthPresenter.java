@@ -20,10 +20,12 @@ public class MusicMonthPresenter extends BasePresenter<MusicMonthView> implement
 
     @Override
     public void showList(String date) {
+        mView.showLoading();
         Requests.getApi().getMusicByMonth(date).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<MusicMonthWrapper>() {
             @Override
             public void call(MusicMonthWrapper musicMonthWrapper) {
                 mView.showList(musicMonthWrapper.getData());
+                mView.dismissLoading();
             }
         });
     }

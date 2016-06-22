@@ -27,6 +27,7 @@ public class MovieStoryPresenter extends BasePresenter<MovieStoryView> implement
 
     @Override
     public void getAndShowList(String id) {
+        mView.showLoading();
         mID=id;
         Requests.getApi().getMovieStoryByID(id,"0","0").map(new Func1<BaseBean<MovieStoryWrapper>, List<MovieStory>>() {
             @Override
@@ -47,6 +48,7 @@ public class MovieStoryPresenter extends BasePresenter<MovieStoryView> implement
                 if (stories!=null) {
                     mView.showList(stories);
                 }
+                mView.dismissLoading();
             }
         });
     }

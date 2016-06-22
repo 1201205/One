@@ -39,6 +39,7 @@
         <activity android:name=".ui.MusicActivity"></activity>
         <activity android:name=".ui.MovieContentActivity"></activity>
         <activity android:name=".ui.MovieStoryActivity"></activity>
+        <activity android:name=".ui.MovieListActivity"></activity>
 
     </application>
 

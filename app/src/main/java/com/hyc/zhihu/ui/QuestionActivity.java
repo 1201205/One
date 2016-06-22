@@ -30,7 +30,9 @@ import com.hyc.zhihu.beans.Serial;
 import com.hyc.zhihu.presenter.QuestionContentPresenter;
 import com.hyc.zhihu.ui.adpter.CommentAdapter;
 import com.hyc.zhihu.ui.adpter.QuestionAdapter;
+import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 import com.hyc.zhihu.utils.AppUtil;
+import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.QuestionContentView;
 import com.hyc.zhihu.view.ReadingContentView;
 import com.hyc.zhihu.widget.ListViewForScrollView;
@@ -165,11 +167,12 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
 
     @Override
     public void showLoading() {
-
+        LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
     }
 
     @Override
     public void dismissLoading() {
+        LoadingDialogFragment.getInstance().dismiss();
 
     }
 

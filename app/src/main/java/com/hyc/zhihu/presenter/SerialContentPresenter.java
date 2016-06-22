@@ -33,11 +33,13 @@ public class SerialContentPresenter extends BasePresenter<ReadingContentView<Ser
 
     @Override
     public void getAndShowContent(String id) {
+        mView.showLoading();
         mId = id;
         Observable.just(Requests.getApi().getSerialContentByID(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<SerialWrapper>() {
             @Override
             public void call(SerialWrapper serialWrapper) {
                 mView.showContent(serialWrapper.getData());
+                mView.dismissLoading();
             }
         }), Requests.getApi().getSerialRelateByID(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Serials>() {
             @Override

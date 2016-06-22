@@ -20,10 +20,14 @@ public class ReadingListPresenter extends BasePresenter<ReadingListView> impleme
 
     @Override
     public void getAndShowEssayList(String id) {
+        mView.showLoading();
+
         Requests.getApi().getEssayListByID(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<ReadingListItems>() {
             @Override
             public void call(ReadingListItems readingListItems) {
                 mView.showList(readingListItems.getData());
+                mView.dismissLoading();
+
             }
         });
     }

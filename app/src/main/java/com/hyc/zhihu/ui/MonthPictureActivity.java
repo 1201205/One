@@ -17,6 +17,8 @@ import com.hyc.zhihu.base.PresenterLoader;
 import com.hyc.zhihu.beans.OnePictureData;
 import com.hyc.zhihu.presenter.MonthPicturePresenter;
 import com.hyc.zhihu.ui.adpter.MonthPictureAdapter;
+import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
+import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.MonthPictureView;
 
 import java.util.List;
@@ -80,11 +82,12 @@ public class MonthPictureActivity extends BaseActivity<MonthPicturePresenter> im
 
     @Override
     public void showLoading() {
-
+        LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
     }
 
     @Override
     public void dismissLoading() {
+        LoadingDialogFragment.getInstance().dismiss();
 
     }
 }

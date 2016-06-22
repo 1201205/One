@@ -21,10 +21,12 @@ public class MonthPicturePresenter extends BasePresenter<MonthPictureView> imple
 
     @Override
     public void getAndShowPictures(String date) {
+        mView.showLoading();
         Requests.getApi().getPictureByMonth(date).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<OnePictureByMonth>() {
             @Override
             public void call(OnePictureByMonth onePictureByMonth) {
                 mView.showPictures(onePictureByMonth.getData());
+                mView.dismissLoading();
             }
         }, new Action1<Throwable>() {
             @Override

@@ -39,6 +39,7 @@ public class ReadingPresenter extends BasePresenter<ReadingView> implements IRea
 
     @Override
     public void showContent() {
+        mView.showLoading();
         getAndShowHead();
         getAndShowList(0);
     }
@@ -49,6 +50,7 @@ public class ReadingPresenter extends BasePresenter<ReadingView> implements IRea
             @Override
             public void call(HeadItems headItems) {
                 mView.showHead(headItems.getData());
+
             }
         });
     }
@@ -86,6 +88,8 @@ public class ReadingPresenter extends BasePresenter<ReadingView> implements IRea
             @Override
             public void call(List<RealReading> realReadings) {
                 mView.showList(realReadings, mIndexer);
+                mView.dismissLoading();
+
             }
         });
     }

@@ -30,6 +30,7 @@ import com.hyc.zhihu.player.ManagedMediaPlayer;
 import com.hyc.zhihu.player.MyPlayer;
 import com.hyc.zhihu.presenter.MusicRelatePresenter;
 import com.hyc.zhihu.ui.adpter.CommentAdapter;
+import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.MusicRelateView;
 
@@ -208,7 +209,7 @@ public class MusicRelateActivity extends BaseActivity<MusicRelatePresenter> impl
 
     @Override
     public void showLoading() {
-
+        LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
     }
 
     @Override
@@ -219,6 +220,7 @@ public class MusicRelateActivity extends BaseActivity<MusicRelatePresenter> impl
 
     @Override
     public void dismissLoading() {
+        LoadingDialogFragment.getInstance().dismiss();
 
     }
 

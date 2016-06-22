@@ -14,6 +14,8 @@ import com.hyc.zhihu.base.PresenterLoader;
 import com.hyc.zhihu.beans.movie.Movie;
 import com.hyc.zhihu.presenter.MovieListPresenter;
 import com.hyc.zhihu.ui.adpter.MovieListAdapter;
+import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
+import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.MovieListView;
 
 import java.util.List;
@@ -69,11 +71,12 @@ public class MovieListActivity extends BaseActivity<MovieListPresenter> implemen
 
     @Override
     public void showLoading() {
-
+        LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
     }
 
     @Override
     public void dismissLoading() {
+        LoadingDialogFragment.getInstance().stopLoading();
 
     }
 

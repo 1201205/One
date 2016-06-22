@@ -25,6 +25,7 @@ public class MovieListPresenter extends BasePresenter<MovieListView> implements 
 
     @Override
     public void showContent() {
+        mView.showLoading();
         Requests.getApi().getMovieList("0").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<BaseBean<List<Movie>>>() {
             @Override
             public void call(BaseBean<List<Movie>> listBaseBean) {
@@ -33,6 +34,7 @@ public class MovieListPresenter extends BasePresenter<MovieListView> implements 
                     mLastIndex = movies.get(movies.size() - 1).getId();
                 }
                 mView.showList(listBaseBean.getData());
+                mView.dismissLoading();
             }
         });
     }

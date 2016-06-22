@@ -27,6 +27,8 @@ import com.hyc.zhihu.beans.RealReading;
 import com.hyc.zhihu.presenter.ReadingPresenter;
 import com.hyc.zhihu.ui.adpter.LoopViewPagerAdapter;
 import com.hyc.zhihu.ui.adpter.ReadingAdapter;
+import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
+import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.ReadingView;
 
 import java.util.LinkedHashMap;
@@ -162,6 +164,7 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter> implements R
 
     @Override
     protected void handleIntent() {
+
     }
 
     @Override
@@ -200,11 +203,13 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter> implements R
 
     @Override
     public void showLoading() {
+        LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
 
     }
 
     @Override
     public void dismissLoading() {
+        LoadingDialogFragment.getInstance().dismissAllowingStateLoss();
 
     }
 

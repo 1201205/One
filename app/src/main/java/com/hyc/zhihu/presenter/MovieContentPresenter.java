@@ -32,6 +32,7 @@ public class MovieContentPresenter extends BasePresenter<MovieContentView> imple
 
     @Override
     public void getAndShowContent(String id) {
+        mView.showLoading();
         mID = id;
         Requests.getApi().getMovieContentByID(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<BaseBean<MovieContent>>() {
             @Override
@@ -73,6 +74,7 @@ public class MovieContentPresenter extends BasePresenter<MovieContentView> imple
             public void call(List<Comment>[] comments) {
                 mView.showHotComment(comments[0]);
                 mView.refreshComment(comments[1]);
+                mView.dismissLoading();
             }
         });
     }

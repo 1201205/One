@@ -97,6 +97,7 @@ public class PicturePresenterImp extends BasePresenter<PictureView> implements I
                         viewBeans.add(bean);
                         mView.setAdapter(viewBeans);
                         mView.showPicture(mIds.get(0), onePictureData);
+                        mView.dismissLoading();
                     }
                 },mThrowableAction);
             }

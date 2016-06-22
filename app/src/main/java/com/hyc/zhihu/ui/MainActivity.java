@@ -19,7 +19,9 @@ import com.hyc.zhihu.base.PresenterFactory;
 import com.hyc.zhihu.base.PresenterLoader;
 import com.hyc.zhihu.beans.movie.Movie;
 import com.hyc.zhihu.presenter.MainPresenter;
+import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 import com.hyc.zhihu.ui.fragment.PictureFragment;
+import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.TestView;
 
 public class MainActivity extends BaseActivity<MainPresenter> implements TestView,LoaderManager.LoaderCallbacks<MainPresenter> {
@@ -142,11 +144,12 @@ public class MainActivity extends BaseActivity<MainPresenter> implements TestVie
 
     @Override
     public void showLoading() {
-
+        LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
     }
 
     @Override
     public void dismissLoading() {
+        LoadingDialogFragment.getInstance().dismiss();
 
     }
 }

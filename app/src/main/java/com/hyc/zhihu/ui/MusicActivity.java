@@ -21,6 +21,8 @@ import com.hyc.zhihu.event.PlayEvent;
 import com.hyc.zhihu.helper.DelayHandle;
 import com.hyc.zhihu.presenter.MusicPresenter;
 import com.hyc.zhihu.ui.adpter.MusicAdapter;
+import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
+import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.MusicView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -77,11 +79,12 @@ public class MusicActivity extends BaseActivity<MusicPresenter> implements Music
 
     @Override
     public void showLoading() {
-
+        LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
     }
 
     @Override
     public void dismissLoading() {
+        LoadingDialogFragment.getInstance().dismiss();
 
     }
 

@@ -42,11 +42,13 @@ public class QuestionContentPresenter extends BasePresenter<ReadingContentView<Q
 //            public void call(Throwable throwable) {
 //            }
 //        });
+        mView.showLoading();
         mId=id;
         Observable.just(Requests.getApi().getQuestionContentByID(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<QuestionWrapper>() {
             @Override
             public void call(QuestionWrapper questionWrapper) {
                 mView.showContent(questionWrapper.getData());
+                mView.dismissLoading();
             }
         }),Requests.getApi().getQuestionRelateByID(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Questions>() {
             @Override

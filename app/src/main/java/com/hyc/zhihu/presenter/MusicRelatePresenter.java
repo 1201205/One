@@ -22,6 +22,7 @@ public class MusicRelatePresenter extends BasePresenter<MusicRelateView> impleme
     private String mLastIndex;
     @Override
     public void setContent(String id) {
+        mView.showLoading();
         mID=id;
         Requests.getApi().getMusicContentByID(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<MusicWrapper>() {
             @Override
@@ -29,6 +30,7 @@ public class MusicRelatePresenter extends BasePresenter<MusicRelateView> impleme
                 mView.showContent(musicWrapper.getData());
                 mLastIndex="0";
                 showComment();
+                mView.dismissLoading();
 
             }
         });

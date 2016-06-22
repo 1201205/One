@@ -33,6 +33,7 @@ public class EssayContentPresenter extends BasePresenter<ReadingContentView<Essa
 
     @Override
     public void getAndShowContent(String id) {
+        mView.showLoading();
         mId = id;
         Observable.just(Requests.getApi().getEssayContentByID(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<EssayWrapper>() {
             @Override
@@ -72,6 +73,7 @@ public class EssayContentPresenter extends BasePresenter<ReadingContentView<Essa
             public void call(List<Comment>[] comments) {
                 mView.showHotComments(comments[0]);
                 mView.refreshCommentList(comments[1]);
+                mView.dismissLoading();
             }
         })).subscribeOn(Schedulers.io()).subscribe();
     }

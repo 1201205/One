@@ -37,7 +37,9 @@ import com.hyc.zhihu.player.MyPlayer;
 import com.hyc.zhihu.presenter.EssayContentPresenter;
 import com.hyc.zhihu.ui.adpter.CommentAdapter;
 import com.hyc.zhihu.ui.adpter.EssayAdapter;
+import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 import com.hyc.zhihu.utils.AppUtil;
+import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.ReadingContentView;
 import com.hyc.zhihu.widget.CircleImageView;
 import com.hyc.zhihu.widget.CircleTransform;
@@ -259,11 +261,13 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter> implement
 
     @Override
     public void showLoading() {
+        LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
 
     }
 
     @Override
     public void dismissLoading() {
+        LoadingDialogFragment.getInstance().dismiss();
 
     }
 

@@ -32,6 +32,7 @@ import com.hyc.zhihu.helper.FrescoHelper;
 import com.hyc.zhihu.presenter.MovieContentPresenter;
 import com.hyc.zhihu.ui.adpter.CommentAdapter;
 import com.hyc.zhihu.ui.adpter.MovieStoryPictureAdapter;
+import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.MovieContentView;
 import com.hyc.zhihu.widget.ListViewForScrollView;
@@ -168,11 +169,12 @@ public class MovieContentActivity extends BaseActivity<MovieContentPresenter> im
 
     @Override
     public void showLoading() {
-
+        LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
     }
 
     @Override
     public void dismissLoading() {
+        LoadingDialogFragment.getInstance().dismiss();
 
     }
 

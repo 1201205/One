@@ -34,6 +34,7 @@ import com.hyc.zhihu.presenter.QuestionContentPresenter;
 import com.hyc.zhihu.presenter.SerialContentPresenter;
 import com.hyc.zhihu.ui.adpter.CommentAdapter;
 import com.hyc.zhihu.ui.adpter.SerialAdapter;
+import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.ReadingContentView;
@@ -203,11 +204,12 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
 
     @Override
     public void showLoading() {
-
+        LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
     }
 
     @Override
     public void dismissLoading() {
+        LoadingDialogFragment.getInstance().dismiss();
 
     }
 

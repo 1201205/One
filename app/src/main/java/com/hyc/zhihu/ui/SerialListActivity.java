@@ -22,6 +22,7 @@ import com.hyc.zhihu.beans.SerialListItem;
 import com.hyc.zhihu.presenter.SerialContentPresenter;
 import com.hyc.zhihu.presenter.SerialListPresenter;
 import com.hyc.zhihu.ui.adpter.SerialListAdapter;
+import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.SerialListView;
 
@@ -67,11 +68,13 @@ public class SerialListActivity extends BaseActivity<SerialListPresenter> implem
 
     @Override
     public void showLoading() {
+        LoadingDialogFragment.getInstance().show(getSupportFragmentManager(), S.TAG);
 
     }
 
     @Override
     public void dismissLoading() {
+        LoadingDialogFragment.getInstance().dismiss();
 
     }
 

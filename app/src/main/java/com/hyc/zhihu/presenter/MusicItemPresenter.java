@@ -29,6 +29,7 @@ public class MusicItemPresenter extends BasePresenter<MusicItemView> implements 
 
     @Override
     public void getAndShowContent(String id) {
+        mView.showLoading();
         mID = id;
         Requests.getApi().getMusicContentByID(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<MusicWrapper>() {
             @Override
@@ -36,6 +37,7 @@ public class MusicItemPresenter extends BasePresenter<MusicItemView> implements 
                 mView.showContent(musicWrapper.getData());
                 getRelate();
                 getAndShowComments();
+                mView.dismissLoading();
             }
         });
     }

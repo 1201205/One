@@ -22,6 +22,8 @@ import com.hyc.zhihu.beans.HeadScrollItem;
 import com.hyc.zhihu.beans.ReadingListItem;
 import com.hyc.zhihu.presenter.ReadingListPresenter;
 import com.hyc.zhihu.ui.adpter.ReadingListAdapter;
+import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
+import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.ReadingListView;
 import com.squareup.picasso.Picasso;
 
@@ -117,11 +119,12 @@ public class ReadingListActivity extends BaseActivity<ReadingListPresenter> impl
 
     @Override
     public void showLoading() {
-
+        LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
     }
 
     @Override
     public void dismissLoading() {
+        LoadingDialogFragment.getInstance().dismiss();
 
     }
 

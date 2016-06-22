@@ -15,6 +15,8 @@ import com.hyc.zhihu.base.PresenterLoader;
 import com.hyc.zhihu.beans.music.MusicMonthItem;
 import com.hyc.zhihu.presenter.MusicMonthPresenter;
 import com.hyc.zhihu.ui.adpter.MonthMusicAdapter;
+import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
+import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.MusicMonthView;
 
 import java.util.List;
@@ -52,11 +54,13 @@ public class MusicMonthListActivity extends BaseActivity<MusicMonthPresenter> im
 
     @Override
     public void showLoading() {
+        LoadingDialogFragment.getInstance().show(getSupportFragmentManager(), S.TAG);
 
     }
 
     @Override
     public void dismissLoading() {
+        LoadingDialogFragment.getInstance().dismiss();
 
     }
 

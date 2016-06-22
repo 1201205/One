@@ -21,6 +21,7 @@ public class SerialListPresenter extends BasePresenter<SerialListView> implement
 
     @Override
     public void getAndShowList(String id) {
+        mView.showLoading();
         Requests.getApi().getSerialListByID(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<SerialListWrapper>() {
             @Override
             public void call(SerialListWrapper serialListWrapper) {
@@ -30,6 +31,7 @@ public class SerialListPresenter extends BasePresenter<SerialListView> implement
                     title=title+"(未完结)";
                 }
                 mView.showList(list.getList(),title);
+                mView.dismissLoading();
             }
         });
     }
