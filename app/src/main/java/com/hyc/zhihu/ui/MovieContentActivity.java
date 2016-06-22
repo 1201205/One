@@ -43,7 +43,10 @@ import java.util.List;
 /**
  * Created by ray on 16/5/30.
  */
-public class MovieContentActivity extends BaseActivity<MovieContentPresenter> implements MovieContentView, LoaderManager.LoaderCallbacks<MovieContentPresenter>,OnLoadMoreListener {
+public class MovieContentActivity extends BaseActivity<MovieContentPresenter> implements
+    MovieContentView,
+    LoaderManager.LoaderCallbacks<MovieContentPresenter>,
+    OnLoadMoreListener {
     private String mID;
     private SwipeToLoadLayout swipeToLoadLayout;
     private View mHeader;
@@ -68,16 +71,19 @@ public class MovieContentActivity extends BaseActivity<MovieContentPresenter> im
     private TextView mScoreTV;
     private boolean mHasMoreComments = true;
 
+
     @Override
     protected void handleIntent() {
         mID = getIntent().getStringExtra(S.ID);
     }
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportLoaderManager().initLoader(132,null,this);
+        getSupportLoaderManager().initLoader(132, null, this);
     }
+
 
     @Override
     protected void initView() {
@@ -88,11 +94,13 @@ public class MovieContentActivity extends BaseActivity<MovieContentPresenter> im
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
-                    if (mHasMoreComments && view.getLastVisiblePosition() == view.getCount() - 1 && !ViewCompat.canScrollVertically(view, 1)) {
+                    if (mHasMoreComments && view.getLastVisiblePosition() == view.getCount() - 1 &&
+                        !ViewCompat.canScrollVertically(view, 1)) {
                         swipeToLoadLayout.setLoadingMore(true);
                     }
                 }
             }
+
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
@@ -155,28 +163,33 @@ public class MovieContentActivity extends BaseActivity<MovieContentPresenter> im
         mAllTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MovieContentActivity.this,MovieStoryActivity.class);
-                intent.putExtra(S.ID,mID);
+                Intent intent = new Intent(MovieContentActivity.this, MovieStoryActivity.class);
+                intent.putExtra(S.ID, mID);
                 startActivity(intent);
             }
         });
     }
+
 
     @Override
     protected int getLayoutID() {
         return R.layout.activity_question;
     }
 
+
     @Override
     public void showLoading() {
-        LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
+        //LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
+        showLoadingView();
     }
+
 
     @Override
     public void dismissLoading() {
-        LoadingDialogFragment.getInstance().dismiss();
-
+        //LoadingDialogFragment.getInstance().stopLoading();
+        dissmissLoadingView();
     }
+
 
     @Override
     public Loader<MovieContentPresenter> onCreateLoader(int id, Bundle args) {
@@ -188,35 +201,40 @@ public class MovieContentActivity extends BaseActivity<MovieContentPresenter> im
         });
     }
 
+
     @Override
     public void onLoadFinished(Loader<MovieContentPresenter> loader, MovieContentPresenter data) {
         mPresenter = data;
         mPresenter.getAndShowContent(mID);
     }
 
+
     @Override
     public void onLoaderReset(Loader<MovieContentPresenter> loader) {
         mPresenter = null;
     }
 
+
     @Override
     public void showContent(MovieContent data) {
         FrescoHelper.loadImage(mCoverSDV, data.getDetailcover());
         mScoreTV.setText(data.getScore());
-        LinearLayoutManager manager=new LinearLayoutManager(this);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mPhotoRV.setLayoutManager(manager);
-        MovieStoryPictureAdapter adapter=new MovieStoryPictureAdapter(data.getPhoto());
+        MovieStoryPictureAdapter adapter = new MovieStoryPictureAdapter(data.getPhoto());
         mPhotoRV.setAdapter(adapter);
         mInfoTV.setText(data.getInfo());
         mTagGV.setTags(data.getKeywords().split(";"));
     }
+
 
     @Override
     public void refreshComment(List<Comment> comments) {
         mCommentAdapter.refreshComments(comments);
         swipeToLoadLayout.setLoadingMore(false);
     }
+
 
     @Override
     public void showHotComment(List<Comment> comments) {
@@ -225,23 +243,26 @@ public class MovieContentActivity extends BaseActivity<MovieContentPresenter> im
         mHotCommentsLV.setAdapter(adapter);
     }
 
+
     @Override
     public void showNoComments() {
-        mHasMoreComments=false;
+        mHasMoreComments = false;
         swipeToLoadLayout.setLoadMoreEnabled(false);
         swipeToLoadLayout.setLoadingMore(false);
     }
+
 
     @Override
     public void showStory(MovieStoryWrapper wrapper) {
         MovieStory story = wrapper.getData().get(0);
         FrescoHelper.loadImage(mHeadIV, story.getUser().getWeb_url());
         mDateTV.setText(story.getInput_date());
-        mNumTV.setText(story.getPraisenum()+"");
+        mNumTV.setText(story.getPraisenum() + "");
         mTitleTV.setText(story.getTitle());
         mContentTV.setText(story.getContent());
         mCountTV.setText(wrapper.getCount() + "条电影故事");
     }
+
 
     @Override
     public void onLoadMore() {

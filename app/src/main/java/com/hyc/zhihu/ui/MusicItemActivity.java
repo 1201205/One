@@ -50,13 +50,17 @@ import java.util.List;
 /**
  * Created by ray on 16/5/26.
  */
-public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implements MusicItemView, LoaderManager.LoaderCallbacks<MusicItemPresenter> ,OnLoadMoreListener{
+public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implements MusicItemView,
+    LoaderManager.LoaderCallbacks<MusicItemPresenter>,
+    OnLoadMoreListener {
     private String mID;
+
 
     @Override
     protected void handleIntent() {
         mID = getIntent().getStringExtra(S.ID);
     }
+
 
     ListView listView;
     SwipeToLoadLayout swipeToLoadLayout;
@@ -88,18 +92,21 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
     private TextView mFooter;
     private ImageView playIV;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportLoaderManager().initLoader(130,null,this);
+        getSupportLoaderManager().initLoader(130, null, this);
         EventBus.getDefault().register(this);
     }
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+
 
     @Override
     protected void initView() {
@@ -109,12 +116,15 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if (mHasMoreComments && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
-                    if (view.getLastVisiblePosition() == view.getCount() - 1 && !ViewCompat.canScrollVertically(view, 1)) {
+                if (mHasMoreComments &&
+                    scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                    if (view.getLastVisiblePosition() == view.getCount() - 1 &&
+                        !ViewCompat.canScrollVertically(view, 1)) {
                         swipeToLoadLayout.setLoadingMore(true);
                     }
                 }
             }
+
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
@@ -183,10 +193,12 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
 
     }
 
+
     @Override
     protected int getLayoutID() {
         return R.layout.activity_question;
     }
+
 
     @Override
     public Loader<MusicItemPresenter> onCreateLoader(int id, Bundle args) {
@@ -198,16 +210,19 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
         });
     }
 
+
     @Override
     public void onLoadFinished(Loader<MusicItemPresenter> loader, MusicItemPresenter data) {
         mPresenter = data;
         mPresenter.getAndShowContent(mID);
     }
 
+
     @Override
     public void onLoaderReset(Loader<MusicItemPresenter> loader) {
         mPresenter = null;
     }
+
 
     @Override
     public void refreshComment(List<Comment> comments) {
@@ -222,12 +237,14 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
         }
     }
 
+
     @Override
     public void showHotComment(List<Comment> comments) {
         CommentAdapter adapter = new CommentAdapter();
         hotCommentsLV.setAdapter(adapter);
         adapter.refreshComments(comments);
     }
+
 
     @Override
     public void showRelate(List<MusicRelate> musicRelates) {
@@ -241,6 +258,7 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
             r.setLayoutManager(m);
         }
     }
+
 
     @Override
     public void showContent(final Music music) {
@@ -268,7 +286,8 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
         playIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ManagedMediaPlayer.Status s = MyPlayer.getPlayer().getSourceStatus(music.getMusic_id());
+                ManagedMediaPlayer.Status s = MyPlayer.getPlayer()
+                    .getSourceStatus(music.getMusic_id());
                 if (s == ManagedMediaPlayer.Status.IDLE || s == ManagedMediaPlayer.Status.STOPPED) {
                     PlayEvent e = new PlayEvent();
                     e.setSong(new Song(music.getTitle(), music.getMusic_id()));
@@ -289,6 +308,8 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
             }
         });
     }
+
+
     @Subscribe
     public void onEvent(PlayCallBackEvent playEvent) {
         switch (playEvent.getState()) {
@@ -304,16 +325,19 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
 
         }
     }
+
+
     @Override
     public void showLoading() {
-        LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
+        showLoadingView();
     }
+
 
     @Override
     public void dismissLoading() {
-        LoadingDialogFragment.getInstance().dismiss();
-
+        dismissLoading();
     }
+
 
     @Override
     public void onLoadMore() {

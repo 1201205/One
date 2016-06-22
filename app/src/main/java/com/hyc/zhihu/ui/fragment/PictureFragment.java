@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.hyc.zhihu.R;
+import com.hyc.zhihu.base.BaseActivity;
 import com.hyc.zhihu.base.BasePresenter;
 import com.hyc.zhihu.base.PresenterFactory;
 import com.hyc.zhihu.base.PresenterLoader;
@@ -84,7 +85,7 @@ public class PictureFragment extends Fragment implements PictureView,LoaderManag
         super.onResume();
         Log.e("test10",Thread.currentThread().getName());
 //        mPresenter.getPictureIdsAndFirstItem();
-        mViewPager.setOffscreenPageLimit(3);
+//        mViewPager.setOffscreenPageLimit(3);
 
     }
 
@@ -124,11 +125,13 @@ public class PictureFragment extends Fragment implements PictureView,LoaderManag
 
     @Override
     public void showLoading() {
-
+        //LoadingDialogFragment.getInstance().startLoading(getFragmentManager());
+        ((BaseActivity)getActivity()).showLoadingView();
     }
 
     @Override
     public void dismissLoading() {
+        ((BaseActivity)getActivity()).dissmissLoadingView();
 
     }
 

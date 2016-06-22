@@ -71,7 +71,7 @@ public class MusicPresenter extends BasePresenter<MusicView> implements IMusicPr
                             showCurrentComment(0);
                             mView.setSongList(songs);
                         }
-                        mView.showLoading();
+                        mView.dismissLoading();
                     }
                 });
             }

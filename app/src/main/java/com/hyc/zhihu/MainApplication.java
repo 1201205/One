@@ -30,7 +30,7 @@ public class MainApplication extends Application {
         initRealm();
         FrescoHelper.initialize(this);
         startService(new Intent(this, PlayerService.class));
-        LeakCanary.install(this);
+        //LeakCanary.install(this);
     }
 
     public static Context getApplication() {

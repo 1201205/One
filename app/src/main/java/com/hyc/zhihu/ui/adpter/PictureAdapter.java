@@ -112,7 +112,7 @@ public class PictureAdapter extends PagerAdapter {
                 vol.setText(bean.getHp_title());
                 content.setText(bean.getHp_content());
                 date.setText(bean.getLast_update_date());
-                Picasso.with(mContext).load(bean.getHp_img_original_url()).into(picture);
+                Picasso.with(mContext).load(bean.getHp_img_original_url()).fit().into(picture);
             }
             view.setTag(viewBean.id);
         }
@@ -127,7 +127,6 @@ public class PictureAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
 //                ActivityOptionsCompat compat=  ActivityOptionsCompat.makeSceneTransitionAnimation((MainActivity) mContext,new Pair<View, String>(v,PictureActivity.SHARE_TITLE),new Pair<View, String>(vol,PictureActivity.SHARE_PICTURE));
-                mContext.startActivity(new Intent(mContext, MusicActivity.class));
                 ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation((MainActivity) mContext, v, PictureActivity.SHARE_PICTURE);
                 Intent intent = PictureActivity.newIntent(mContext, url,title);
 //                ((MainActivity) mContext).getWindow().setSharedElementEnterTransition(new ChangeImageTransform(mContext, null));

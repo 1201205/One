@@ -55,7 +55,10 @@ import java.util.List;
 /**
  * Created by ray on 16/5/18.
  */
-public class EssayActivity extends BaseActivity<EssayContentPresenter> implements ReadingContentView<Essay, RealArticle>, OnLoadMoreListener, LoaderManager.LoaderCallbacks<EssayContentPresenter> {
+public class EssayActivity extends BaseActivity<EssayContentPresenter>
+    implements ReadingContentView<Essay, RealArticle>,
+    OnLoadMoreListener,
+    LoaderManager.LoaderCallbacks<EssayContentPresenter> {
     private SwipeToLoadLayout swipeToLoadLayout;
     private View mHeader;
     private TextView mTitleTV;
@@ -79,7 +82,9 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter> implement
     public static final String ID = "id";
     private boolean mHasMoreComments = true;
     private CircleTransform mTransform = new CircleTransform();
-    private ManagedMediaPlayer.Status mMusicState= ManagedMediaPlayer.Status.IDLE;
+    private ManagedMediaPlayer.Status mMusicState = ManagedMediaPlayer.Status.IDLE;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,16 +92,19 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter> implement
         EventBus.getDefault().register(this);
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
 
+
     @Override
     protected void handleIntent() {
         mID = getIntent().getStringExtra(ID);
     }
+
 
     @Override
     protected void initView() {
@@ -106,11 +114,13 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter> implement
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
-                    if (mHasMoreComments && view.getLastVisiblePosition() == view.getCount() - 1 && !ViewCompat.canScrollVertically(view, 1)) {
+                    if (mHasMoreComments && view.getLastVisiblePosition() == view.getCount() - 1 &&
+                        !ViewCompat.canScrollVertically(view, 1)) {
                         swipeToLoadLayout.setLoadingMore(true);
                     }
                 }
             }
+
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
@@ -138,6 +148,7 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter> implement
         swipeToLoadLayout.setOnLoadMoreListener(this);
     }
 
+
     @Override
     protected int getLayoutID() {
         return R.layout.activity_question;
@@ -148,9 +159,15 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter> implement
     public void showContent(final Essay content) {
         RealArticleAuthor author = content.getAuthor().get(0);
         if (!TextUtils.isEmpty(author.getWeb_url())) {
-            Picasso.with(this).load(author.getWeb_url()).placeholder(R.drawable.head).into(mHeaderIV);
-            Picasso.with(this).load(author.getWeb_url()).placeholder(R.drawable.head).into(mAuthorHeaderIV);
-        }else {
+            Picasso.with(this)
+                .load(author.getWeb_url())
+                .placeholder(R.drawable.head)
+                .into(mHeaderIV);
+            Picasso.with(this)
+                .load(author.getWeb_url())
+                .placeholder(R.drawable.head)
+                .into(mAuthorHeaderIV);
+        } else {
             mHeaderIV.setImageResource(R.drawable.head);
             mAuthorHeaderIV.setImageResource(R.drawable.head);
         }
@@ -162,21 +179,22 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter> implement
         if (TextUtils.isEmpty(content.getAudio())) {
             mListenTV.setVisibility(View.GONE);
             mPlayBt.setVisibility(View.GONE);
-        }else {
-            ManagedMediaPlayer.Status status=MyPlayer.getPlayer().getSourceStatus(content.getAudio());
-            mMusicState= status;
-             if (status==ManagedMediaPlayer.Status.STARTED) {
+        } else {
+            ManagedMediaPlayer.Status status = MyPlayer.getPlayer()
+                .getSourceStatus(content.getAudio());
+            mMusicState = status;
+            if (status == ManagedMediaPlayer.Status.STARTED) {
                 mPlayBt.setBackgroundResource(R.drawable.pause_selector);
-             }
+            }
             mPlayBt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mMusicState == ManagedMediaPlayer.Status.STARTED) {
-                        PlayEvent event=new PlayEvent();
+                        PlayEvent event = new PlayEvent();
                         event.setAction(PlayEvent.Action.PAUSE);
                         EventBus.getDefault().post(event);
                     } else if (mMusicState == ManagedMediaPlayer.Status.PAUSED) {
-                        PlayEvent event=new PlayEvent();
+                        PlayEvent event = new PlayEvent();
                         event.setAction(PlayEvent.Action.RESUME);
                         EventBus.getDefault().post(event);
                     } else {
@@ -200,10 +218,12 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter> implement
         mAuthorTV.setText(content.getHp_author());
         mAuthorNameTV.setText(content.getHp_author());
     }
+
+
     @Subscribe
     public void onEvent(PlayCallBackEvent playEvent) {
-        mMusicState=playEvent.state;
-        switch (playEvent.getState()){
+        mMusicState = playEvent.state;
+        switch (playEvent.getState()) {
             case STARTED:
                 mPlayBt.setBackgroundResource(R.drawable.pause_selector);
                 break;
@@ -216,6 +236,8 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter> implement
 
         }
     }
+
+
     @Override
     public void showRelate(List<RealArticle> realArticles) {
         if (realArticles == null || realArticles.size() == 0) {
@@ -231,21 +253,29 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter> implement
             });
         }
     }
+
+
     private void jumpToNewEssay(RealArticle s) {
-        Intent i=new Intent(this,EssayActivity.class);
-        i.putExtra(EssayActivity.ID,s.getContent_id());
+        Intent i = new Intent(this, EssayActivity.class);
+        i.putExtra(EssayActivity.ID, s.getContent_id());
         startActivity(i);
     }
+
+
     @Override
     public void refreshCommentList(List<Comment> comments) {
         mCommentAdapter.refreshComments(comments);
         swipeToLoadLayout.setLoadingMore(false);
 
     }
+
+
     @Override
     protected String getTitleString() {
         return "短篇";
     }
+
+
     @Override
     public void showHotComments(List<Comment> comments) {
         CommentAdapter adapter = new CommentAdapter();
@@ -253,23 +283,27 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter> implement
         adapter.refreshComments(comments);
     }
 
+
     @Override
     public void showNoComments() {
         AppUtil.showToast("没有更多评论啦~~~");
         mHasMoreComments = false;
     }
 
+
     @Override
     public void showLoading() {
-        LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
-
+        //LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
+        showLoadingView();
     }
+
 
     @Override
     public void dismissLoading() {
-        LoadingDialogFragment.getInstance().dismiss();
-
+        //LoadingDialogFragment.getInstance().stopLoading();
+        dissmissLoadingView();
     }
+
 
     @Override
     public Loader<EssayContentPresenter> onCreateLoader(int id, Bundle args) {
@@ -281,51 +315,61 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter> implement
         });
     }
 
+
     @Override
     public void onLoadFinished(Loader<EssayContentPresenter> loader, EssayContentPresenter data) {
         mPresenter = data;
         mPresenter.getAndShowContent(mID);
     }
 
+
     @Override
     public void onLoaderReset(Loader<EssayContentPresenter> loader) {
         mPresenter = null;
     }
+
 
     @Override
     public void onLoadMore() {
         mPresenter.getAndShowCommentList();
     }
 
+
     static class ViewHolder {
         TextView tv;
     }
+
 
     class TestAdapter extends BaseAdapter {
         TestAdapter() {
 
         }
 
+
         @Override
         public int getCount() {
             return 100;
         }
+
 
         @Override
         public Integer getItem(int position) {
             return position;
         }
 
+
         @Override
         public long getItemId(int position) {
             return position;
         }
 
+
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder h = null;
             if (convertView == null) {
-                convertView = LayoutInflater.from(EssayActivity.this).inflate(R.layout.layout_title, null);
+                convertView = LayoutInflater.from(EssayActivity.this)
+                    .inflate(R.layout.layout_title, null);
                 h = new ViewHolder();
                 h.tv = (TextView) convertView.findViewById(R.id.title);
                 convertView.setTag(h);

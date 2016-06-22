@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.hyc.zhihu.R;
+import com.hyc.zhihu.helper.DelayHandle;
+import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 
 /**
  * Created by Administrator on 2016/5/13.
@@ -17,6 +19,7 @@ import com.hyc.zhihu.R;
 public abstract class BaseActivity<T> extends AppCompatActivity {
     protected TextView mTitleView;
     protected T mPresenter;
+    protected LoadingDialogFragment mDalog;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +36,17 @@ public abstract class BaseActivity<T> extends AppCompatActivity {
     protected abstract void initView();
 
     protected abstract int getLayoutID();
+    public void showLoadingView(){
+        DelayHandle.delay(0, new Runnable() {
+            @Override public void run() {
+                LoadingDialogFragment.getInstance().show(getSupportFragmentManager(),BaseActivity.this.getClass().getSimpleName());
+            }
+        });
+    }
+    public void dissmissLoadingView(){
+        LoadingDialogFragment.getInstance().dismissAllowingStateLoss();
 
+    }
     private void initActionBar() {
         ActionBar mActionBar = getSupportActionBar();
         mActionBar.setElevation(0);

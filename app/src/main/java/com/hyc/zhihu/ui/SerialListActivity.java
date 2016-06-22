@@ -31,26 +31,30 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/5/19.
  */
-public class SerialListActivity extends BaseActivity<SerialListPresenter> implements SerialListView,LoaderManager.LoaderCallbacks<SerialListPresenter> {
+public class SerialListActivity extends BaseActivity<SerialListPresenter>
+    implements SerialListView, LoaderManager.LoaderCallbacks<SerialListPresenter> {
     private ListView mListView;
-    private  String mID;
+    private String mID;
     SerialListAdapter mAdapter;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportLoaderManager().initLoader(125,null,this);
+        getSupportLoaderManager().initLoader(125, null, this);
     }
+
 
     @Override
     protected void handleIntent() {
-        mID=getIntent().getStringExtra(S.ID);
+        mID = getIntent().getStringExtra(S.ID);
     }
+
 
     @Override
     protected void initView() {
-        mListView= (ListView) findViewById(R.id.list);
-        mAdapter=new SerialListAdapter(this);
+        mListView = (ListView) findViewById(R.id.list);
+        mAdapter = new SerialListAdapter(this);
         mListView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new SerialListAdapter.OnItemClickListener() {
             @Override
@@ -61,22 +65,26 @@ public class SerialListActivity extends BaseActivity<SerialListPresenter> implem
 
     }
 
+
     @Override
     protected int getLayoutID() {
         return R.layout.activity_serial_list;
     }
 
+
     @Override
     public void showLoading() {
-        LoadingDialogFragment.getInstance().show(getSupportFragmentManager(), S.TAG);
-
+        //LoadingDialogFragment.getInstance().show(getSupportFragmentManager(), S.TAG);
+        showLoadingView();
     }
+
 
     @Override
     public void dismissLoading() {
-        LoadingDialogFragment.getInstance().dismiss();
-
+        //LoadingDialogFragment.getInstance().stopLoading();
+        dissmissLoadingView();
     }
+
 
     @Override
     public Loader<SerialListPresenter> onCreateLoader(int id, Bundle args) {
@@ -88,16 +96,19 @@ public class SerialListActivity extends BaseActivity<SerialListPresenter> implem
         });
     }
 
+
     @Override
     public void onLoadFinished(Loader<SerialListPresenter> loader, SerialListPresenter data) {
-        mPresenter=data;
+        mPresenter = data;
         mPresenter.getAndShowList(mID);
     }
 
+
     @Override
     public void onLoaderReset(Loader<SerialListPresenter> loader) {
-        mPresenter=null;
+        mPresenter = null;
     }
+
 
     @Override
     public void showList(List<SerialListItem> datas, String title) {
@@ -107,9 +118,10 @@ public class SerialListActivity extends BaseActivity<SerialListPresenter> implem
 
     }
 
+
     private void jumpToSerial(String id) {
-        Intent i=new Intent(this,SerialActivity.class);
-        i.putExtra(S.ID,id);
+        Intent i = new Intent(this, SerialActivity.class);
+        i.putExtra(S.ID, id);
         startActivity(i);
     }
 

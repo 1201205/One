@@ -32,9 +32,11 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/5/24.
  */
-public class MusicActivity extends BaseActivity<MusicPresenter> implements MusicView, LoaderManager.LoaderCallbacks<MusicPresenter> {
+public class MusicActivity extends BaseActivity<MusicPresenter>
+    implements MusicView, LoaderManager.LoaderCallbacks<MusicPresenter> {
     private ViewPager mPager;
     private MusicAdapter mAdapter;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,10 +44,13 @@ public class MusicActivity extends BaseActivity<MusicPresenter> implements Music
         getSupportLoaderManager().initLoader(126, null, this);
     }
 
+
     @Override
     protected void handleIntent() {
 
     }
+
+
     @Override
     protected void initView() {
         mPager = (ViewPager) findViewById(R.id.pager);
@@ -54,6 +59,7 @@ public class MusicActivity extends BaseActivity<MusicPresenter> implements Music
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
+
 
             @Override
             public void onPageSelected(final int position) {
@@ -65,6 +71,7 @@ public class MusicActivity extends BaseActivity<MusicPresenter> implements Music
                 }
             }
 
+
             @Override
             public void onPageScrollStateChanged(int state) {
 
@@ -72,21 +79,25 @@ public class MusicActivity extends BaseActivity<MusicPresenter> implements Music
         });
     }
 
+
     @Override
     protected int getLayoutID() {
         return R.layout.picture_fragment;
     }
 
+
     @Override
     public void showLoading() {
-        LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
+        showLoadingView();
+        //LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
     }
+
 
     @Override
     public void dismissLoading() {
-        LoadingDialogFragment.getInstance().dismiss();
-
+        dissmissLoadingView();
     }
+
 
     @Override
     public Loader<MusicPresenter> onCreateLoader(int id, Bundle args) {
@@ -98,31 +109,37 @@ public class MusicActivity extends BaseActivity<MusicPresenter> implements Music
         });
     }
 
+
     @Override
     public void onLoadFinished(Loader<MusicPresenter> loader, MusicPresenter data) {
         mPresenter = data;
         mPresenter.getAndShowContent();
     }
 
+
     @Override
     public void onLoaderReset(Loader<MusicPresenter> loader) {
         mPresenter = null;
     }
+
 
     @Override
     public void showMusic(String id, Music data) {
 
     }
 
+
     @Override
     public void jumpToDate() {
 
     }
 
+
     @Override
     public void showNetWorkError() {
 
     }
+
 
     @Override
     public void setAdapter(List<Music> beans, List<MusicRelateListBean> listBeans) {
@@ -136,28 +153,33 @@ public class MusicActivity extends BaseActivity<MusicPresenter> implements Music
         });
     }
 
+
     @Override
     public void setRelate(int position, List<MusicRelate> musicRelates) {
         mAdapter.setRelate(position, musicRelates);
     }
 
+
     @Override
     protected void onDestroy() {
         mAdapter.clear();
         mPager.setAdapter(null);
-        Log.e("test1","ondestory");
+        Log.e("test1", "ondestory");
         super.onDestroy();
     }
+
 
     @Override
     public void setComment(int position, List<Comment> hot, List<Comment> normal) {
         mAdapter.setComment(position, hot, normal);
     }
 
+
     @Override
     public void refreshCommentList(int page, List<Comment> comments) {
         mAdapter.refreshComment(page, comments);
     }
+
 
     @Override
     public void setSongList(List<Song> songs) {

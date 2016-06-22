@@ -10,12 +10,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.helper.DelayHandle;
+import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.widget.MyLoadingView;
 
 /**
@@ -35,15 +37,26 @@ public class LoadingDialogFragment extends DialogFragment {
         DelayHandle.delay(0, new Runnable() {
             @Override
             public void run() {
-                manager.beginTransaction().show(sFragment).commit();
+               sFragment.show(manager, null);
             }
         });
 
     }
 
 
+    @Override public void show(FragmentManager manager, String tag) {
+        Log.e("test1","show--被调用了");
+
+        super.show(manager, tag);
+    }
+
+
+
+
     public void stopLoading(){
-        getActivity().getSupportFragmentManager().beginTransaction().detach(sFragment).commit();
+        sFragment.dismissAllowingStateLoss();
+        sFragment=null;
+        //getActivity().getSupportFragmentManager().beginTransaction().detach(sFragment).commit();
     }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

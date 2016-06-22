@@ -32,7 +32,8 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/5/18.
  */
-public class ReadingListActivity extends BaseActivity<ReadingListPresenter> implements ReadingListView, LoaderManager.LoaderCallbacks<ReadingListPresenter> {
+public class ReadingListActivity extends BaseActivity<ReadingListPresenter>
+    implements ReadingListView, LoaderManager.LoaderCallbacks<ReadingListPresenter> {
     public static final String HEAD_ITEM = "head_item";
     public static final int LOADER_ID = 1003;
     private HeadScrollItem mItem;
@@ -41,16 +42,19 @@ public class ReadingListActivity extends BaseActivity<ReadingListPresenter> impl
     private ImageView mPicIV;
     private int mColor;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
     }
 
+
     @Override
     protected void handleIntent() {
         mItem = (HeadScrollItem) getIntent().getSerializableExtra(HEAD_ITEM);
     }
+
 
     @Override
     protected void initView() {
@@ -67,20 +71,24 @@ public class ReadingListActivity extends BaseActivity<ReadingListPresenter> impl
 
     }
 
+
     @Override
     protected int getLayoutID() {
         return R.layout.activity_reading_list;
     }
+
 
     @Override
     protected String getTitleString() {
         return mItem.getTitle();
     }
 
+
     @Override
     public void showBottom() {
 
     }
+
 
     @Override
     public void showList(List<ReadingListItem> readingListItems) {
@@ -92,25 +100,25 @@ public class ReadingListActivity extends BaseActivity<ReadingListPresenter> impl
                 jumpToContent(item);
             }
 
-
         });
     }
 
+
     private void jumpToContent(ReadingListItem item) {
-        switch (item.getType()){
+        switch (item.getType()) {
             case "1":
-                Intent essay=new Intent(this,EssayActivity.class);
-                essay.putExtra(EssayActivity.ID,item.getItem_id());
+                Intent essay = new Intent(this, EssayActivity.class);
+                essay.putExtra(EssayActivity.ID, item.getItem_id());
                 startActivity(essay);
                 break;
             case "2":
-                Intent serial=new Intent(this,SerialActivity.class);
-                serial.putExtra(SerialActivity.ID,item.getItem_id());
+                Intent serial = new Intent(this, SerialActivity.class);
+                serial.putExtra(SerialActivity.ID, item.getItem_id());
                 startActivity(serial);
                 break;
             case "3":
-                Intent question=new Intent(this,QuestionActivity.class);
-                question.putExtra(QuestionActivity.ID,item.getItem_id());
+                Intent question = new Intent(this, QuestionActivity.class);
+                question.putExtra(QuestionActivity.ID, item.getItem_id());
                 startActivity(question);
                 break;
         }
@@ -119,14 +127,17 @@ public class ReadingListActivity extends BaseActivity<ReadingListPresenter> impl
 
     @Override
     public void showLoading() {
-        LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
+        //LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
+        showLoadingView();
     }
+
 
     @Override
     public void dismissLoading() {
-        LoadingDialogFragment.getInstance().dismiss();
-
+        //LoadingDialogFragment.getInstance().stopLoading();
+        dissmissLoadingView();
     }
+
 
     @Override
     public Loader<ReadingListPresenter> onCreateLoader(int id, Bundle args) {
@@ -138,11 +149,13 @@ public class ReadingListActivity extends BaseActivity<ReadingListPresenter> impl
         });
     }
 
+
     @Override
     public void onLoadFinished(Loader<ReadingListPresenter> loader, ReadingListPresenter data) {
         mPresenter = data;
         mPresenter.getAndShowEssayList(mItem.getId());
     }
+
 
     @Override
     public void onLoaderReset(Loader<ReadingListPresenter> loader) {

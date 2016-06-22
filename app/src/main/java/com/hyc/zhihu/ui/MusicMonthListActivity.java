@@ -24,33 +24,40 @@ import java.util.List;
 /**
  * Created by ray on 16/5/26.
  */
-public class MusicMonthListActivity extends BaseActivity<MusicMonthPresenter> implements MusicMonthView,LoaderManager.LoaderCallbacks<MusicMonthPresenter> {
+public class MusicMonthListActivity extends BaseActivity<MusicMonthPresenter>
+    implements MusicMonthView, LoaderManager.LoaderCallbacks<MusicMonthPresenter> {
     private RecyclerView mRecyclerView;
     private String mDate;
-    public static final String DATE="date";
+    public static final String DATE = "date";
+
+
     @Override
     protected void handleIntent() {
-        mDate=getIntent().getStringExtra(DATE);
+        mDate = getIntent().getStringExtra(DATE);
     }
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportLoaderManager().initLoader(129,null,this);
+        getSupportLoaderManager().initLoader(129, null, this);
     }
+
 
     @Override
     protected void initView() {
-        mRecyclerView= (RecyclerView) findViewById(R.id.list_rv);
-        LinearLayoutManager manager=new LinearLayoutManager(this);
+        mRecyclerView = (RecyclerView) findViewById(R.id.list_rv);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(manager);
     }
+
 
     @Override
     protected int getLayoutID() {
         return R.layout.activity_music_month_list;
     }
+
 
     @Override
     public void showLoading() {
@@ -58,11 +65,13 @@ public class MusicMonthListActivity extends BaseActivity<MusicMonthPresenter> im
 
     }
 
+
     @Override
     public void dismissLoading() {
-        LoadingDialogFragment.getInstance().dismiss();
+        LoadingDialogFragment.getInstance().stopLoading();
 
     }
+
 
     @Override
     public Loader<MusicMonthPresenter> onCreateLoader(int id, Bundle args) {
@@ -74,20 +83,23 @@ public class MusicMonthListActivity extends BaseActivity<MusicMonthPresenter> im
         });
     }
 
+
     @Override
     public void onLoadFinished(Loader<MusicMonthPresenter> loader, MusicMonthPresenter data) {
-        mPresenter=data;
+        mPresenter = data;
         mPresenter.showList(mDate);
     }
+
 
     @Override
     public void onLoaderReset(Loader<MusicMonthPresenter> loader) {
 
     }
 
+
     @Override
     public void showList(List<MusicMonthItem> items) {
-        MonthMusicAdapter adapter=new MonthMusicAdapter(items);
+        MonthMusicAdapter adapter = new MonthMusicAdapter(items);
         mRecyclerView.setAdapter(adapter);
     }
 }

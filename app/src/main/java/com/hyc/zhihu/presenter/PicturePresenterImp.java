@@ -45,7 +45,7 @@ public class PicturePresenterImp extends BasePresenter<PictureView> implements I
 
     @Override
     public void getPictureIdsAndFirstItem() {
-        mView.showLoading();
+        //mView.showLoading();
         Requests.getApi().getPictureIds("0").map(new Func1<IDList, String>() {
             @Override
             public String call(IDList IDList) {
@@ -84,7 +84,7 @@ public class PicturePresenterImp extends BasePresenter<PictureView> implements I
                 onePictureDataObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<OnePictureData>() {
                     @Override
                     public void call(OnePictureData onePictureData) {
-                        mView.dismissLoading();
+                        //mView.dismissLoading();
                         viewBeans = new ArrayList<PictureViewBean>();
                         for (int i = 0; i < mIds.size(); i++) {
                             PictureViewBean bean = new PictureViewBean(mIds.get(i), PictureViewBean.NORESULT, null);

@@ -48,7 +48,10 @@ import java.util.List;
 /**
  * Created by ray on 16/5/18.
  */
-public class SerialActivity extends BaseActivity<SerialContentPresenter> implements ReadingContentView<SerialContent, Serial>, OnLoadMoreListener, LoaderManager.LoaderCallbacks<SerialContentPresenter> {
+public class SerialActivity extends BaseActivity<SerialContentPresenter> implements
+    ReadingContentView<SerialContent, Serial>,
+    OnLoadMoreListener,
+    LoaderManager.LoaderCallbacks<SerialContentPresenter> {
     private SwipeToLoadLayout swipeToLoadLayout;
     private View mHeader;
     private TextView mTitleTV;
@@ -68,8 +71,9 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
     private CommentAdapter mCommentAdapter;
     private String mID;
     public static final String ID = "id";
-    private boolean mHasMoreComments=true;
+    private boolean mHasMoreComments = true;
     private CircleTransform mTransform = new CircleTransform();
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,10 +82,12 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
 
     }
 
+
     @Override
     protected void handleIntent() {
         mID = getIntent().getStringExtra(ID);
     }
+
 
     @Override
     protected void initView() {
@@ -91,11 +97,13 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
-                    if (mHasMoreComments&&view.getLastVisiblePosition() == view.getCount() - 1 && !ViewCompat.canScrollVertically(view, 1)) {
+                    if (mHasMoreComments && view.getLastVisiblePosition() == view.getCount() - 1 &&
+                        !ViewCompat.canScrollVertically(view, 1)) {
                         swipeToLoadLayout.setLoadingMore(true);
                     }
                 }
             }
+
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
@@ -122,6 +130,7 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
 
     }
 
+
     @Override
     protected int getLayoutID() {
         return R.layout.activity_question;
@@ -132,8 +141,14 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
     public void showContent(final SerialContent content) {
         RealArticleAuthor author = content.getAuthor();
         if (!TextUtils.isEmpty(author.getWeb_url())) {
-            Picasso.with(this).load(author.getWeb_url()).placeholder(R.drawable.head).into(mHeaderIV);
-            Picasso.with(this).load(author.getWeb_url()).placeholder(R.drawable.head).into(mAuthorHeaderIV);
+            Picasso.with(this)
+                .load(author.getWeb_url())
+                .placeholder(R.drawable.head)
+                .into(mHeaderIV);
+            Picasso.with(this)
+                .load(author.getWeb_url())
+                .placeholder(R.drawable.head)
+                .into(mAuthorHeaderIV);
         } else {
             mHeaderIV.setImageResource(R.drawable.head);
             mAuthorHeaderIV.setImageResource(R.drawable.head);
@@ -148,12 +163,13 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
         mSerialIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(SerialActivity.this, SerialListActivity.class);
-                i.putExtra(S.ID,content.getSerial_id());
+                Intent i = new Intent(SerialActivity.this, SerialListActivity.class);
+                i.putExtra(S.ID, content.getSerial_id());
                 startActivity(i);
             }
         });
     }
+
 
     @Override
     public void showRelate(List<Serial> serials) {
@@ -171,16 +187,19 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
         }
     }
 
+
     @Override
     protected String getTitleString() {
         return "连载";
     }
 
+
     private void jumpToNewSerial(Serial s) {
-        Intent i=new Intent(this,SerialActivity.class);
-        i.putExtra(SerialActivity.ID,s.getId());
+        Intent i = new Intent(this, SerialActivity.class);
+        i.putExtra(SerialActivity.ID, s.getId());
         startActivity(i);
     }
+
 
     @Override
     public void refreshCommentList(List<Comment> comments) {
@@ -189,6 +208,7 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
 
     }
 
+
     @Override
     public void showHotComments(List<Comment> comments) {
         CommentAdapter adapter = new CommentAdapter();
@@ -196,22 +216,27 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
         adapter.refreshComments(comments);
     }
 
+
     @Override
     public void showNoComments() {
         AppUtil.showToast("没有更多评论啦~~~");
-        mHasMoreComments=false;
+        mHasMoreComments = false;
     }
+
 
     @Override
     public void showLoading() {
-        LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
+        //LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
+        showLoadingView();
     }
+
 
     @Override
     public void dismissLoading() {
-        LoadingDialogFragment.getInstance().dismiss();
-
+        //LoadingDialogFragment.getInstance().stopLoading();
+        dissmissLoadingView();
     }
+
 
     @Override
     public Loader<SerialContentPresenter> onCreateLoader(int id, Bundle args) {
@@ -223,51 +248,61 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
         });
     }
 
+
     @Override
     public void onLoadFinished(Loader<SerialContentPresenter> loader, SerialContentPresenter data) {
         mPresenter = data;
         mPresenter.getAndShowContent(mID);
     }
 
+
     @Override
     public void onLoaderReset(Loader<SerialContentPresenter> loader) {
         mPresenter = null;
     }
+
 
     @Override
     public void onLoadMore() {
         mPresenter.getAndShowCommentList();
     }
 
+
     static class ViewHolder {
         TextView tv;
     }
+
 
     class TestAdapter extends BaseAdapter {
         TestAdapter() {
 
         }
 
+
         @Override
         public int getCount() {
             return 100;
         }
+
 
         @Override
         public Integer getItem(int position) {
             return position;
         }
 
+
         @Override
         public long getItemId(int position) {
             return position;
         }
 
+
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder h = null;
             if (convertView == null) {
-                convertView = LayoutInflater.from(SerialActivity.this).inflate(R.layout.layout_title, null);
+                convertView = LayoutInflater.from(SerialActivity.this)
+                    .inflate(R.layout.layout_title, null);
                 h = new ViewHolder();
                 h.tv = (TextView) convertView.findViewById(R.id.title);
                 convertView.setTag(h);

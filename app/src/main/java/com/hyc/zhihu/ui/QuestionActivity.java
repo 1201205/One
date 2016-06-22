@@ -42,7 +42,10 @@ import java.util.List;
 /**
  * Created by ray on 16/5/18.
  */
-public class QuestionActivity extends BaseActivity<QuestionContentPresenter> implements ReadingContentView<QuestionContent,Question>, OnLoadMoreListener, LoaderManager.LoaderCallbacks<QuestionContentPresenter> {
+public class QuestionActivity extends BaseActivity<QuestionContentPresenter> implements
+    ReadingContentView<QuestionContent, Question>,
+    OnLoadMoreListener,
+    LoaderManager.LoaderCallbacks<QuestionContentPresenter> {
     private SwipeToLoadLayout swipeToLoadLayout;
     private View mHeader;
     private TextView mTitleTV;
@@ -58,7 +61,9 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
     private CommentAdapter mCommentAdapter;
     private String mID;
     public static final String ID = "id";
-    private boolean mHasMoreComments=true;
+    private boolean mHasMoreComments = true;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,10 +71,12 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
 
     }
 
+
     @Override
     protected void handleIntent() {
         mID = getIntent().getStringExtra(ID);
     }
+
 
     @Override
     protected void initView() {
@@ -78,12 +85,15 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if (mHasMoreComments&&scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
-                    if (view.getLastVisiblePosition() == view.getCount() - 1 && !ViewCompat.canScrollVertically(view, 1)) {
+                if (mHasMoreComments &&
+                    scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                    if (view.getLastVisiblePosition() == view.getCount() - 1 &&
+                        !ViewCompat.canScrollVertically(view, 1)) {
                         swipeToLoadLayout.setLoadingMore(true);
                     }
                 }
             }
+
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
@@ -105,6 +115,7 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
         swipeToLoadLayout.setOnLoadMoreListener(this);
     }
 
+
     @Override
     protected int getLayoutID() {
         return R.layout.activity_question;
@@ -119,6 +130,7 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
         mEditorTV.setText(content.getCharge_edt());
         mAuthorTV.setText(content.getAnswer_title());
     }
+
 
     @Override
     public void showRelate(List<Question> questions) {
@@ -135,15 +147,20 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
             });
         }
     }
+
+
     @Override
     protected String getTitleString() {
         return "问题";
     }
+
+
     private void jumpToNewQuestion(Question s) {
-        Intent i=new Intent(this,QuestionActivity.class);
-        i.putExtra(QuestionActivity.ID,s.getQuestion_id());
+        Intent i = new Intent(this, QuestionActivity.class);
+        i.putExtra(QuestionActivity.ID, s.getQuestion_id());
         startActivity(i);
     }
+
 
     @Override
     public void refreshCommentList(List<Comment> comments) {
@@ -152,6 +169,7 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
 
     }
 
+
     @Override
     public void showHotComments(List<Comment> comments) {
         CommentAdapter adapter = new CommentAdapter();
@@ -159,22 +177,27 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
         adapter.refreshComments(comments);
     }
 
+
     @Override
     public void showNoComments() {
         AppUtil.showToast("没有更多评论啦~~~");
-        mHasMoreComments=false;
+        mHasMoreComments = false;
     }
+
 
     @Override
     public void showLoading() {
-        LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
+        //LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
+        showLoadingView();
     }
+
 
     @Override
     public void dismissLoading() {
-        LoadingDialogFragment.getInstance().dismiss();
-
+        //LoadingDialogFragment.getInstance().stopLoading();
+        dissmissLoadingView();
     }
+
 
     @Override
     public Loader<QuestionContentPresenter> onCreateLoader(int id, Bundle args) {
@@ -186,51 +209,61 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
         });
     }
 
+
     @Override
     public void onLoadFinished(Loader<QuestionContentPresenter> loader, QuestionContentPresenter data) {
         mPresenter = data;
         mPresenter.getAndShowContent(mID);
     }
 
+
     @Override
     public void onLoaderReset(Loader<QuestionContentPresenter> loader) {
         mPresenter = null;
     }
+
 
     @Override
     public void onLoadMore() {
         mPresenter.getAndShowCommentList();
     }
 
+
     static class ViewHolder {
         TextView tv;
     }
+
 
     class TestAdapter extends BaseAdapter {
         TestAdapter() {
 
         }
 
+
         @Override
         public int getCount() {
             return 100;
         }
+
 
         @Override
         public Integer getItem(int position) {
             return position;
         }
 
+
         @Override
         public long getItemId(int position) {
             return position;
         }
 
+
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder h = null;
             if (convertView == null) {
-                convertView = LayoutInflater.from(QuestionActivity.this).inflate(R.layout.layout_title, null);
+                convertView = LayoutInflater.from(QuestionActivity.this)
+                    .inflate(R.layout.layout_title, null);
                 h = new ViewHolder();
                 h.tv = (TextView) convertView.findViewById(R.id.title);
                 convertView.setTag(h);

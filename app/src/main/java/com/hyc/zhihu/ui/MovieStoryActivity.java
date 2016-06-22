@@ -27,38 +27,46 @@ import java.util.List;
 /**
  * Created by ray on 16/6/6.
  */
-public class MovieStoryActivity extends BaseActivity<MovieStoryPresenter> implements MovieStoryView, LoaderManager.LoaderCallbacks<MovieStoryPresenter>, OnLoadMoreListener {
+public class MovieStoryActivity extends BaseActivity<MovieStoryPresenter> implements MovieStoryView,
+    LoaderManager.LoaderCallbacks<MovieStoryPresenter>,
+    OnLoadMoreListener {
     private String mID;
     private SwipeToLoadLayout swipeToLoadLayout;
     private ListView listView;
     private MovieStoryAdapter mAdapter;
-    private boolean mHasMoreComments=true;
+    private boolean mHasMoreComments = true;
+
 
     @Override
     protected void handleIntent() {
-        mID=getIntent().getStringExtra(S.ID);
+        mID = getIntent().getStringExtra(S.ID);
     }
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportLoaderManager().initLoader(134,null,this);
+        getSupportLoaderManager().initLoader(134, null, this);
     }
+
 
     @Override
     protected void initView() {
-        mAdapter=new MovieStoryAdapter();
+        mAdapter = new MovieStoryAdapter();
         listView = (ListView) findViewById(R.id.swipe_target);
         swipeToLoadLayout = (SwipeToLoadLayout) findViewById(R.id.swipeToLoadLayout);
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if (mHasMoreComments&&scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
-                    if (view.getLastVisiblePosition() == view.getCount() - 1 && !ViewCompat.canScrollVertically(view, 1)) {
+                if (mHasMoreComments &&
+                    scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                    if (view.getLastVisiblePosition() == view.getCount() - 1 &&
+                        !ViewCompat.canScrollVertically(view, 1)) {
                         swipeToLoadLayout.setLoadingMore(true);
                     }
                 }
             }
+
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
@@ -68,10 +76,12 @@ public class MovieStoryActivity extends BaseActivity<MovieStoryPresenter> implem
         swipeToLoadLayout.setOnLoadMoreListener(this);
     }
 
+
     @Override
     protected int getLayoutID() {
         return R.layout.activity_question;
     }
+
 
     @Override
     public Loader<MovieStoryPresenter> onCreateLoader(int id, Bundle args) {
@@ -83,27 +93,32 @@ public class MovieStoryActivity extends BaseActivity<MovieStoryPresenter> implem
         });
     }
 
+
     @Override
     public void onLoadFinished(Loader<MovieStoryPresenter> loader, MovieStoryPresenter data) {
         mPresenter = data;
         mPresenter.getAndShowList(mID);
     }
 
+
     @Override
     public void onLoaderReset(Loader<MovieStoryPresenter> loader) {
-        mPresenter=null;
+        mPresenter = null;
 
     }
+
 
     @Override
     public void onLoadMore() {
         mPresenter.refreshList();
     }
 
+
     @Override
     public void showList(List<MovieStory> stories) {
         mAdapter.refreshComments(stories);
     }
+
 
     @Override
     public void refreshList(List<MovieStory> stories) {
@@ -118,14 +133,17 @@ public class MovieStoryActivity extends BaseActivity<MovieStoryPresenter> implem
 
     }
 
+
     @Override
     public void showLoading() {
-        LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
+        //LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
+        showLoadingView();
     }
+
 
     @Override
     public void dismissLoading() {
-        LoadingDialogFragment.getInstance().dismiss();
-
+        //LoadingDialogFragment.getInstance().stopLoading();
+        dissmissLoadingView();
     }
 }

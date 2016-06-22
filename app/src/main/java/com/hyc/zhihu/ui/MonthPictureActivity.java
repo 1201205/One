@@ -26,33 +26,40 @@ import java.util.List;
 /**
  * Created by hyc on 2016/5/13.
  */
-public class MonthPictureActivity extends BaseActivity<MonthPicturePresenter> implements MonthPictureView, LoaderManager.LoaderCallbacks<MonthPicturePresenter>{
+public class MonthPictureActivity extends BaseActivity<MonthPicturePresenter>
+    implements MonthPictureView, LoaderManager.LoaderCallbacks<MonthPicturePresenter> {
     private String mDate;
     private RecyclerView mRecyclerView;
-    public static final String DATE="date";
+    public static final String DATE = "date";
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportLoaderManager().initLoader(10000,null,this);
-        mRecyclerView= (RecyclerView) findViewById(R.id.picture_rv);
-        GridLayoutManager manager=new GridLayoutManager(this,2);
+        getSupportLoaderManager().initLoader(10000, null, this);
+        mRecyclerView = (RecyclerView) findViewById(R.id.picture_rv);
+        GridLayoutManager manager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(manager);
     }
 
+
     @Override
     protected void handleIntent() {
-        mDate=getIntent().getStringExtra(DATE);
+        mDate = getIntent().getStringExtra(DATE);
     }
+
 
     @Override
     protected void initView() {
 
     }
 
+
     @Override
     protected int getLayoutID() {
         return R.layout.activity_month;
     }
+
 
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
@@ -63,31 +70,38 @@ public class MonthPictureActivity extends BaseActivity<MonthPicturePresenter> im
             }
         });
     }
+
+
     @Override
     public void onLoadFinished(Loader loader, MonthPicturePresenter data) {
-        mPresenter=data;
+        mPresenter = data;
         mPresenter.getAndShowPictures(mDate);
     }
+
 
     @Override
     public void onLoaderReset(Loader loader) {
 
     }
 
+
     @Override
     public void showPictures(List<OnePictureData> datas) {
-        MonthPictureAdapter monthPictureAdapter=new MonthPictureAdapter(datas,this);
+        MonthPictureAdapter monthPictureAdapter = new MonthPictureAdapter(datas, this);
         mRecyclerView.setAdapter(monthPictureAdapter);
     }
 
+
     @Override
     public void showLoading() {
-        LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
+        //LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
+        showLoadingView();
     }
+
 
     @Override
     public void dismissLoading() {
-        LoadingDialogFragment.getInstance().dismiss();
-
+        //LoadingDialogFragment.getInstance().stopLoading();
+        dissmissLoadingView();
     }
 }

@@ -24,47 +24,52 @@ import com.hyc.zhihu.ui.fragment.PictureFragment;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.TestView;
 
-public class MainActivity extends BaseActivity<MainPresenter> implements TestView,LoaderManager.LoaderCallbacks<MainPresenter> {
+public class MainActivity extends BaseActivity<MainPresenter>
+    implements TestView, LoaderManager.LoaderCallbacks<MainPresenter> {
     private int ID = 1001;
     private RecyclerView mRecyclerView;
     private ActionBarDrawerToggle mActionBarDrawerToggle;
     DrawerLayout mDrawerLayout;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportLoaderManager().initLoader(ID, null, this);
-        Log.d("act-hyc","onCreate");
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_content,new PictureFragment()).commit();
-        mRecyclerView= (RecyclerView) findViewById(R.id.picture_rv);
+        Log.d("act-hyc", "onCreate");
+        getSupportFragmentManager().beginTransaction()
+            .add(R.id.fragment_content, new PictureFragment())
+            .commit();
+        mRecyclerView = (RecyclerView) findViewById(R.id.picture_rv);
         findViewById(R.id.music_tv).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,MusicActivity.class));
+                startActivity(new Intent(MainActivity.this, MusicActivity.class));
             }
         });
         findViewById(R.id.movie_tv).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,MovieListActivity.class));
+                startActivity(new Intent(MainActivity.this, MovieListActivity.class));
             }
         });
         findViewById(R.id.reading_tv).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,ReadingActivity.class));
+                startActivity(new Intent(MainActivity.this, ReadingActivity.class));
             }
         });
     }
+
 
     @Override
     protected void handleIntent() {
 
     }
 
+
     @Override
     protected void initView() {
 
     }
+
 
     @Override
     protected int getLayoutID() {
@@ -75,48 +80,50 @@ public class MainActivity extends BaseActivity<MainPresenter> implements TestVie
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("act-hyc","onStart");
-//        Requests.getApi().getPictureIds("0").map(new Func1<IDList, Observable<OnePicture>>() {
-//            @Override
-//            public Observable<OnePicture> call(IDList onePictureList) {
-//                return Requests.getApi().getPictureById(onePictureList.getData().get(0));
-//            }
-//        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
-//                subscribe(new Action1<Observable<OnePicture>>() {
-//            @Override
-//            public void call(Observable<OnePicture> onePictureObservable) {
-//                onePictureObservable.subscribeOn(Schedulers.io()).subscribe(new Action1<OnePicture>() {
-//                    @Override
-//                    public void call(OnePicture onePicture) {
-//                        Log.e("tes1",onePicture.getData().getHp_content());
-//                    }
-//                });
-//            }
-//        });
-//         Requests.getApi().getPictureIds("0").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<IDList>() {
-//             @Override
-//             public void call(IDList onePictureList) {
-//                 Log.e("test1", onePictureList.getData().get(0));
-//             }
-//         }, new Action1<Throwable>() {
-//             @Override
-//             public void call(Throwable throwable) {
-//                 Log.e("test1",throwable.getMessage());
-//             }
-//         });
+        Log.d("act-hyc", "onStart");
+        //        Requests.getApi().getPictureIds("0").map(new Func1<IDList, Observable<OnePicture>>() {
+        //            @Override
+        //            public Observable<OnePicture> call(IDList onePictureList) {
+        //                return Requests.getApi().getPictureById(onePictureList.getData().get(0));
+        //            }
+        //        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
+        //                subscribe(new Action1<Observable<OnePicture>>() {
+        //            @Override
+        //            public void call(Observable<OnePicture> onePictureObservable) {
+        //                onePictureObservable.subscribeOn(Schedulers.io()).subscribe(new Action1<OnePicture>() {
+        //                    @Override
+        //                    public void call(OnePicture onePicture) {
+        //                        Log.e("tes1",onePicture.getData().getHp_content());
+        //                    }
+        //                });
+        //            }
+        //        });
+        //         Requests.getApi().getPictureIds("0").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<IDList>() {
+        //             @Override
+        //             public void call(IDList onePictureList) {
+        //                 Log.e("test1", onePictureList.getData().get(0));
+        //             }
+        //         }, new Action1<Throwable>() {
+        //             @Override
+        //             public void call(Throwable throwable) {
+        //                 Log.e("test1",throwable.getMessage());
+        //             }
+        //         });
     }
+
 
     @Override
     protected void onResume() {
         super.onResume();
         mPresenter.onLoadFinished();
-        Log.d("act-hyc","onResume----"+mPresenter.toString());
+        Log.d("act-hyc", "onResume----" + mPresenter.toString());
 
     }
 
+
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
-        Log.d("act-hyc","onCreateLoader");
+        Log.d("act-hyc", "onCreateLoader");
         return new PresenterLoader(this, new PresenterFactory() {
             @Override
             public BasePresenter create() {
@@ -125,31 +132,37 @@ public class MainActivity extends BaseActivity<MainPresenter> implements TestVie
         });
     }
 
+
     @Override
     public void onLoadFinished(Loader loader, MainPresenter data) {
         mPresenter = data;
-        Log.d("act-hyc","onLoadFinished");
+        Log.d("act-hyc", "onLoadFinished");
     }
+
 
     @Override
     public void onLoaderReset(Loader loader) {
         mPresenter = null;
-        Log.d("act-hyc","onLoaderReset");
+        Log.d("act-hyc", "onLoaderReset");
     }
+
 
     @Override
     public void showToast() {
-        Toast.makeText(this,"我下载完了",Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "我下载完了", Toast.LENGTH_LONG).show();
     }
+
 
     @Override
     public void showLoading() {
-        LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
+        //LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
+        showLoadingView();
     }
+
 
     @Override
     public void dismissLoading() {
-        LoadingDialogFragment.getInstance().dismiss();
-
+        //LoadingDialogFragment.getInstance().stopLoading();
+        dissmissLoadingView();
     }
 }

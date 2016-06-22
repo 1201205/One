@@ -1,6 +1,7 @@
 package com.hyc.zhihu.ui;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,17 +24,27 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/5/30.
  */
-public class MovieListActivity extends BaseActivity<MovieListPresenter> implements MovieListView, LoaderManager.LoaderCallbacks<MovieListPresenter> {
+public class MovieListActivity extends BaseActivity<MovieListPresenter>
+    implements MovieListView, LoaderManager.LoaderCallbacks<MovieListPresenter> {
     private RecyclerView mRecyclerView;
     private MovieListAdapter mAdapter;
     private LinearLayoutManager mManager;
     private boolean mHasMore;
     private boolean mIsLoading;
 
+
+    @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getSupportLoaderManager().initLoader(131, null, this);
+
+    }
+
+
     @Override
     protected void handleIntent() {
 
     }
+
 
     @Override
     protected void initView() {
@@ -44,12 +55,14 @@ public class MovieListActivity extends BaseActivity<MovieListPresenter> implemen
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     int lastVisiblePosition = mManager.findLastVisibleItemPosition();
-                    if (!mIsLoading && mHasMore && lastVisiblePosition >= mManager.getItemCount() - 1) {
+                    if (!mIsLoading && mHasMore &&
+                        lastVisiblePosition >= mManager.getItemCount() - 1) {
                         mIsLoading = true;
                         mPresenter.refresh();
                     }
                 }
             }
+
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -58,27 +71,32 @@ public class MovieListActivity extends BaseActivity<MovieListPresenter> implemen
         });
     }
 
+
     @Override
     protected int getLayoutID() {
         return R.layout.activity_movie_list;
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
-        getSupportLoaderManager().initLoader(131, null, this);
     }
+
 
     @Override
     public void showLoading() {
-        LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
+        //LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
+        showLoadingView();
     }
+
 
     @Override
     public void dismissLoading() {
-        LoadingDialogFragment.getInstance().stopLoading();
-
+        //LoadingDialogFragment.getInstance().stopLoading();
+        dissmissLoadingView();
     }
+
 
     @Override
     public Loader<MovieListPresenter> onCreateLoader(int id, Bundle args) {
@@ -90,16 +108,19 @@ public class MovieListActivity extends BaseActivity<MovieListPresenter> implemen
         });
     }
 
+
     @Override
     public void onLoadFinished(Loader<MovieListPresenter> loader, MovieListPresenter data) {
         mPresenter = data;
         mPresenter.showContent();
     }
 
+
     @Override
     public void onLoaderReset(Loader<MovieListPresenter> loader) {
 
     }
+
 
     @Override
     public void showList(List<Movie> movies) {
@@ -110,6 +131,7 @@ public class MovieListActivity extends BaseActivity<MovieListPresenter> implemen
         mRecyclerView.setAdapter(mAdapter);
 
     }
+
 
     @Override
     public void refreshList(List<Movie> movies) {

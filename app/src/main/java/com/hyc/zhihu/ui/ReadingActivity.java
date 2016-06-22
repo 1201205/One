@@ -37,7 +37,8 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/5/16.
  */
-public class ReadingActivity extends BaseActivity<ReadingPresenter> implements ReadingView, LoaderManager.LoaderCallbacks<ReadingPresenter>, OnLoadMoreListener {
+public class ReadingActivity extends BaseActivity<ReadingPresenter>
+    implements ReadingView, LoaderManager.LoaderCallbacks<ReadingPresenter>, OnLoadMoreListener {
     private SwipeToLoadLayout swipeToLoadLayout;
 
     private ListView listView;
@@ -50,6 +51,7 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter> implements R
     private ReadingAdapter mReadingAdapter;
     private int mIndex;
     private int lastFirstVisibleItem = -1;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,11 +71,13 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter> implements R
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
-                    if (view.getLastVisiblePosition() == view.getCount() - 1 && !ViewCompat.canScrollVertically(view, 1)) {
+                    if (view.getLastVisiblePosition() == view.getCount() - 1 &&
+                        !ViewCompat.canScrollVertically(view, 1)) {
                         swipeToLoadLayout.setLoadingMore(true);
                     }
                 }
             }
+
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
@@ -92,8 +96,8 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter> implements R
                 if (firstVisibleItem != lastFirstVisibleItem) {
 
                     ViewGroup.MarginLayoutParams params =
-                            (ViewGroup.MarginLayoutParams) titleLayout
-                                    .getLayoutParams();
+                        (ViewGroup.MarginLayoutParams) titleLayout
+                            .getLayoutParams();
                     params.topMargin = 0;
                     titleLayout.setLayoutParams(params);
                     String date = mReadingAdapter.getDateBySection(section);
@@ -115,8 +119,8 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter> implements R
                     }
                     int bottom = childView.getBottom();
                     ViewGroup.MarginLayoutParams params =
-                            (ViewGroup.MarginLayoutParams) titleLayout
-                                    .getLayoutParams();
+                        (ViewGroup.MarginLayoutParams) titleLayout
+                            .getLayoutParams();
                     if (bottom < titleHeight) {
                         float pushedDistance = bottom - titleHeight;
                         params.topMargin = (int) pushedDistance;
@@ -141,21 +145,22 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter> implements R
         });
     }
 
+
     private void jumpToContent(RealReading reading) {
-        switch (reading.getType()){
+        switch (reading.getType()) {
             case 1:
-                Intent essay=new Intent(this,EssayActivity.class);
-                essay.putExtra(EssayActivity.ID,reading.getContent().getId());
+                Intent essay = new Intent(this, EssayActivity.class);
+                essay.putExtra(EssayActivity.ID, reading.getContent().getId());
                 startActivity(essay);
                 break;
             case 2:
-                Intent serial=new Intent(this,SerialActivity.class);
-                serial.putExtra(SerialActivity.ID,reading.getContent().getId());
+                Intent serial = new Intent(this, SerialActivity.class);
+                serial.putExtra(SerialActivity.ID, reading.getContent().getId());
                 startActivity(serial);
                 break;
             case 3:
-                Intent question=new Intent(this,QuestionActivity.class);
-                question.putExtra(QuestionActivity.ID,reading.getContent().getId());
+                Intent question = new Intent(this, QuestionActivity.class);
+                question.putExtra(QuestionActivity.ID, reading.getContent().getId());
                 startActivity(question);
                 break;
         }
@@ -167,15 +172,18 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter> implements R
 
     }
 
+
     @Override
     protected void initView() {
 
     }
 
+
     @Override
     protected int getLayoutID() {
         return R.layout.activity_reading;
     }
+
 
     @Override
     public void showHead(List<HeadScrollItem> headScrollItems) {
@@ -194,6 +202,7 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter> implements R
 
     }
 
+
     @Override
     public void showList(List<RealReading> realReadings, LinkedHashMap<Integer, String> indexer) {
         mReadingAdapter.refreshList(realReadings, indexer);
@@ -203,15 +212,17 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter> implements R
 
     @Override
     public void showLoading() {
-        LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
-
+        //LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
+        showLoadingView();
     }
+
 
     @Override
     public void dismissLoading() {
-        LoadingDialogFragment.getInstance().dismissAllowingStateLoss();
-
+        //LoadingDialogFragment.getInstance().stopLoading();
+        dissmissLoadingView();
     }
+
 
     @Override
     public Loader<ReadingPresenter> onCreateLoader(int id, Bundle args) {
@@ -222,6 +233,7 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter> implements R
             }
         });
     }
+
 
     @Override
     public void onLoadFinished(Loader<ReadingPresenter> loader, ReadingPresenter data) {
@@ -234,6 +246,7 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter> implements R
     public void onLoaderReset(Loader<ReadingPresenter> loader) {
         mPresenter = null;
     }
+
 
     @Override
     public void onLoadMore() {
