@@ -1,11 +1,11 @@
 package com.hyc.zhihu.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,12 +17,11 @@ import com.hyc.zhihu.base.BaseActivity;
 import com.hyc.zhihu.base.BasePresenter;
 import com.hyc.zhihu.base.PresenterFactory;
 import com.hyc.zhihu.base.PresenterLoader;
-import com.hyc.zhihu.beans.movie.Movie;
 import com.hyc.zhihu.presenter.MainPresenter;
-import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 import com.hyc.zhihu.ui.fragment.PictureFragment;
 import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
+import com.hyc.zhihu.utils.SPUtil;
 import com.hyc.zhihu.view.TestView;
 
 public class MainActivity extends BaseActivity<MainPresenter>
@@ -53,7 +52,9 @@ public class MainActivity extends BaseActivity<MainPresenter>
         });
         findViewById(R.id.reading_tv).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ReadingActivity.class));
+                SPUtil.put(MainActivity.this,S.THEME,Color.RED);
+               changeColor();
+                //startActivity(new Intent(MainActivity.this, ReadingActivity.class));
             }
         });
     }

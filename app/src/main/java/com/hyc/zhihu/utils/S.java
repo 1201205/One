@@ -7,4 +7,5 @@ public interface S {
     String FIRST_INIT="first_init";
     String ID="id";
     String TAG="loading_tag";
+    String THEME="color";
 }

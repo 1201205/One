@@ -107,7 +107,7 @@ public class PictureFragment extends Fragment implements PictureView, LoaderMana
 
     @Override
     public void showNetWorkError() {
-        Toast.makeText(getActivity(), "网络错误，请检查", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getActivity(), "网络错误，请检查", Toast.LENGTH_LONG).show();
     }
 
     @Override

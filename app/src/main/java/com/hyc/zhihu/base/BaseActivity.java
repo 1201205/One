@@ -1,5 +1,6 @@
 package com.hyc.zhihu.base;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -12,6 +13,9 @@ import android.widget.TextView;
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.helper.DelayHandle;
 import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
+import com.hyc.zhihu.utils.AppUtil;
+import com.hyc.zhihu.utils.S;
+import com.hyc.zhihu.utils.SPUtil;
 
 /**
  * Created by Administrator on 2016/5/13.
@@ -19,9 +23,13 @@ import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 public abstract class BaseActivity<T> extends AppCompatActivity implements BaseView {
     protected TextView mTitleView;
     protected T mPresenter;
+    private int mColor;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        //ThemeUtil.changeTheme(this);
+        mColor=SPUtil.get(this, S.THEME,AppUtil.getColor(R.color.google_blue));
+        getWindow().setStatusBarColor(mColor);
         super.onCreate(savedInstanceState);
         setContentView(getLayoutID());
         if (getIntent() != null) {
@@ -53,6 +61,7 @@ public abstract class BaseActivity<T> extends AppCompatActivity implements BaseV
         if (!TextUtils.isEmpty(title)) {
             mTitleView.setText(title);
         }
+        mActionBar.setBackgroundDrawable(new ColorDrawable(mColor));
         mActionBar.setCustomView(mCustomView, new
                 ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT,
                 ActionBar.LayoutParams.WRAP_CONTENT));
@@ -81,5 +90,9 @@ public abstract class BaseActivity<T> extends AppCompatActivity implements BaseV
         LoadingDialogFragment.getInstance().dismissAllowingStateLoss();
 
     }
-
+    protected void changeColor(){
+        mColor=SPUtil.get(this, S.THEME,AppUtil.getColor(R.color.google_blue));
+        getWindow().setStatusBarColor(mColor);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(mColor));
+    }
 }
