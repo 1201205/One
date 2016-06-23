@@ -16,37 +16,31 @@ import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 /**
  * Created by Administrator on 2016/5/13.
  */
-public abstract class BaseActivity<T> extends AppCompatActivity {
+public abstract class BaseActivity<T> extends AppCompatActivity implements BaseView {
     protected TextView mTitleView;
     protected T mPresenter;
-    protected LoadingDialogFragment mDalog;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutID());
-        if (getIntent()!=null) {
+        if (getIntent() != null) {
             handleIntent();
         }
         initView();
         initActionBar();
+        initLoader();
 
     }
 
+    protected abstract void initLoader();
+
     protected abstract void handleIntent();
+
     protected abstract void initView();
 
     protected abstract int getLayoutID();
-    public void showLoadingView(){
-        DelayHandle.delay(0, new Runnable() {
-            @Override public void run() {
-                LoadingDialogFragment.getInstance().show(getSupportFragmentManager(),BaseActivity.this.getClass().getSimpleName());
-            }
-        });
-    }
-    public void dissmissLoadingView(){
-        LoadingDialogFragment.getInstance().dismissAllowingStateLoss();
 
-    }
     private void initActionBar() {
         ActionBar mActionBar = getSupportActionBar();
         mActionBar.setElevation(0);
@@ -54,8 +48,8 @@ public abstract class BaseActivity<T> extends AppCompatActivity {
         mActionBar.setDisplayShowHomeEnabled(false);
         mActionBar.setDisplayShowTitleEnabled(false);
         View mCustomView = getLayoutInflater().inflate(R.layout.layout_actionbar, null);
-        mTitleView= (TextView) mCustomView.findViewById(R.id.title);
-        String title=getTitleString();
+        mTitleView = (TextView) mCustomView.findViewById(R.id.title);
+        String title = getTitleString();
         if (!TextUtils.isEmpty(title)) {
             mTitleView.setText(title);
         }
@@ -66,8 +60,26 @@ public abstract class BaseActivity<T> extends AppCompatActivity {
         mP.gravity = mP.gravity & ~Gravity.HORIZONTAL_GRAVITY_MASK | Gravity.CENTER_HORIZONTAL;
         mActionBar.setCustomView(mCustomView, mP);
     }
-    protected String getTitleString(){
+
+    protected String getTitleString() {
         return "一个";
+    }
+
+    @Override
+    public void showLoading() {
+        DelayHandle.delay(0, new Runnable() {
+            @Override
+            public void run() {
+                LoadingDialogFragment.getInstance().show(getSupportFragmentManager(), BaseActivity.this.getClass().getSimpleName());
+            }
+        });
+    }
+
+
+    @Override
+    public void dismissLoading() {
+        LoadingDialogFragment.getInstance().dismissAllowingStateLoss();
+
     }
 
 }

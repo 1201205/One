@@ -1,17 +1,10 @@
 package com.hyc.zhihu.ui;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.base.BaseActivity;
@@ -19,10 +12,9 @@ import com.hyc.zhihu.base.BasePresenter;
 import com.hyc.zhihu.base.PresenterFactory;
 import com.hyc.zhihu.base.PresenterLoader;
 import com.hyc.zhihu.beans.SerialListItem;
-import com.hyc.zhihu.presenter.SerialContentPresenter;
 import com.hyc.zhihu.presenter.SerialListPresenter;
 import com.hyc.zhihu.ui.adpter.SerialListAdapter;
-import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
+import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.SerialListView;
 
@@ -32,18 +24,16 @@ import java.util.List;
  * Created by Administrator on 2016/5/19.
  */
 public class SerialListActivity extends BaseActivity<SerialListPresenter>
-    implements SerialListView, LoaderManager.LoaderCallbacks<SerialListPresenter> {
+        implements SerialListView, LoaderManager.LoaderCallbacks<SerialListPresenter> {
     private ListView mListView;
     private String mID;
     SerialListAdapter mAdapter;
 
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getSupportLoaderManager().initLoader(125, null, this);
+    protected void initLoader() {
+        getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
     }
-
 
     @Override
     protected void handleIntent() {
@@ -70,21 +60,6 @@ public class SerialListActivity extends BaseActivity<SerialListPresenter>
     protected int getLayoutID() {
         return R.layout.activity_serial_list;
     }
-
-
-    @Override
-    public void showLoading() {
-        //LoadingDialogFragment.getInstance().show(getSupportFragmentManager(), S.TAG);
-        showLoadingView();
-    }
-
-
-    @Override
-    public void dismissLoading() {
-        //LoadingDialogFragment.getInstance().stopLoading();
-        dissmissLoadingView();
-    }
-
 
     @Override
     public Loader<SerialListPresenter> onCreateLoader(int id, Bundle args) {

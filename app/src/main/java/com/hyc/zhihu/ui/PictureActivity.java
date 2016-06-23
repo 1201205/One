@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.base.BaseActivity;
+import com.hyc.zhihu.utils.AppUtil;
 import com.squareup.picasso.Picasso;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
@@ -69,5 +70,8 @@ public class PictureActivity extends BaseActivity {
     @Override
     protected String getTitleString() {
         return super.getTitleString();
+    }
+    @Override
+    protected void initLoader() {
     }
 }

@@ -33,6 +33,7 @@ import com.hyc.zhihu.presenter.MovieContentPresenter;
 import com.hyc.zhihu.ui.adpter.CommentAdapter;
 import com.hyc.zhihu.ui.adpter.MovieStoryPictureAdapter;
 import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
+import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.MovieContentView;
 import com.hyc.zhihu.widget.ListViewForScrollView;
@@ -76,14 +77,6 @@ public class MovieContentActivity extends BaseActivity<MovieContentPresenter> im
     protected void handleIntent() {
         mID = getIntent().getStringExtra(S.ID);
     }
-
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getSupportLoaderManager().initLoader(132, null, this);
-    }
-
 
     @Override
     protected void initView() {
@@ -178,20 +171,6 @@ public class MovieContentActivity extends BaseActivity<MovieContentPresenter> im
 
 
     @Override
-    public void showLoading() {
-        //LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
-        showLoadingView();
-    }
-
-
-    @Override
-    public void dismissLoading() {
-        //LoadingDialogFragment.getInstance().stopLoading();
-        dissmissLoadingView();
-    }
-
-
-    @Override
     public Loader<MovieContentPresenter> onCreateLoader(int id, Bundle args) {
         return new PresenterLoader<MovieContentPresenter>(this, new PresenterFactory() {
             @Override
@@ -208,7 +187,10 @@ public class MovieContentActivity extends BaseActivity<MovieContentPresenter> im
         mPresenter.getAndShowContent(mID);
     }
 
-
+    @Override
+    protected void initLoader() {
+        getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
+    }
     @Override
     public void onLoaderReset(Loader<MovieContentPresenter> loader) {
         mPresenter = null;

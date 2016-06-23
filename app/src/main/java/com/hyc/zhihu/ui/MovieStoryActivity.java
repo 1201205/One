@@ -19,6 +19,7 @@ import com.hyc.zhihu.beans.movie.MovieStory;
 import com.hyc.zhihu.presenter.MovieStoryPresenter;
 import com.hyc.zhihu.ui.adpter.MovieStoryAdapter;
 import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
+import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.MovieStoryView;
 
@@ -40,13 +41,6 @@ public class MovieStoryActivity extends BaseActivity<MovieStoryPresenter> implem
     @Override
     protected void handleIntent() {
         mID = getIntent().getStringExtra(S.ID);
-    }
-
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getSupportLoaderManager().initLoader(134, null, this);
     }
 
 
@@ -132,18 +126,8 @@ public class MovieStoryActivity extends BaseActivity<MovieStoryPresenter> implem
         }
 
     }
-
-
     @Override
-    public void showLoading() {
-        //LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
-        showLoadingView();
-    }
-
-
-    @Override
-    public void dismissLoading() {
-        //LoadingDialogFragment.getInstance().stopLoading();
-        dissmissLoadingView();
+    protected void initLoader() {
+        getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
     }
 }

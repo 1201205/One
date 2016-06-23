@@ -28,6 +28,7 @@ import com.hyc.zhihu.presenter.ReadingPresenter;
 import com.hyc.zhihu.ui.adpter.LoopViewPagerAdapter;
 import com.hyc.zhihu.ui.adpter.ReadingAdapter;
 import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
+import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.ReadingView;
 
@@ -56,7 +57,6 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportLoaderManager().initLoader(121, null, this);
         mReadingAdapter = new ReadingAdapter(this);
         listView = (ListView) findViewById(R.id.swipe_target);
         listView.setAdapter(mReadingAdapter);
@@ -208,22 +208,10 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
         mReadingAdapter.refreshList(realReadings, indexer);
         swipeToLoadLayout.setLoadingMore(false);
     }
-
-
     @Override
-    public void showLoading() {
-        //LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
-        showLoadingView();
+    protected void initLoader() {
+        getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
     }
-
-
-    @Override
-    public void dismissLoading() {
-        //LoadingDialogFragment.getInstance().stopLoading();
-        dissmissLoadingView();
-    }
-
-
     @Override
     public Loader<ReadingPresenter> onCreateLoader(int id, Bundle args) {
         return new PresenterLoader<ReadingPresenter>(this, new PresenterFactory() {

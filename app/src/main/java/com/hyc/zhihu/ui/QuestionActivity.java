@@ -65,14 +65,6 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
 
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getSupportLoaderManager().initLoader(123, null, this);
-
-    }
-
-
-    @Override
     protected void handleIntent() {
         mID = getIntent().getStringExtra(ID);
     }
@@ -183,21 +175,10 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
         AppUtil.showToast("没有更多评论啦~~~");
         mHasMoreComments = false;
     }
-
-
     @Override
-    public void showLoading() {
-        //LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
-        showLoadingView();
+    protected void initLoader() {
+        getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
     }
-
-
-    @Override
-    public void dismissLoading() {
-        //LoadingDialogFragment.getInstance().stopLoading();
-        dissmissLoadingView();
-    }
-
 
     @Override
     public Loader<QuestionContentPresenter> onCreateLoader(int id, Bundle args) {

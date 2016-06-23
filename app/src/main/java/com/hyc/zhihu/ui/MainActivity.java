@@ -21,6 +21,7 @@ import com.hyc.zhihu.beans.movie.Movie;
 import com.hyc.zhihu.presenter.MainPresenter;
 import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 import com.hyc.zhihu.ui.fragment.PictureFragment;
+import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.TestView;
 
@@ -35,7 +36,6 @@ public class MainActivity extends BaseActivity<MainPresenter>
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportLoaderManager().initLoader(ID, null, this);
         Log.d("act-hyc", "onCreate");
         getSupportFragmentManager().beginTransaction()
             .add(R.id.fragment_content, new PictureFragment())
@@ -111,7 +111,10 @@ public class MainActivity extends BaseActivity<MainPresenter>
         //         });
     }
 
-
+    @Override
+    protected void initLoader() {
+        getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -152,17 +155,4 @@ public class MainActivity extends BaseActivity<MainPresenter>
         Toast.makeText(this, "我下载完了", Toast.LENGTH_LONG).show();
     }
 
-
-    @Override
-    public void showLoading() {
-        //LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
-        showLoadingView();
-    }
-
-
-    @Override
-    public void dismissLoading() {
-        //LoadingDialogFragment.getInstance().stopLoading();
-        dissmissLoadingView();
-    }
 }

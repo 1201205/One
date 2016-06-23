@@ -10,6 +10,7 @@ import com.hyc.zhihu.MainApplication;
 import com.hyc.zhihu.R;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by ray on 16/5/13.
@@ -51,5 +52,12 @@ public class AppUtil {
             }
         }
         return isRunning;
+    }
+    // 随机生成一个数
+    private final static AtomicInteger c = new AtomicInteger(1);
+
+    // 获取一个不重复的数, 从1开始
+    public static int getID() {
+        return c.incrementAndGet();
     }
 }

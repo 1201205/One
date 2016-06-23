@@ -18,6 +18,7 @@ import com.hyc.zhihu.beans.OnePictureData;
 import com.hyc.zhihu.presenter.MonthPicturePresenter;
 import com.hyc.zhihu.ui.adpter.MonthPictureAdapter;
 import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
+import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.MonthPictureView;
 
@@ -36,7 +37,6 @@ public class MonthPictureActivity extends BaseActivity<MonthPicturePresenter>
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportLoaderManager().initLoader(10000, null, this);
         mRecyclerView = (RecyclerView) findViewById(R.id.picture_rv);
         GridLayoutManager manager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(manager);
@@ -90,18 +90,9 @@ public class MonthPictureActivity extends BaseActivity<MonthPicturePresenter>
         MonthPictureAdapter monthPictureAdapter = new MonthPictureAdapter(datas, this);
         mRecyclerView.setAdapter(monthPictureAdapter);
     }
-
-
     @Override
-    public void showLoading() {
-        //LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
-        showLoadingView();
+    protected void initLoader() {
+        getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
     }
 
-
-    @Override
-    public void dismissLoading() {
-        //LoadingDialogFragment.getInstance().stopLoading();
-        dissmissLoadingView();
-    }
 }

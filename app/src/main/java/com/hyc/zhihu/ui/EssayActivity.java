@@ -37,9 +37,7 @@ import com.hyc.zhihu.player.MyPlayer;
 import com.hyc.zhihu.presenter.EssayContentPresenter;
 import com.hyc.zhihu.ui.adpter.CommentAdapter;
 import com.hyc.zhihu.ui.adpter.EssayAdapter;
-import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 import com.hyc.zhihu.utils.AppUtil;
-import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.ReadingContentView;
 import com.hyc.zhihu.widget.CircleImageView;
 import com.hyc.zhihu.widget.CircleTransform;
@@ -56,9 +54,9 @@ import java.util.List;
  * Created by ray on 16/5/18.
  */
 public class EssayActivity extends BaseActivity<EssayContentPresenter>
-    implements ReadingContentView<Essay, RealArticle>,
-    OnLoadMoreListener,
-    LoaderManager.LoaderCallbacks<EssayContentPresenter> {
+        implements ReadingContentView<Essay, RealArticle>,
+        OnLoadMoreListener,
+        LoaderManager.LoaderCallbacks<EssayContentPresenter> {
     private SwipeToLoadLayout swipeToLoadLayout;
     private View mHeader;
     private TextView mTitleTV;
@@ -88,8 +86,12 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportLoaderManager().initLoader(125, null, this);
         EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void initLoader() {
+        getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
     }
 
 
@@ -115,7 +117,7 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     if (mHasMoreComments && view.getLastVisiblePosition() == view.getCount() - 1 &&
-                        !ViewCompat.canScrollVertically(view, 1)) {
+                            !ViewCompat.canScrollVertically(view, 1)) {
                         swipeToLoadLayout.setLoadingMore(true);
                     }
                 }
@@ -160,13 +162,13 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
         RealArticleAuthor author = content.getAuthor().get(0);
         if (!TextUtils.isEmpty(author.getWeb_url())) {
             Picasso.with(this)
-                .load(author.getWeb_url())
-                .placeholder(R.drawable.head)
-                .into(mHeaderIV);
+                    .load(author.getWeb_url())
+                    .placeholder(R.drawable.head)
+                    .into(mHeaderIV);
             Picasso.with(this)
-                .load(author.getWeb_url())
-                .placeholder(R.drawable.head)
-                .into(mAuthorHeaderIV);
+                    .load(author.getWeb_url())
+                    .placeholder(R.drawable.head)
+                    .into(mAuthorHeaderIV);
         } else {
             mHeaderIV.setImageResource(R.drawable.head);
             mAuthorHeaderIV.setImageResource(R.drawable.head);
@@ -181,7 +183,7 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
             mPlayBt.setVisibility(View.GONE);
         } else {
             ManagedMediaPlayer.Status status = MyPlayer.getPlayer()
-                .getSourceStatus(content.getAudio());
+                    .getSourceStatus(content.getAudio());
             mMusicState = status;
             if (status == ManagedMediaPlayer.Status.STARTED) {
                 mPlayBt.setBackgroundResource(R.drawable.pause_selector);
@@ -218,7 +220,6 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
         mAuthorTV.setText(content.getHp_author());
         mAuthorNameTV.setText(content.getHp_author());
     }
-
 
     @Subscribe
     public void onEvent(PlayCallBackEvent playEvent) {
@@ -292,20 +293,6 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
 
 
     @Override
-    public void showLoading() {
-        //LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
-        showLoadingView();
-    }
-
-
-    @Override
-    public void dismissLoading() {
-        //LoadingDialogFragment.getInstance().stopLoading();
-        dissmissLoadingView();
-    }
-
-
-    @Override
     public Loader<EssayContentPresenter> onCreateLoader(int id, Bundle args) {
         return new PresenterLoader<EssayContentPresenter>(this, new PresenterFactory() {
             @Override
@@ -369,7 +356,7 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
             ViewHolder h = null;
             if (convertView == null) {
                 convertView = LayoutInflater.from(EssayActivity.this)
-                    .inflate(R.layout.layout_title, null);
+                        .inflate(R.layout.layout_title, null);
                 h = new ViewHolder();
                 h.tv = (TextView) convertView.findViewById(R.id.title);
                 convertView.setTag(h);

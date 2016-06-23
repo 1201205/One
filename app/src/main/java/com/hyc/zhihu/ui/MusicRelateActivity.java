@@ -31,6 +31,7 @@ import com.hyc.zhihu.player.MyPlayer;
 import com.hyc.zhihu.presenter.MusicRelatePresenter;
 import com.hyc.zhihu.ui.adpter.CommentAdapter;
 import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
+import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.MusicRelateView;
 
@@ -218,26 +219,14 @@ public class MusicRelateActivity extends BaseActivity<MusicRelatePresenter> impl
 
 
     @Override
-    public void showLoading() {
-        //LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
-        showLoadingView();
-    }
-
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportLoaderManager().initLoader(128, null, this);
     }
-
 
     @Override
-    public void dismissLoading() {
-        //LoadingDialogFragment.getInstance().stopLoading();
-        dissmissLoadingView();
+    protected void initLoader() {
+        getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
     }
-
-
     @Override
     public Loader<MusicRelatePresenter> onCreateLoader(int id, Bundle args) {
         return new PresenterLoader(this, new PresenterFactory() {

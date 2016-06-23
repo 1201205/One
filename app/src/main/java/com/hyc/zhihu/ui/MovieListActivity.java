@@ -16,6 +16,7 @@ import com.hyc.zhihu.beans.movie.Movie;
 import com.hyc.zhihu.presenter.MovieListPresenter;
 import com.hyc.zhihu.ui.adpter.MovieListAdapter;
 import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
+import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.MovieListView;
 
@@ -33,11 +34,6 @@ public class MovieListActivity extends BaseActivity<MovieListPresenter>
     private boolean mIsLoading;
 
 
-    @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getSupportLoaderManager().initLoader(131, null, this);
-
-    }
 
 
     @Override
@@ -83,21 +79,10 @@ public class MovieListActivity extends BaseActivity<MovieListPresenter>
         super.onResume();
     }
 
-
     @Override
-    public void showLoading() {
-        //LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
-        showLoadingView();
+    protected void initLoader() {
+        getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
     }
-
-
-    @Override
-    public void dismissLoading() {
-        //LoadingDialogFragment.getInstance().stopLoading();
-        dissmissLoadingView();
-    }
-
-
     @Override
     public Loader<MovieListPresenter> onCreateLoader(int id, Bundle args) {
         return new PresenterLoader<MovieListPresenter>(this, new PresenterFactory() {

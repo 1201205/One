@@ -38,6 +38,7 @@ import com.hyc.zhihu.presenter.MusicItemPresenter;
 import com.hyc.zhihu.ui.adpter.CommentAdapter;
 import com.hyc.zhihu.ui.adpter.MusicRelateAdapter;
 import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
+import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.MusicItemView;
 import com.hyc.zhihu.widget.ListViewForScrollView;
@@ -96,7 +97,6 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportLoaderManager().initLoader(130, null, this);
         EventBus.getDefault().register(this);
     }
 
@@ -326,21 +326,12 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
         }
     }
 
-
-    @Override
-    public void showLoading() {
-        showLoadingView();
-    }
-
-
-    @Override
-    public void dismissLoading() {
-        dismissLoading();
-    }
-
-
     @Override
     public void onLoadMore() {
         mPresenter.refreshComments();
+    }
+    @Override
+    protected void initLoader() {
+        getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
     }
 }

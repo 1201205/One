@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * Created by ray on 16/5/5.
  */
-public class PictureFragment extends Fragment implements PictureView,LoaderManager.LoaderCallbacks<IPicturePresenter> {
+public class PictureFragment extends Fragment implements PictureView, LoaderManager.LoaderCallbacks<IPicturePresenter> {
     private IPicturePresenter mPresenter;
     private ViewPager mViewPager;
     private PictureAdapter mPictureAdapter;
@@ -50,8 +50,8 @@ public class PictureFragment extends Fragment implements PictureView,LoaderManag
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=LayoutInflater.from(getActivity()).inflate(R.layout.picture_fragment,null);
-        mViewPager= (ViewPager) view.findViewById(R.id.pager);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.picture_fragment, null);
+        mViewPager = (ViewPager) view.findViewById(R.id.pager);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -62,7 +62,7 @@ public class PictureFragment extends Fragment implements PictureView,LoaderManag
             public void onPageSelected(int position) {
                 mPictureAdapter.setCurrentPage(position);
                 mPresenter.gotoPosition(position);
-                Log.e("test1","选中位置--"+position);
+                Log.e("test1", "选中位置--" + position);
             }
 
             @Override
@@ -83,7 +83,7 @@ public class PictureFragment extends Fragment implements PictureView,LoaderManag
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("test10",Thread.currentThread().getName());
+        Log.e("test10", Thread.currentThread().getName());
 //        mPresenter.getPictureIdsAndFirstItem();
 //        mViewPager.setOffscreenPageLimit(3);
 
@@ -94,9 +94,9 @@ public class PictureFragment extends Fragment implements PictureView,LoaderManag
         mViewPager.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mPictureAdapter.setCurrentItem(id,data);
+                mPictureAdapter.setCurrentItem(id, data);
             }
-        },0);
+        }, 0);
 
     }
 
@@ -107,12 +107,12 @@ public class PictureFragment extends Fragment implements PictureView,LoaderManag
 
     @Override
     public void showNetWorkError() {
-        Toast.makeText(getActivity(),"网络错误，请检查",Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), "网络错误，请检查", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void setAdapter(List<PictureViewBean> beans) {
-        mPictureAdapter=new PictureAdapter(beans,getActivity());
+        mPictureAdapter = new PictureAdapter(beans, getActivity());
 
         mViewPager.post(new Runnable() {
             @Override
@@ -125,13 +125,12 @@ public class PictureFragment extends Fragment implements PictureView,LoaderManag
 
     @Override
     public void showLoading() {
-        //LoadingDialogFragment.getInstance().startLoading(getFragmentManager());
-        ((BaseActivity)getActivity()).showLoadingView();
+        ((BaseActivity) getActivity()).showLoading();
     }
 
     @Override
     public void dismissLoading() {
-        ((BaseActivity)getActivity()).dissmissLoadingView();
+        ((BaseActivity) getActivity()).dismissLoading();
 
     }
 
@@ -148,7 +147,8 @@ public class PictureFragment extends Fragment implements PictureView,LoaderManag
     @Override
     public void onLoadFinished(Loader<IPicturePresenter> loader, IPicturePresenter data) {
         mPresenter = data;
-        mPresenter.getPictureIdsAndFirstItem();    }
+        mPresenter.getPictureIdsAndFirstItem();
+    }
 
     @Override
     public void onLoaderReset(Loader<IPicturePresenter> loader) {

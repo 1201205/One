@@ -16,6 +16,7 @@ import com.hyc.zhihu.beans.music.MusicMonthItem;
 import com.hyc.zhihu.presenter.MusicMonthPresenter;
 import com.hyc.zhihu.ui.adpter.MonthMusicAdapter;
 import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
+import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.MusicMonthView;
 
@@ -37,12 +38,6 @@ public class MusicMonthListActivity extends BaseActivity<MusicMonthPresenter>
     }
 
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getSupportLoaderManager().initLoader(129, null, this);
-    }
-
 
     @Override
     protected void initView() {
@@ -57,22 +52,10 @@ public class MusicMonthListActivity extends BaseActivity<MusicMonthPresenter>
     protected int getLayoutID() {
         return R.layout.activity_music_month_list;
     }
-
-
     @Override
-    public void showLoading() {
-        LoadingDialogFragment.getInstance().show(getSupportFragmentManager(), S.TAG);
-
+    protected void initLoader() {
+        getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
     }
-
-
-    @Override
-    public void dismissLoading() {
-        LoadingDialogFragment.getInstance().stopLoading();
-
-    }
-
-
     @Override
     public Loader<MusicMonthPresenter> onCreateLoader(int id, Bundle args) {
         return new PresenterLoader<MusicMonthPresenter>(this, new PresenterFactory() {

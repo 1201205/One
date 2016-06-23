@@ -22,6 +22,7 @@ import com.hyc.zhihu.helper.DelayHandle;
 import com.hyc.zhihu.presenter.MusicPresenter;
 import com.hyc.zhihu.ui.adpter.MusicAdapter;
 import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
+import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.MusicView;
 
@@ -37,12 +38,6 @@ public class MusicActivity extends BaseActivity<MusicPresenter>
     private ViewPager mPager;
     private MusicAdapter mAdapter;
 
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getSupportLoaderManager().initLoader(126, null, this);
-    }
 
 
     @Override
@@ -85,20 +80,10 @@ public class MusicActivity extends BaseActivity<MusicPresenter>
         return R.layout.picture_fragment;
     }
 
-
     @Override
-    public void showLoading() {
-        showLoadingView();
-        //LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
+    protected void initLoader() {
+        getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
     }
-
-
-    @Override
-    public void dismissLoading() {
-        dissmissLoadingView();
-    }
-
-
     @Override
     public Loader<MusicPresenter> onCreateLoader(int id, Bundle args) {
         return new PresenterLoader<MusicPresenter>(this, new PresenterFactory() {

@@ -76,14 +76,6 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
 
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getSupportLoaderManager().initLoader(124, null, this);
-
-    }
-
-
-    @Override
     protected void handleIntent() {
         mID = getIntent().getStringExtra(ID);
     }
@@ -216,27 +208,15 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
         adapter.refreshComments(comments);
     }
 
-
+    @Override
+    protected void initLoader() {
+        getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
+    }
     @Override
     public void showNoComments() {
         AppUtil.showToast("没有更多评论啦~~~");
         mHasMoreComments = false;
     }
-
-
-    @Override
-    public void showLoading() {
-        //LoadingDialogFragment.getInstance().startLoading(getSupportFragmentManager());
-        showLoadingView();
-    }
-
-
-    @Override
-    public void dismissLoading() {
-        //LoadingDialogFragment.getInstance().stopLoading();
-        dissmissLoadingView();
-    }
-
 
     @Override
     public Loader<SerialContentPresenter> onCreateLoader(int id, Bundle args) {
