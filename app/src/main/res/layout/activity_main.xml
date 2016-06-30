@@ -9,39 +9,11 @@
         android:id="@+id/fragment_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    <LinearLayout
-        android:background="@color/google_blue"
-        android:layout_width="240dp"
+    <FrameLayout
+        android:id="@+id/navigation_fl"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:orientation="vertical">
-        <TextView
-            android:textSize="16sp"
-            android:gravity="center"
-            android:text="picture"
-            android:id="@+id/picture_tv"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"/>
-        <TextView
-            android:textSize="16sp"
-            android:gravity="center"
-            android:text="reading"
-            android:id="@+id/reading_tv"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"/>
-        <TextView
-            android:textSize="16sp"
-            android:gravity="center"
-            android:text="music"
-            android:id="@+id/music_tv"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"/>
-        <TextView
-            android:textSize="16sp"
-            android:gravity="center"
-            android:text="movie"
-            android:id="@+id/movie_tv"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"/>
-    </LinearLayout>
+    </FrameLayout>
 </android.support.v4.widget.DrawerLayout>

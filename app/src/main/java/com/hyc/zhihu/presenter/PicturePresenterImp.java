@@ -114,7 +114,7 @@ public class PicturePresenterImp extends BasePresenter<PictureView> implements I
     @Override
     public OnePictureData getPictureById(final String id) {
         Log.e("test1", "获取信息--" + id);
-        mView.showLoading();
+//        mView.showLoading();
         Observable<OnePictureData> orm=Observable.just(getOnePictureDataByRealm(id)).subscribeOn(Schedulers.io());
         Observable<OnePictureData> net= Requests.getApi().getPictureById(id).subscribeOn(Schedulers.io()).map(new Func1<OnePicture, OnePictureData>() {
             @Override

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:id="@+id/main_ll"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/head" />
+
+    <TextView
+        android:id="@+id/home_tv"
+        android:drawableLeft="@drawable/music_story_default"
+        style="@style/NavigationText"
+        android:text="首页" />
+
+    <TextView
+        android:id="@+id/read_tv"
+        android:drawableLeft="@drawable/music_about_default"
+        style="@style/NavigationText"
+        android:text="阅读" />
+
+    <TextView
+        android:id="@+id/music_tv"
+        android:drawableLeft="@drawable/music_lyric_default"
+        style="@style/NavigationText"
+        android:text="音乐" />
+
+    <TextView
+        android:id="@+id/movie_tv"
+        android:drawableLeft="@drawable/movie_ticket"
+        style="@style/NavigationText"
+        android:text="电影" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/color_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

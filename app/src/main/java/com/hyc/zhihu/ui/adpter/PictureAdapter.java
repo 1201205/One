@@ -24,6 +24,7 @@ import com.hyc.zhihu.beans.OnePictureData;
 import com.hyc.zhihu.beans.PictureViewBean;
 import com.hyc.zhihu.helper.DelayHandle;
 import com.hyc.zhihu.ui.MainActivity;
+import com.hyc.zhihu.ui.MonthPictureActivity;
 import com.hyc.zhihu.ui.MusicActivity;
 import com.hyc.zhihu.ui.PictureActivity;
 import com.squareup.picasso.Picasso;
@@ -86,7 +87,7 @@ public class PictureAdapter extends PagerAdapter {
         if (position == viewBeans.size() - 1) {
             view = LayoutInflater.from(mContext).inflate(R.layout.date_list, null);
             ListView listView = (ListView) view.findViewById(R.id.date_list);
-            listView.setAdapter(new DateAdapter(getDateBeans()));
+            listView.setAdapter(new DateAdapter(getDateBeans(), MonthPictureActivity.class));
         } else {
             view = LayoutInflater.from(mContext).inflate(R.layout.picture_adpter_item, null);
             final ImageView picture = (ImageView) view.findViewById(R.id.picture_sdv);

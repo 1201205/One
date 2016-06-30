@@ -5,19 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
-    <com.hyc.zhihu.widget.MyLoadingView
-        android:id="@+id/score"
-        android:layout_marginTop="100dp"
-        android:layout_width="100dp"
-        android:layout_height="match_parent" />
-    <Button
-        android:id="@+id/d"
-        android:layout_width="100dp"
-        android:layout_height="100dp" />
-    <SeekBar
-        android:id="@+id/s"
-        android:layout_width="100dp"
-        android:layout_height="100dp" />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/picture_rv"
         android:layout_width="match_parent"

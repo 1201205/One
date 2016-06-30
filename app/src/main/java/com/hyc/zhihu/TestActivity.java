@@ -21,31 +21,31 @@ public class TestActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_month);
-        m= (MyLoadingView) findViewById(R.id.score);
-        SeekBar seekBar= (SeekBar) findViewById(R.id.s);
-        findViewById(R.id.d).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                m.startAnim();
-                LoadingDialogFragment.getInstance().show(getSupportFragmentManager(),"11111");
-            }
-        });
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                Log.e("test1",progress+"");
-                m.setFrag(progress/100f);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
+//        m= (MyLoadingView) findViewById(R.id.score);
+//        SeekBar seekBar= (SeekBar) findViewById(R.id.s);
+//        findViewById(R.id.d).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                m.startAnim();
+//                LoadingDialogFragment.getInstance().show(getSupportFragmentManager(),"11111");
+//            }
+//        });
+//        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                Log.e("test1",progress+"");
+//                m.setFrag(progress/100f);
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//        });
     }
 }

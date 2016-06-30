@@ -18,6 +18,7 @@ import com.hyc.zhihu.base.BasePresenter;
 import com.hyc.zhihu.base.PresenterFactory;
 import com.hyc.zhihu.base.PresenterLoader;
 import com.hyc.zhihu.presenter.MainPresenter;
+import com.hyc.zhihu.ui.fragment.NavigationFragment;
 import com.hyc.zhihu.ui.fragment.PictureFragment;
 import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
@@ -39,24 +40,27 @@ public class MainActivity extends BaseActivity<MainPresenter>
         getSupportFragmentManager().beginTransaction()
             .add(R.id.fragment_content, new PictureFragment())
             .commit();
-        mRecyclerView = (RecyclerView) findViewById(R.id.picture_rv);
-        findViewById(R.id.music_tv).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, MusicActivity.class));
-            }
-        });
-        findViewById(R.id.movie_tv).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, MovieListActivity.class));
-            }
-        });
-        findViewById(R.id.reading_tv).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                SPUtil.put(MainActivity.this,S.THEME,Color.RED);
-               changeColor();
-                //startActivity(new Intent(MainActivity.this, ReadingActivity.class));
-            }
-        });
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.navigation_fl, new NavigationFragment())
+                .commit();
+//        mRecyclerView = (RecyclerView) findViewById(R.id.picture_rv);
+//        findViewById(R.id.music_tv).setOnClickListener(new View.OnClickListener() {
+//            @Override public void onClick(View v) {
+//                startActivity(new Intent(MainActivity.this, MusicActivity.class));
+//            }
+//        });
+//        findViewById(R.id.movie_tv).setOnClickListener(new View.OnClickListener() {
+//            @Override public void onClick(View v) {
+//                startActivity(new Intent(MainActivity.this, MovieListActivity.class));
+//            }
+//        });
+//        findViewById(R.id.reading_tv).setOnClickListener(new View.OnClickListener() {
+//            @Override public void onClick(View v) {
+//                SPUtil.put(MainActivity.this,S.THEME,Color.RED);
+//               changeColor();
+//                //startActivity(new Intent(MainActivity.this, ReadingActivity.class));
+//            }
+//        });
     }
 
 

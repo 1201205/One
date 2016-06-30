@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
+import com.facebook.common.memory.MemoryTrimmable;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.base.BaseActivity;
