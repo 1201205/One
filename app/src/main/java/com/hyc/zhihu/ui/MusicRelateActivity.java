@@ -241,6 +241,7 @@ public class MusicRelateActivity extends BaseActivity<MusicRelatePresenter> impl
     @Override
     public void onLoadFinished(Loader<MusicRelatePresenter> loader, MusicRelatePresenter data) {
         mPresenter = data;
+        mPresenter.attachView();
         mPresenter.setContent(mID);
     }
 

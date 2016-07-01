@@ -1,12 +1,11 @@
 package com.hyc.zhihu.presenter;
 
 import com.hyc.zhihu.base.BasePresenter;
+import com.hyc.zhihu.beans.BaseBean;
 import com.hyc.zhihu.beans.Comment;
-import com.hyc.zhihu.beans.Comments;
+import com.hyc.zhihu.beans.CommentWrapper;
 import com.hyc.zhihu.beans.Essay;
-import com.hyc.zhihu.beans.EssayWrapper;
 import com.hyc.zhihu.beans.RealArticle;
-import com.hyc.zhihu.beans.RealArticles;
 import com.hyc.zhihu.net.Requests;
 import com.hyc.zhihu.presenter.base.IReadingContentPresenter;
 import com.hyc.zhihu.view.ReadingContentView;
@@ -35,54 +34,56 @@ public class EssayContentPresenter extends BasePresenter<ReadingContentView<Essa
     public void getAndShowContent(String id) {
         mView.showLoading();
         mId = id;
-        Observable.just(Requests.getApi().getEssayContentByID(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<EssayWrapper>() {
-            @Override
-            public void call(EssayWrapper serialWrapper) {
-                mView.showContent(serialWrapper.getData());
-            }
-        }), Requests.getApi().getEssayRelateByID(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<RealArticles>() {
-            @Override
-            public void call(RealArticles realArticles) {
-                mView.showRelate(realArticles.getData());
-            }
-        }), Requests.getApi().getEssayCommentsByIndex(id, "0").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map(new Func1<Comments, List<Comment>[]>() {
-            @Override
-            public List<Comment>[] call(Comments comments) {
-                List<Comment> hot = new ArrayList<Comment>();
-                List<Comment> normal = new ArrayList<Comment>();
-                List<Comment> all = comments.getData().getData();
-                int count = all.size();
-                for (int i = 0; i < count; i++) {
-                    Comment c = all.get(i);
-                    if (all.get(i).getType() == 0) {
-                        hot.add(c);
-                    } else {
-                        normal.add(c);
+        mCompositeSubscription.add(
+                Observable.just(Requests.getApi().getEssayContentByID(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<BaseBean<Essay>>() {
+                    @Override
+                    public void call(BaseBean<Essay> serialWrapper) {
+                        mView.showContent(serialWrapper.getData());
                     }
-                }
-                List<Comment>[] types = new List[2];
-                types[0] = hot;
-                types[1] = normal;
-                if (normal.size() > 0) {
-                    mLastIndex = normal.get(normal.size() - 1).getId();
-                }
-                return types;
-            }
-        }).subscribe(new Action1<List<Comment>[]>() {
-            @Override
-            public void call(List<Comment>[] comments) {
-                mView.showHotComments(comments[0]);
-                mView.refreshCommentList(comments[1]);
-                mView.dismissLoading();
-            }
-        })).subscribeOn(Schedulers.io()).subscribe();
+                }), Requests.getApi().getEssayRelateByID(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<BaseBean<List<RealArticle>>>() {
+                    @Override
+                    public void call(BaseBean<List<RealArticle>> realArticles) {
+                        mView.showRelate(realArticles.getData());
+                    }
+                }), Requests.getApi().getEssayCommentsByIndex(id, "0").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map(new Func1<BaseBean<CommentWrapper>, List<Comment>[]>() {
+                    @Override
+                    public List<Comment>[] call(BaseBean<CommentWrapper> comments) {
+                        List<Comment> hot = new ArrayList<Comment>();
+                        List<Comment> normal = new ArrayList<Comment>();
+                        List<Comment> all = comments.getData().getData();
+                        int count = all.size();
+                        for (int i = 0; i < count; i++) {
+                            Comment c = all.get(i);
+                            if (all.get(i).getType() == 0) {
+                                hot.add(c);
+                            } else {
+                                normal.add(c);
+                            }
+                        }
+                        List<Comment>[] types = new List[2];
+                        types[0] = hot;
+                        types[1] = normal;
+                        if (normal.size() > 0) {
+                            mLastIndex = normal.get(normal.size() - 1).getId();
+                        }
+                        return types;
+                    }
+                }).subscribe(new Action1<List<Comment>[]>() {
+                    @Override
+                    public void call(List<Comment>[] comments) {
+                        mView.showHotComments(comments[0]);
+                        mView.refreshCommentList(comments[1]);
+                        mView.dismissLoading();
+                    }
+                })).subscribeOn(Schedulers.io()).subscribe());
     }
 
     @Override
     public void getAndShowCommentList() {
-        Requests.getApi().getEssayCommentsByIndex(mId, mLastIndex).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Comments>() {
+
+        mCompositeSubscription.add(Requests.getApi().getEssayCommentsByIndex(mId, mLastIndex).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<BaseBean<CommentWrapper>>() {
             @Override
-            public void call(Comments comments) {
+            public void call(BaseBean<CommentWrapper> comments) {
                 if (comments == null || comments.getData() == null || comments.getData().getData() == null || comments.getData().getData().size() == 0) {
                     mView.showNoComments();
                 }
@@ -92,7 +93,7 @@ public class EssayContentPresenter extends BasePresenter<ReadingContentView<Essa
                 }
                 mView.refreshCommentList(comments.getData().getData());
             }
-        });
+        }));
     }
 
     @Override

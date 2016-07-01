@@ -97,6 +97,7 @@ public class MovieListActivity extends BaseActivity<MovieListPresenter>
     @Override
     public void onLoadFinished(Loader<MovieListPresenter> loader, MovieListPresenter data) {
         mPresenter = data;
+        mPresenter.attachView();
         mPresenter.showContent();
     }
 

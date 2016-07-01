@@ -232,6 +232,7 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
     @Override
     public void onLoadFinished(Loader<SerialContentPresenter> loader, SerialContentPresenter data) {
         mPresenter = data;
+        mPresenter.attachView();
         mPresenter.getAndShowContent(mID);
     }
 

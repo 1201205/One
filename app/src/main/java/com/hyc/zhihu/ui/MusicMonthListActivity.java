@@ -70,6 +70,7 @@ public class MusicMonthListActivity extends BaseActivity<MusicMonthPresenter>
     @Override
     public void onLoadFinished(Loader<MusicMonthPresenter> loader, MusicMonthPresenter data) {
         mPresenter = data;
+        mPresenter.attachView();
         mPresenter.showList(mDate);
     }
 

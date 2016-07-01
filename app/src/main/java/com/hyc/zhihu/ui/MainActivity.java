@@ -144,6 +144,7 @@ public class MainActivity extends BaseActivity<MainPresenter>
     @Override
     public void onLoadFinished(Loader loader, MainPresenter data) {
         mPresenter = data;
+        mPresenter.attachView();
         Log.d("act-hyc", "onLoadFinished");
     }
 

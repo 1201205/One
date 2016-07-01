@@ -214,6 +214,7 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
     @Override
     public void onLoadFinished(Loader<MusicItemPresenter> loader, MusicItemPresenter data) {
         mPresenter = data;
+        mPresenter.attachView();
         mPresenter.getAndShowContent(mID);
     }
 

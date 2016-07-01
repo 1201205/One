@@ -306,6 +306,7 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
     @Override
     public void onLoadFinished(Loader<EssayContentPresenter> loader, EssayContentPresenter data) {
         mPresenter = data;
+        mPresenter.attachView();
         mPresenter.getAndShowContent(mID);
     }
 

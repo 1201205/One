@@ -20,15 +20,14 @@ import com.hyc.zhihu.utils.SPUtil;
 /**
  * Created by Administrator on 2016/5/13.
  */
-public abstract class BaseActivity<T> extends AppCompatActivity implements BaseView {
+public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity implements BaseView {
     protected TextView mTitleView;
     protected T mPresenter;
     private int mColor;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        //ThemeUtil.changeTheme(this);
-        mColor=SPUtil.get(this, S.THEME,AppUtil.getColor(R.color.google_blue));
+        mColor = SPUtil.get(this, S.THEME, AppUtil.getColor(R.color.google_blue));
         getWindow().setStatusBarColor(mColor);
         super.onCreate(savedInstanceState);
         setContentView(getLayoutID());
@@ -90,9 +89,16 @@ public abstract class BaseActivity<T> extends AppCompatActivity implements BaseV
         LoadingDialogFragment.getInstance().dismissAllowingStateLoss();
 
     }
-    protected void changeColor(){
-        mColor=SPUtil.get(this, S.THEME,AppUtil.getColor(R.color.google_blue));
+
+    public void changeColor() {
+        mColor = SPUtil.get(this, S.THEME, AppUtil.getColor(R.color.google_blue));
         getWindow().setStatusBarColor(mColor);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(mColor));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.detachView();
     }
 }

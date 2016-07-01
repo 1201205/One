@@ -185,6 +185,7 @@ public class MovieContentActivity extends BaseActivity<MovieContentPresenter> im
     @Override
     public void onLoadFinished(Loader<MovieContentPresenter> loader, MovieContentPresenter data) {
         mPresenter = data;
+        mPresenter.attachView();
         mPresenter.getAndShowContent(mID);
     }
 

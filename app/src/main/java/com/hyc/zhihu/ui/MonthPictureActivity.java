@@ -75,6 +75,7 @@ public class MonthPictureActivity extends BaseActivity<MonthPicturePresenter>
     @Override
     public void onLoadFinished(Loader loader, MonthPicturePresenter data) {
         mPresenter = data;
+        mPresenter.attachView();
         mPresenter.getAndShowPictures(mDate);
     }
 

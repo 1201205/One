@@ -98,6 +98,7 @@ public class MusicActivity extends BaseActivity<MusicPresenter>
     @Override
     public void onLoadFinished(Loader<MusicPresenter> loader, MusicPresenter data) {
         mPresenter = data;
+        mPresenter.attachView();
         mPresenter.getAndShowContent();
     }
 

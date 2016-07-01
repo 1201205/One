@@ -194,6 +194,7 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
     @Override
     public void onLoadFinished(Loader<QuestionContentPresenter> loader, QuestionContentPresenter data) {
         mPresenter = data;
+        mPresenter.attachView();
         mPresenter.getAndShowContent(mID);
     }
 

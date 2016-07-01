@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.hyc.zhihu.R;
+import com.hyc.zhihu.base.BaseActivity;
 import com.hyc.zhihu.ui.MovieListActivity;
 import com.hyc.zhihu.ui.MusicActivity;
 import com.hyc.zhihu.ui.ReadingActivity;
@@ -48,13 +49,21 @@ public class NavigationFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ArrayList<Integer> colors=new ArrayList<>();
+        ArrayList<Integer> colors = new ArrayList<>();
         colors.add(Color.parseColor("#4285F4"));
         colors.add(Color.parseColor("#EA4335"));
         colors.add(Color.parseColor("#34A853"));
         colors.add(Color.parseColor("#FBBC05"));
-        GridLayoutManager manager=new GridLayoutManager(getActivity(),3);
-        ColorAdapter colorAdapter=new ColorAdapter(colors);
+        GridLayoutManager manager = new GridLayoutManager(getActivity(), 3);
+        ColorAdapter colorAdapter = new ColorAdapter(colors);
+        colorAdapter.setItemClickListener(new ColorAdapter.ItemClickListener() {
+            @Override
+            public void OnItemClicked(int color) {
+                SPUtil.put(getContext(), S.THEME, color);
+                mMainBg.setBackgroundColor(color);
+                ((BaseActivity) getActivity()).changeColor();
+            }
+        });
         mColorGV.setLayoutManager(manager);
         mColorGV.setAdapter(colorAdapter);
         mMusicTV.setOnClickListener(new View.OnClickListener() {

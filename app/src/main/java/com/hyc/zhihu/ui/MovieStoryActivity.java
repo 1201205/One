@@ -91,6 +91,7 @@ public class MovieStoryActivity extends BaseActivity<MovieStoryPresenter> implem
     @Override
     public void onLoadFinished(Loader<MovieStoryPresenter> loader, MovieStoryPresenter data) {
         mPresenter = data;
+        mPresenter.attachView();
         mPresenter.getAndShowList(mID);
     }
 

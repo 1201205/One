@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.base.BaseActivity;
@@ -20,7 +19,6 @@ import com.hyc.zhihu.base.PresenterLoader;
 import com.hyc.zhihu.beans.OnePictureData;
 import com.hyc.zhihu.beans.PictureViewBean;
 import com.hyc.zhihu.presenter.PicturePresenterImp;
-import com.hyc.zhihu.presenter.base.IPicturePresenter;
 import com.hyc.zhihu.ui.adpter.PictureAdapter;
 import com.hyc.zhihu.view.PictureView;
 
@@ -29,8 +27,8 @@ import java.util.List;
 /**
  * Created by ray on 16/5/5.
  */
-public class PictureFragment extends Fragment implements PictureView, LoaderManager.LoaderCallbacks<IPicturePresenter> {
-    private IPicturePresenter mPresenter;
+public class PictureFragment extends Fragment implements PictureView, LoaderManager.LoaderCallbacks<PicturePresenterImp> {
+    private PicturePresenterImp mPresenter;
     private ViewPager mViewPager;
     private PictureAdapter mPictureAdapter;
 
@@ -135,7 +133,7 @@ public class PictureFragment extends Fragment implements PictureView, LoaderMana
     }
 
     @Override
-    public Loader<IPicturePresenter> onCreateLoader(int id, Bundle args) {
+    public Loader<PicturePresenterImp> onCreateLoader(int id, Bundle args) {
         return new PresenterLoader(getContext(), new PresenterFactory() {
             @Override
             public BasePresenter create() {
@@ -145,13 +143,14 @@ public class PictureFragment extends Fragment implements PictureView, LoaderMana
     }
 
     @Override
-    public void onLoadFinished(Loader<IPicturePresenter> loader, IPicturePresenter data) {
+    public void onLoadFinished(Loader<PicturePresenterImp> loader, PicturePresenterImp data) {
         mPresenter = data;
+        mPresenter.attachView();
         mPresenter.getPictureIdsAndFirstItem();
     }
 
     @Override
-    public void onLoaderReset(Loader<IPicturePresenter> loader) {
+    public void onLoaderReset(Loader<PicturePresenterImp> loader) {
         mPresenter = null;
     }
 }

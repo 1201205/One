@@ -26,26 +26,28 @@ public class MovieListPresenter extends BasePresenter<MovieListView> implements 
     @Override
     public void showContent() {
         mView.showLoading();
-        Requests.getApi().getMovieList("0").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<BaseBean<List<Movie>>>() {
-            @Override
-            public void call(BaseBean<List<Movie>> listBaseBean) {
-                List<Movie> movies = listBaseBean.getData();
-                if (movies != null && movies.size() > 0) {
-                    mLastIndex = movies.get(movies.size() - 1).getId();
-                }
-                mView.showList(listBaseBean.getData());
-                mView.dismissLoading();
-            }
-        });
+        mCompositeSubscription.add(
+                Requests.getApi().getMovieList("0").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<BaseBean<List<Movie>>>() {
+                    @Override
+                    public void call(BaseBean<List<Movie>> listBaseBean) {
+                        List<Movie> movies = listBaseBean.getData();
+                        if (movies != null && movies.size() > 0) {
+                            mLastIndex = movies.get(movies.size() - 1).getId();
+                        }
+                        mView.showList(listBaseBean.getData());
+                        mView.dismissLoading();
+                    }
+                }));
     }
 
     @Override
     public void refresh() {
-        Requests.getApi().getMovieList(mLastIndex).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<BaseBean<List<Movie>>>() {
-            @Override
-            public void call(BaseBean<List<Movie>> listBaseBean) {
-                mView.refreshList(listBaseBean.getData());
-            }
-        });
+        mCompositeSubscription.add(
+                Requests.getApi().getMovieList(mLastIndex).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<BaseBean<List<Movie>>>() {
+                    @Override
+                    public void call(BaseBean<List<Movie>> listBaseBean) {
+                        mView.refreshList(listBaseBean.getData());
+                    }
+                }));
     }
 }

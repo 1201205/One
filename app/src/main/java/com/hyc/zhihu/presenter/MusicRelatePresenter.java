@@ -1,8 +1,9 @@
 package com.hyc.zhihu.presenter;
 
 import com.hyc.zhihu.base.BasePresenter;
-import com.hyc.zhihu.beans.Comments;
-import com.hyc.zhihu.beans.music.MusicWrapper;
+import com.hyc.zhihu.beans.BaseBean;
+import com.hyc.zhihu.beans.CommentWrapper;
+import com.hyc.zhihu.beans.music.Music;
 import com.hyc.zhihu.net.Requests;
 import com.hyc.zhihu.presenter.base.IMusicRelatePresenter;
 import com.hyc.zhihu.view.MusicRelateView;
@@ -18,35 +19,41 @@ public class MusicRelatePresenter extends BasePresenter<MusicRelateView> impleme
     public MusicRelatePresenter(MusicRelateView view) {
         super(view);
     }
+
     private String mID;
     private String mLastIndex;
+
     @Override
     public void setContent(String id) {
         mView.showLoading();
-        mID=id;
-        Requests.getApi().getMusicContentByID(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<MusicWrapper>() {
-            @Override
-            public void call(MusicWrapper musicWrapper) {
-                mView.showContent(musicWrapper.getData());
-                mLastIndex="0";
-                showComment();
-                mView.dismissLoading();
+        mID = id;
+        mCompositeSubscription.add(
 
-            }
-        });
+                Requests.getApi().getMusicContentByID(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<BaseBean<Music>>() {
+                    @Override
+                    public void call(BaseBean<Music> musicWrapper) {
+                        mView.showContent(musicWrapper.getData());
+                        mLastIndex = "0";
+                        showComment();
+                        mView.dismissLoading();
+
+                    }
+                }));
     }
 
     @Override
     public void showComment() {
         //http://v3.wufazhuce.com:8000/api/comment/praiseandtime/music/564/0?
-        Requests.getApi().getMusicCommentsByIndex(mID,mLastIndex).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Comments>() {
-            @Override
-            public void call(Comments comments) {
-                if (comments.getData()!=null&&comments.getData().getData().size()>0) {
-                    mLastIndex=comments.getData().getData().get(comments.getData().getData().size()-1).getId();
-                }
-                mView.showList(comments.getData().getData());
-            }
-        });
+        mCompositeSubscription.add(
+
+                Requests.getApi().getMusicCommentsByIndex(mID, mLastIndex).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<BaseBean<CommentWrapper>>() {
+                    @Override
+                    public void call(BaseBean<CommentWrapper> comments) {
+                        if (comments.getData() != null && comments.getData().getData().size() > 0) {
+                            mLastIndex = comments.getData().getData().get(comments.getData().getData().size() - 1).getId();
+                        }
+                        mView.showList(comments.getData().getData());
+                    }
+                }));
     }
 }

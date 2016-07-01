@@ -136,6 +136,7 @@ public class ReadingListActivity extends BaseActivity<ReadingListPresenter>
     @Override
     public void onLoadFinished(Loader<ReadingListPresenter> loader, ReadingListPresenter data) {
         mPresenter = data;
+        mPresenter.attachView();
         mPresenter.getAndShowEssayList(mItem.getId());
     }
 

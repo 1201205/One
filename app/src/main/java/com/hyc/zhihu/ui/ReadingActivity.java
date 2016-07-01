@@ -226,6 +226,7 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
     @Override
     public void onLoadFinished(Loader<ReadingPresenter> loader, ReadingPresenter data) {
         mPresenter = data;
+        mPresenter.attachView();
         mPresenter.showContent();
     }
 

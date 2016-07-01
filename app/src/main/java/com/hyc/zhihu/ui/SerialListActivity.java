@@ -75,6 +75,7 @@ public class SerialListActivity extends BaseActivity<SerialListPresenter>
     @Override
     public void onLoadFinished(Loader<SerialListPresenter> loader, SerialListPresenter data) {
         mPresenter = data;
+        mPresenter.attachView();
         mPresenter.getAndShowList(mID);
     }
 
