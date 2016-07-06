@@ -48,11 +48,11 @@ public class PictureDetailActivity extends BaseActivity implements PictureDetail
         mPictureIV = (ImageView) findViewById(R.id.picture_sdv);
         ViewCompat.setTransitionName(mPictureIV,"test1");
         Picasso.with(this).load(getIntent().getStringExtra("test2")).fit().into(mPictureIV);
-//        mVolTV = (TextView) findViewById(R.id.vol_tv);
-//        mNameTV = (TextView) findViewById(R.id.name_tv);
-//        mContentTV = (TextView) findViewById(R.id.main_tv);
-//        mDateTV = (TextView) findViewById(R.id.date_tv);
-
+        mVolTV = (TextView) findViewById(R.id.vol_tv);
+        mNameTV = (TextView) findViewById(R.id.name_tv);
+        mContentTV = (TextView) findViewById(R.id.main_tv);
+        mDateTV = (TextView) findViewById(R.id.date_tv);
+        showDetail();
 //        postponeEnterTransition();
 //        setEnterSharedElementCallback(mCallback);
 

@@ -52,25 +52,23 @@ public interface Api {
     //http://v3.wufazhuce.com:8000/api/serialcontent/104?
     //获取阅读list
     //http://v3.wufazhuce.com:8000/api/reading/index/0?
-    @GET("/api/hp/idlist/{id}")
-    Observable<IDList> getPictureIds(@Path("id") String id);
+    @GET("/api/hp/idlist/{id}") Observable<IDList> getPictureIds(@Path("id") String id);
 
-    @GET("/api/hp/detail/{id}")
-    Observable<BaseBean<OnePictureData>> getPictureById(@Path("id") String id);
+    @GET("/api/hp/detail/{id}") Observable<BaseBean<OnePictureData>> getPictureById(
+        @Path("id") String id);
 
-    @GET("/api/hp/bymonth/{date}")
-    Observable<BaseBean<List<OnePictureData>>> getPictureByMonth(@Path("date") String date);
+    @GET("/api/hp/bymonth/{date}") Observable<BaseBean<List<OnePictureData>>> getPictureByMonth(
+        @Path("date") String date);
 
-    @GET("/api/reading/carousel/")
-    Observable<BaseBean<List<HeadScrollItem>>> getScrollHeads();
+    @GET("/api/reading/carousel/") Observable<BaseBean<List<HeadScrollItem>>> getScrollHeads();
 
-    @GET("/api/reading/index/{index}")
-    Observable<BaseBean<List<DateReading>>> getReadingList(@Path("index") int index);
+    @GET("/api/reading/index/{index}") Observable<BaseBean<List<DateReading>>> getReadingList(
+        @Path("index") int index);
 
-    @GET("/api/reading/carousel/{id}")
-    Observable<BaseBean<List<ReadingListItem>>> getEssayListByID(@Path("id") String id);
-//    @GET("/api/reading/carousel/")
-//    Observable<ReadingListItems> getEssayList();
+    @GET("/api/reading/carousel/{id}") Observable<BaseBean<List<ReadingListItem>>> getEssayListByID(
+        @Path("id") String id);
+    //    @GET("/api/reading/carousel/")
+    //    Observable<ReadingListItems> getEssayList();
     //点击问题需要发送的请求有：
 
     /**
@@ -83,7 +81,8 @@ public interface Api {
      * <p/>
      * 点击连载需要发送的请求：
      * http://v3.wufazhuce.com:8000/api/serialcontent/111  查看连载内容
-     * http://v3.wufazhuce.com:8000/api/serialcontent/update/111/2016-05-12%2017:59:40 更新连载的评论数量和查看数量
+     * http://v3.wufazhuce.com:8000/api/serialcontent/update/111/2016-05-12%2017:59:40
+     * 更新连载的评论数量和查看数量
      * http://v3.wufazhuce.com:8000/api/related/serial/111 查看与之相关推荐
      * http://v3.wufazhuce.com:8000/api/comment/praiseandtime/serial/111/0 评论列表
      * http://v3.wufazhuce.com:8000/api/comment/praiseandtime/serial/111/15635
@@ -95,35 +94,37 @@ public interface Api {
      * http://v3.wufazhuce.com:8000/api/comment/praiseandtime/essay/1411/0 评论
      * http://v3.wufazhuce.com:8000/api/comment/praiseandtime/essay/1411/14582 评论
      */
-    @GET("/api/question/{id}")
-    Observable<BaseBean<QuestionContent>> getQuestionContentByID(@Path("id") String id);
+    @GET("/api/question/{id}") Observable<BaseBean<QuestionContent>> getQuestionContentByID(
+        @Path("id") String id);
 
-    @GET("/api/serialcontent/{id}")
-    Observable<BaseBean<SerialContent>> getSerialContentByID(@Path("id") String id);
+    @GET("/api/serialcontent/{id}") Observable<BaseBean<SerialContent>> getSerialContentByID(
+        @Path("id") String id);
 
-    @GET("/api/essay/{id}")
-    Observable<BaseBean<Essay>> getEssayContentByID(@Path("id") String id);
+    @GET("/api/essay/{id}") Observable<BaseBean<Essay>> getEssayContentByID(@Path("id") String id);
 
-    @GET("/api/related/question/{id}")
-    Observable<BaseBean<List<Question>>> getQuestionRelateByID(@Path("id") String id);
+    @GET("/api/related/question/{id}") Observable<BaseBean<List<Question>>> getQuestionRelateByID(
+        @Path("id") String id);
 
-    @GET("/api/related/serial/{id}")
-    Observable<BaseBean<List<Serial>>> getSerialRelateByID(@Path("id") String id);
+    @GET("/api/related/serial/{id}") Observable<BaseBean<List<Serial>>> getSerialRelateByID(
+        @Path("id") String id);
 
-    @GET("/api/related/essay/{id}")
-    Observable<BaseBean<List<RealArticle>>> getEssayRelateByID(@Path("id") String id);
+    @GET("/api/related/essay/{id}") Observable<BaseBean<List<RealArticle>>> getEssayRelateByID(
+        @Path("id") String id);
 
     @GET("/api/comment/praiseandtime/question/{id}/{index}")
-    Observable<BaseBean<CommentWrapper>> getQuestionCommentsByIndex(@Path("id") String id, @Path("index") String index);
+    Observable<BaseBean<CommentWrapper>> getQuestionCommentsByIndex(
+        @Path("id") String id, @Path("index") String index);
 
     @GET("/api/comment/praiseandtime/serial/{id}/{index}")
-    Observable<BaseBean<CommentWrapper>> getSerialCommentsByIndex(@Path("id") String id, @Path("index") String index);
+    Observable<BaseBean<CommentWrapper>> getSerialCommentsByIndex(
+        @Path("id") String id, @Path("index") String index);
 
     @GET("/api/comment/praiseandtime/essay/{id}/{index}")
-    Observable<BaseBean<CommentWrapper>> getEssayCommentsByIndex(@Path("id") String id, @Path("index") String index);
+    Observable<BaseBean<CommentWrapper>> getEssayCommentsByIndex(
+        @Path("id") String id, @Path("index") String index);
 
-    @GET("/api/serial/list/{id}")
-    Observable<BaseBean<SerialList>> getSerialListByID(@Path("id") String id);
+    @GET("/api/serial/list/{id}") Observable<BaseBean<SerialList>> getSerialListByID(
+        @Path("id") String id);
 
     /**
      * 音乐相关
@@ -139,30 +140,56 @@ public interface Api {
      * http://v3.wufazhuce.com:8000/api/movie/69/story/0/0 获取全部故事
      * http://v3.wufazhuce.com:8000/api/comment/praiseandtime/movie/69/0
      */
-    @GET("/api/music/idlist/{id}")
-    Observable<IDList> getMusicIds(@Path("id") String id);
+    @GET("/api/music/idlist/{id}") Observable<IDList> getMusicIds(@Path("id") String id);
 
-    @GET("/api/music/detail/{id}")
-    Observable<BaseBean<Music>> getMusicContentByID(@Path("id") String id);
+    @GET("/api/music/detail/{id}") Observable<BaseBean<Music>> getMusicContentByID(
+        @Path("id") String id);
 
-    @GET("/api/related/music/{id}")
-    Observable<BaseBean<List<MusicRelate>>> getMusicRelateByID(@Path("id") String id);
+    @GET("/api/related/music/{id}") Observable<BaseBean<List<MusicRelate>>> getMusicRelateByID(
+        @Path("id") String id);
 
     @GET("/api/comment/praiseandtime/music/{id}/{index}")
-    Observable<BaseBean<CommentWrapper>> getMusicCommentsByIndex(@Path("id") String id, @Path("index") String index);
+    Observable<BaseBean<CommentWrapper>> getMusicCommentsByIndex(
+        @Path("id") String id, @Path("index") String index);
 
-    @GET("/api/music/bymonth/{date}")
-    Observable<BaseBean<List<MusicMonthItem>>> getMusicByMonth(@Path("date") String date);
+    @GET("/api/music/bymonth/{date}") Observable<BaseBean<List<MusicMonthItem>>> getMusicByMonth(
+        @Path("date") String date);
 
-    @GET("/api/movie/list/{id}")
-    Observable<BaseBean<List<Movie>>> getMovieList(@Path("id") String id);
+    @GET("/api/movie/list/{id}") Observable<BaseBean<List<Movie>>> getMovieList(
+        @Path("id") String id);
 
-    @GET("/api/movie/detail/{id}")
-    Observable<BaseBean<MovieContent>> getMovieContentByID(@Path("id") String id);
+    @GET("/api/movie/detail/{id}") Observable<BaseBean<MovieContent>> getMovieContentByID(
+        @Path("id") String id);
 
     @GET("/api/comment/praiseandtime/movie/{id}/{index}")
-    Observable<Comments> getMovieCommentsByIndex(@Path("id") String id, @Path("index") String index);
+    Observable<Comments> getMovieCommentsByIndex(
+        @Path("id") String id, @Path("index") String index);
 
     @GET("api/movie/{id}/story/{tag}/{index}")
-    Observable<BaseBean<MovieStoryWrapper>> getMovieStoryByID(@Path("id") String id, @Path("tag") String tag, @Path("index") String index);
+    Observable<BaseBean<MovieStoryWrapper>> getMovieStoryByID(
+        @Path("id") String id, @Path("tag") String tag, @Path("index") String index);
+
+    /**
+     *获取用户信息
+     * http://v3.wufazhuce.com:8000/api/user/info/4744180
+     * 获取用户歌单
+     * 获取http://v3.wufazhuce.com:8000/api/othercenter/4744180
+     * 获取用户收藏的歌单
+     * http://v3.wufazhuce.com:8000/api/othercollection/4744180/more/4/0
+     * 获取用户收藏的短片
+     *http://v3.wufazhuce.com:8000/api/othercollection/4744180/more/1/0
+     * 获取用户收藏的连载
+     *http://v3.wufazhuce.com:8000/api/othercollection/4744180/more/6/0
+     * 获取用户收藏的问题
+     * http://v3.wufazhuce.com:8000/api/othercollection/4744180/more/2/0
+     *获取用户收藏的图文
+     * http://v3.wufazhuce.com:8000/api/othercollection/4744180/more/0/0
+     *
+     * 获取用户收藏的电影
+     * http://v3.wufazhuce.com:8000/api/othercollection/4744180/more/5/0?
+     *http://v3.wufazhuce.com:8000/api/othercollection/1914344/more/1/0?
+     * 获取用户手记
+     * http://v3.wufazhuce.com:8000/api/otherdiary/list/1914344/more/0
+     */
+
 }

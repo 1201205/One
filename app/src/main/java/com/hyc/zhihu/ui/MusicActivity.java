@@ -148,8 +148,10 @@ public class MusicActivity extends BaseActivity<MusicPresenter>
 
     @Override
     protected void onDestroy() {
-        mAdapter.clear();
-        mPager.setAdapter(null);
+        if (mAdapter!=null) {
+            mAdapter.clear();
+        }
+         mPager.setAdapter(null);
         Log.e("test1", "ondestory");
         super.onDestroy();
     }
