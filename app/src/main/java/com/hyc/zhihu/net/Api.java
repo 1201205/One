@@ -2,7 +2,6 @@ package com.hyc.zhihu.net;
 
 import com.hyc.zhihu.beans.BaseBean;
 import com.hyc.zhihu.beans.CommentWrapper;
-import com.hyc.zhihu.beans.Comments;
 import com.hyc.zhihu.beans.DateReading;
 import com.hyc.zhihu.beans.Essay;
 import com.hyc.zhihu.beans.HeadScrollItem;
@@ -162,7 +161,7 @@ public interface Api {
         @Path("id") String id);
 
     @GET("/api/comment/praiseandtime/movie/{id}/{index}")
-    Observable<Comments> getMovieCommentsByIndex(
+    Observable<BaseBean<CommentWrapper>> getMovieCommentsByIndex(
         @Path("id") String id, @Path("index") String index);
 
     @GET("api/movie/{id}/story/{tag}/{index}")

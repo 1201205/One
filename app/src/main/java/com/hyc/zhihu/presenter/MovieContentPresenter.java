@@ -3,7 +3,7 @@ package com.hyc.zhihu.presenter;
 import com.hyc.zhihu.base.BasePresenter;
 import com.hyc.zhihu.beans.BaseBean;
 import com.hyc.zhihu.beans.Comment;
-import com.hyc.zhihu.beans.Comments;
+import com.hyc.zhihu.beans.CommentWrapper;
 import com.hyc.zhihu.beans.movie.MovieContent;
 import com.hyc.zhihu.beans.movie.MovieStoryWrapper;
 import com.hyc.zhihu.net.Requests;
@@ -21,36 +21,51 @@ import rx.schedulers.Schedulers;
 /**
  * Created by ray on 16/5/30.
  */
-public class MovieContentPresenter extends BasePresenter<MovieContentView> implements IMovieContentPresenter {
+public class MovieContentPresenter extends BasePresenter<MovieContentView>
+    implements IMovieContentPresenter {
     public MovieContentPresenter(MovieContentView view) {
         super(view);
     }
 
+
     private String mID;
     private String mLastIndex;
+
 
     @Override
     public void getAndShowContent(String id) {
         mView.showLoading();
         mID = id;
         mCompositeSubscription.add(
-                Requests.getApi().getMovieContentByID(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<BaseBean<MovieContent>>() {
+            Requests.getApi()
+                .getMovieContentByID(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<BaseBean<MovieContent>>() {
                     @Override
                     public void call(BaseBean<MovieContent> movieContentBaseBean) {
                         mView.showContent(movieContentBaseBean.getData());
                     }
                 }));
         mCompositeSubscription.add(
-                Requests.getApi().getMovieStoryByID(id, "1", "0").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<BaseBean<MovieStoryWrapper>>() {
+            Requests.getApi()
+                .getMovieStoryByID(id, "1", "0")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<BaseBean<MovieStoryWrapper>>() {
                     @Override
                     public void call(BaseBean<MovieStoryWrapper> movieStoryWrapperBaseBean) {
                         mView.showStory(movieStoryWrapperBaseBean.getData());
                     }
                 }));
         mCompositeSubscription.add(
-                Requests.getApi().getMovieCommentsByIndex(id, "0").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map(new Func1<Comments, List<Comment>[]>() {
+            Requests.getApi()
+                .getMovieCommentsByIndex(id, "0")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(new Func1<BaseBean<CommentWrapper>, List<Comment>[]>() {
                     @Override
-                    public List<Comment>[] call(Comments comments) {
+                    public List<Comment>[] call(BaseBean<CommentWrapper> comments) {
                         List<Comment> hot = new ArrayList<Comment>();
                         List<Comment> normal = new ArrayList<Comment>();
                         List<Comment> all = comments.getData().getData();
@@ -71,7 +86,8 @@ public class MovieContentPresenter extends BasePresenter<MovieContentView> imple
                         }
                         return types;
                     }
-                }).subscribe(new Action1<List<Comment>[]>() {
+                })
+                .subscribe(new Action1<List<Comment>[]>() {
                     @Override
                     public void call(List<Comment>[] comments) {
                         mView.showHotComment(comments[0]);
@@ -81,13 +97,20 @@ public class MovieContentPresenter extends BasePresenter<MovieContentView> imple
                 }));
     }
 
+
     @Override
     public void refreshComments() {
         mCompositeSubscription.add(
-                Requests.getApi().getMovieCommentsByIndex(mID, mLastIndex).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Comments>() {
+            Requests.getApi()
+                .getMovieCommentsByIndex(mID, mLastIndex)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<BaseBean<CommentWrapper>>() {
                     @Override
-                    public void call(Comments comments) {
-                        if (comments == null || comments.getData() == null || comments.getData().getData() == null || comments.getData().getData().size() == 0) {
+                    public void call(BaseBean<CommentWrapper> comments) {
+                        if (comments == null || comments.getData() == null ||
+                            comments.getData().getData() == null ||
+                            comments.getData().getData().size() == 0) {
                             mView.showNoComments();
                         }
                         List<Comment> c = comments.getData().getData();

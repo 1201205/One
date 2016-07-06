@@ -6,7 +6,6 @@ import com.hyc.zhihu.beans.Question;
 import com.hyc.zhihu.beans.QuestionContent;
 import com.hyc.zhihu.beans.Serial;
 import com.hyc.zhihu.beans.SerialContent;
-import com.hyc.zhihu.beans.Serials;
 
 import java.util.List;
 
