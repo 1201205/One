@@ -190,6 +190,14 @@ public interface Api {
      *http://v3.wufazhuce.com:8000/api/othercollection/1914344/more/1/0?
      * 获取用户手记
      * http://v3.wufazhuce.com:8000/api/otherdiary/list/1914344/more/0
+     *
+     * 搜索相关
+     * http://v3.wufazhuce.com:8000/api/search/reading/《内容》
+     *  http://v3.wufazhuce.com:8000/api/search/hp/《内容》
+     * http://v3.wufazhuce.com:8000/api/search/music/《内容》
+     *  http://v3.wufazhuce.com:8000/api/search/movie/《内容》
+     *   http://v3.wufazhuce.com:8000/api/search/autor/《内容》
+     *    http://v3.wufazhuce.com:8000/api/search/reading/《内容》
      */
 
 }
