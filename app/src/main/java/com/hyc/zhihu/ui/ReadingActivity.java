@@ -7,6 +7,9 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,6 +70,21 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
         indicators = (ViewGroup) v.findViewById(R.id.indicators);
         viewPager.addOnPageChangeListener(mPagerAdapter);
         titleLayout = (TextView) findViewById(R.id.title);
+//        RecyclerView recyclerView=null;
+//        final LinearLayoutManager manager=null;
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//            }
+//
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                int firstVisibleItem= manager.findFirstVisibleItemPosition();
+//                int visibleItemCount=manager.findLastVisibleItemPosition()
+//            }
+//        });
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {

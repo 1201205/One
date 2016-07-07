@@ -25,6 +25,8 @@ import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.utils.SPUtil;
 import com.hyc.zhihu.view.TestView;
 
+import rx.Observable;
+
 public class MainActivity extends BaseActivity<MainPresenter>
     implements TestView, LoaderManager.LoaderCallbacks<MainPresenter> {
     private int ID = 1001;
@@ -123,7 +125,6 @@ public class MainActivity extends BaseActivity<MainPresenter>
     @Override
     protected void onResume() {
         super.onResume();
-        mPresenter.onLoadFinished();
         Log.d("act-hyc", "onResume----" + mPresenter.toString());
 
     }

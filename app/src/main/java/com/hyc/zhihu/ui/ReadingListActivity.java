@@ -36,7 +36,6 @@ import java.util.List;
 public class ReadingListActivity extends BaseActivity<ReadingListPresenter>
     implements ReadingListView, LoaderManager.LoaderCallbacks<ReadingListPresenter> {
     public static final String HEAD_ITEM = "head_item";
-    public static final int LOADER_ID = 1003;
     private HeadScrollItem mItem;
     private ListView mReadingLV;
     private TextView mDesTV;

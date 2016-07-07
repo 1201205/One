@@ -7,10 +7,14 @@ import com.hyc.zhihu.beans.Essay;
 import com.hyc.zhihu.beans.HeadScrollItem;
 import com.hyc.zhihu.beans.IDList;
 import com.hyc.zhihu.beans.OnePictureData;
+import com.hyc.zhihu.beans.Other;
+import com.hyc.zhihu.beans.OtherCenter;
 import com.hyc.zhihu.beans.Question;
 import com.hyc.zhihu.beans.QuestionContent;
 import com.hyc.zhihu.beans.ReadingListItem;
 import com.hyc.zhihu.beans.RealArticle;
+import com.hyc.zhihu.beans.RealArticleAuthor;
+import com.hyc.zhihu.beans.SearchReading;
 import com.hyc.zhihu.beans.Serial;
 import com.hyc.zhihu.beans.SerialContent;
 import com.hyc.zhihu.beans.SerialList;
@@ -51,21 +55,27 @@ public interface Api {
     //http://v3.wufazhuce.com:8000/api/serialcontent/104?
     //获取阅读list
     //http://v3.wufazhuce.com:8000/api/reading/index/0?
-    @GET("/api/hp/idlist/{id}") Observable<IDList> getPictureIds(@Path("id") String id);
+    @GET("/api/hp/idlist/{id}")
+    Observable<IDList> getPictureIds(@Path("id") String id);
 
-    @GET("/api/hp/detail/{id}") Observable<BaseBean<OnePictureData>> getPictureById(
-        @Path("id") String id);
+    @GET("/api/hp/detail/{id}")
+    Observable<BaseBean<OnePictureData>> getPictureById(
+            @Path("id") String id);
 
-    @GET("/api/hp/bymonth/{date}") Observable<BaseBean<List<OnePictureData>>> getPictureByMonth(
-        @Path("date") String date);
+    @GET("/api/hp/bymonth/{date}")
+    Observable<BaseBean<List<OnePictureData>>> getPictureByMonth(
+            @Path("date") String date);
 
-    @GET("/api/reading/carousel/") Observable<BaseBean<List<HeadScrollItem>>> getScrollHeads();
+    @GET("/api/reading/carousel/")
+    Observable<BaseBean<List<HeadScrollItem>>> getScrollHeads();
 
-    @GET("/api/reading/index/{index}") Observable<BaseBean<List<DateReading>>> getReadingList(
-        @Path("index") int index);
+    @GET("/api/reading/index/{index}")
+    Observable<BaseBean<List<DateReading>>> getReadingList(
+            @Path("index") int index);
 
-    @GET("/api/reading/carousel/{id}") Observable<BaseBean<List<ReadingListItem>>> getEssayListByID(
-        @Path("id") String id);
+    @GET("/api/reading/carousel/{id}")
+    Observable<BaseBean<List<ReadingListItem>>> getEssayListByID(
+            @Path("id") String id);
     //    @GET("/api/reading/carousel/")
     //    Observable<ReadingListItems> getEssayList();
     //点击问题需要发送的请求有：
@@ -77,7 +87,7 @@ public interface Api {
      * http://v3.wufazhuce.com:8000/api/related/question/1356  查看与之相关的推荐
      * http://v3.wufazhuce.com:8000/api/comment/praiseandtime/question/1356/0 评论列表
      * http://v3.wufazhuce.com:8000/api/comment/praiseandtime/question/1356/16697 在16697后面的评论
-     * <p/>
+     * <p>
      * 点击连载需要发送的请求：
      * http://v3.wufazhuce.com:8000/api/serialcontent/111  查看连载内容
      * http://v3.wufazhuce.com:8000/api/serialcontent/update/111/2016-05-12%2017:59:40
@@ -93,37 +103,44 @@ public interface Api {
      * http://v3.wufazhuce.com:8000/api/comment/praiseandtime/essay/1411/0 评论
      * http://v3.wufazhuce.com:8000/api/comment/praiseandtime/essay/1411/14582 评论
      */
-    @GET("/api/question/{id}") Observable<BaseBean<QuestionContent>> getQuestionContentByID(
-        @Path("id") String id);
+    @GET("/api/question/{id}")
+    Observable<BaseBean<QuestionContent>> getQuestionContentByID(
+            @Path("id") String id);
 
-    @GET("/api/serialcontent/{id}") Observable<BaseBean<SerialContent>> getSerialContentByID(
-        @Path("id") String id);
+    @GET("/api/serialcontent/{id}")
+    Observable<BaseBean<SerialContent>> getSerialContentByID(
+            @Path("id") String id);
 
-    @GET("/api/essay/{id}") Observable<BaseBean<Essay>> getEssayContentByID(@Path("id") String id);
+    @GET("/api/essay/{id}")
+    Observable<BaseBean<Essay>> getEssayContentByID(@Path("id") String id);
 
-    @GET("/api/related/question/{id}") Observable<BaseBean<List<Question>>> getQuestionRelateByID(
-        @Path("id") String id);
+    @GET("/api/related/question/{id}")
+    Observable<BaseBean<List<Question>>> getQuestionRelateByID(
+            @Path("id") String id);
 
-    @GET("/api/related/serial/{id}") Observable<BaseBean<List<Serial>>> getSerialRelateByID(
-        @Path("id") String id);
+    @GET("/api/related/serial/{id}")
+    Observable<BaseBean<List<Serial>>> getSerialRelateByID(
+            @Path("id") String id);
 
-    @GET("/api/related/essay/{id}") Observable<BaseBean<List<RealArticle>>> getEssayRelateByID(
-        @Path("id") String id);
+    @GET("/api/related/essay/{id}")
+    Observable<BaseBean<List<RealArticle>>> getEssayRelateByID(
+            @Path("id") String id);
 
     @GET("/api/comment/praiseandtime/question/{id}/{index}")
     Observable<BaseBean<CommentWrapper>> getQuestionCommentsByIndex(
-        @Path("id") String id, @Path("index") String index);
+            @Path("id") String id, @Path("index") String index);
 
     @GET("/api/comment/praiseandtime/serial/{id}/{index}")
     Observable<BaseBean<CommentWrapper>> getSerialCommentsByIndex(
-        @Path("id") String id, @Path("index") String index);
+            @Path("id") String id, @Path("index") String index);
 
     @GET("/api/comment/praiseandtime/essay/{id}/{index}")
     Observable<BaseBean<CommentWrapper>> getEssayCommentsByIndex(
-        @Path("id") String id, @Path("index") String index);
+            @Path("id") String id, @Path("index") String index);
 
-    @GET("/api/serial/list/{id}") Observable<BaseBean<SerialList>> getSerialListByID(
-        @Path("id") String id);
+    @GET("/api/serial/list/{id}")
+    Observable<BaseBean<SerialList>> getSerialListByID(
+            @Path("id") String id);
 
     /**
      * 音乐相关
@@ -139,64 +156,137 @@ public interface Api {
      * http://v3.wufazhuce.com:8000/api/movie/69/story/0/0 获取全部故事
      * http://v3.wufazhuce.com:8000/api/comment/praiseandtime/movie/69/0
      */
-    @GET("/api/music/idlist/{id}") Observable<IDList> getMusicIds(@Path("id") String id);
+    @GET("/api/music/idlist/{id}")
+    Observable<IDList> getMusicIds(@Path("id") String id);
 
-    @GET("/api/music/detail/{id}") Observable<BaseBean<Music>> getMusicContentByID(
-        @Path("id") String id);
+    @GET("/api/music/detail/{id}")
+    Observable<BaseBean<Music>> getMusicContentByID(
+            @Path("id") String id);
 
-    @GET("/api/related/music/{id}") Observable<BaseBean<List<MusicRelate>>> getMusicRelateByID(
-        @Path("id") String id);
+    @GET("/api/related/music/{id}")
+    Observable<BaseBean<List<MusicRelate>>> getMusicRelateByID(
+            @Path("id") String id);
 
     @GET("/api/comment/praiseandtime/music/{id}/{index}")
     Observable<BaseBean<CommentWrapper>> getMusicCommentsByIndex(
-        @Path("id") String id, @Path("index") String index);
+            @Path("id") String id, @Path("index") String index);
 
-    @GET("/api/music/bymonth/{date}") Observable<BaseBean<List<MusicMonthItem>>> getMusicByMonth(
-        @Path("date") String date);
+    @GET("/api/music/bymonth/{date}")
+    Observable<BaseBean<List<MusicMonthItem>>> getMusicByMonth(
+            @Path("date") String date);
 
-    @GET("/api/movie/list/{id}") Observable<BaseBean<List<Movie>>> getMovieList(
-        @Path("id") String id);
+    @GET("/api/movie/list/{id}")
+    Observable<BaseBean<List<Movie>>> getMovieList(
+            @Path("id") String id);
 
-    @GET("/api/movie/detail/{id}") Observable<BaseBean<MovieContent>> getMovieContentByID(
-        @Path("id") String id);
+    @GET("/api/movie/detail/{id}")
+    Observable<BaseBean<MovieContent>> getMovieContentByID(
+            @Path("id") String id);
 
     @GET("/api/comment/praiseandtime/movie/{id}/{index}")
     Observable<BaseBean<CommentWrapper>> getMovieCommentsByIndex(
-        @Path("id") String id, @Path("index") String index);
+            @Path("id") String id, @Path("index") String index);
 
     @GET("api/movie/{id}/story/{tag}/{index}")
     Observable<BaseBean<MovieStoryWrapper>> getMovieStoryByID(
-        @Path("id") String id, @Path("tag") String tag, @Path("index") String index);
+            @Path("id") String id, @Path("tag") String tag, @Path("index") String index);
 
     /**
-     *获取用户信息
+     * 获取用户信息
      * http://v3.wufazhuce.com:8000/api/user/info/4744180
      * 获取用户歌单
      * 获取http://v3.wufazhuce.com:8000/api/othercenter/4744180
      * 获取用户收藏的歌单
      * http://v3.wufazhuce.com:8000/api/othercollection/4744180/more/4/0
      * 获取用户收藏的短片
-     *http://v3.wufazhuce.com:8000/api/othercollection/4744180/more/1/0
+     * http://v3.wufazhuce.com:8000/api/othercollection/4744180/more/1/0
      * 获取用户收藏的连载
-     *http://v3.wufazhuce.com:8000/api/othercollection/4744180/more/6/0
+     * http://v3.wufazhuce.com:8000/api/othercollection/4744180/more/6/0
      * 获取用户收藏的问题
      * http://v3.wufazhuce.com:8000/api/othercollection/4744180/more/2/0
-     *获取用户收藏的图文
+     * 获取用户收藏的图文
      * http://v3.wufazhuce.com:8000/api/othercollection/4744180/more/0/0
-     *
+     * <p>
      * 获取用户收藏的电影
      * http://v3.wufazhuce.com:8000/api/othercollection/4744180/more/5/0?
-     *http://v3.wufazhuce.com:8000/api/othercollection/1914344/more/1/0?
+     * http://v3.wufazhuce.com:8000/api/othercollection/1914344/more/1/0?
      * 获取用户手记
      * http://v3.wufazhuce.com:8000/api/otherdiary/list/1914344/more/0
-     *
+     * 获取作者的文章
+     * http://v3.wufazhuce.com:8000/api/works/essay/4814667?
+     * <p>
      * 搜索相关
      * http://v3.wufazhuce.com:8000/api/search/reading/《内容》
-     *  http://v3.wufazhuce.com:8000/api/search/hp/《内容》
+     * http://v3.wufazhuce.com:8000/api/search/hp/《内容》
      * http://v3.wufazhuce.com:8000/api/search/music/《内容》
-     *  http://v3.wufazhuce.com:8000/api/search/movie/《内容》
-     *   http://v3.wufazhuce.com:8000/api/search/autor/《内容》
-     *    http://v3.wufazhuce.com:8000/api/search/reading/《内容》
+     * http://v3.wufazhuce.com:8000/api/search/movie/《内容》
+     * http://v3.wufazhuce.com:8000/api/search/author/《内容》
+     * http://v3.wufazhuce.com:8000/api/search/reading/《内容》
      */
+    @GET("/api/user/info/{id}")
+    Observable<BaseBean<Other>> getOtherInfoByID(
+            @Path("id") String id);
 
+    @GET("/api/othercenter/{id}")
+    Observable<BaseBean<OtherCenter>> getOtherCenterByID(
+            @Path("id") String id);
+
+    //歌单
+    @GET("/api/othercollection/{id}/more/4/{index}")
+    Observable<BaseBean<List<MusicMonthItem>>> getOtherMusicByID(
+            @Path("id") String id, @Path("index") String index);
+
+    //短文
+    @GET("/api/othercollection/{id}/more/1/{index}")
+    Observable<BaseBean<List<Essay>>> getOtherEssayByID(
+            @Path("id") String id, @Path("index") String index);
+
+    //连载
+    @GET("/api/othercollection/{id}/more/6/{index}")
+    Observable<BaseBean<List<Serial>>> getOtherSerialByID(
+            @Path("id") String id, @Path("index") String index);
+
+    //问题
+    @GET("/api/othercollection/{id}/more/6/{index}")
+    Observable<BaseBean<List<Question>>> getOtherQuestionByID(
+            @Path("id") String id, @Path("index") String index);
+
+    //图文
+    @GET("/api/othercollection/{id}/more/0/{index}")
+    Observable<BaseBean<List<OnePictureData>>> getOtherPictureByID(
+            @Path("id") String id, @Path("index") String index);
+
+    //电影
+    @GET("/api/othercollection/{id}/more/5/{index}")
+    Observable<BaseBean<List<Movie>>> getOtherMovieByID(
+            @Path("id") String id, @Path("index") String index);
+
+    //手记
+    @GET("/api/otherdiary/list/{id}/more/{index}")
+    Observable<BaseBean<List<Movie>>> getOtherDiaryByID(
+            @Path("id") String id, @Path("index") String index);
+
+    @GET("/api/works/essay/{id}")
+    Observable<BaseBean<List<Essay>>> getWorkEssayByID(
+            @Path("id") String id);
+
+    @GET("/api/search/reading/{key}")
+    Observable<BaseBean<List<SearchReading>>> searchReaingByKey(
+            @Path("key") String key);
+
+    @GET("/api/search/hp/{key}")
+    Observable<BaseBean<List<OnePictureData>>> searchPictureByKey(
+            @Path("key") String key);
+
+    @GET("/api/search/music/{key}")
+    Observable<BaseBean<List<MusicMonthItem>>> searchMusicByKey(
+            @Path("key") String key);
+
+    @GET("/api/search/movie/{key}")
+    Observable<BaseBean<List<Movie>>> searchMovieByKey(
+            @Path("key") String key);
+
+    @GET("/api/search/author/{key}")
+    Observable<BaseBean<List<RealArticleAuthor>>> searchAutorByKey(
+            @Path("key") String key);
 }
