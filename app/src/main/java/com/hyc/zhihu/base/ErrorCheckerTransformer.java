@@ -8,7 +8,7 @@ import rx.exceptions.Exceptions;
 import rx.functions.Func1;
 
 /**
- * Created by Administrator on 2016/7/7.
+ * Created by hyc on 2016/7/7.
  */
 public class ErrorCheckerTransformer<T extends BaseBean<R>, R>
         implements Observable.Transformer<T, R> {

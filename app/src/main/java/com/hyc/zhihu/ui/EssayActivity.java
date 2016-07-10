@@ -79,7 +79,6 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
     private String mID;
     public static final String ID = "id";
     private boolean mHasMoreComments = true;
-    private CircleTransform mTransform = new CircleTransform();
     private ManagedMediaPlayer.Status mMusicState = ManagedMediaPlayer.Status.IDLE;
 
 
@@ -159,7 +158,12 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
 
     @Override
     public void showContent(final Essay content) {
-        RealArticleAuthor author = content.getAuthor().get(0);
+        final RealArticleAuthor author = content.getAuthor().get(0);
+        mAuthorNameTV.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                OtherDetailActivity.jumpTo(EssayActivity.this,author.getUser_id());
+            }
+        });
         if (!TextUtils.isEmpty(author.getWeb_url())) {
             Picasso.with(this)
                     .load(author.getWeb_url())

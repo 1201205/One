@@ -40,7 +40,7 @@
         <activity android:name=".ui.MovieContentActivity"></activity>
         <activity android:name=".ui.MovieStoryActivity"></activity>
         <activity android:name=".ui.MovieListActivity"></activity>
-
+        <activity android:name=".ui.OtherDetailActivity"></activity>
     </application>
 
 </manifest>
