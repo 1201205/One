@@ -147,7 +147,7 @@ public class CommentAdapter extends BaseAdapter {
         private TextView date;
         private TextView num;
         private TextView other;
-        private TextView content;
+        private TextView content;   
         private TextView score;
     }
 
