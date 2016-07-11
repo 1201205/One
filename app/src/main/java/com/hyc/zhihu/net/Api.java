@@ -9,6 +9,7 @@ import com.hyc.zhihu.beans.IDList;
 import com.hyc.zhihu.beans.OnePictureData;
 import com.hyc.zhihu.beans.Other;
 import com.hyc.zhihu.beans.OtherCenter;
+import com.hyc.zhihu.beans.OtherDiary;
 import com.hyc.zhihu.beans.Question;
 import com.hyc.zhihu.beans.QuestionContent;
 import com.hyc.zhihu.beans.ReadingListItem;
@@ -155,6 +156,8 @@ public interface Api {
      * http://v3.wufazhuce.com:8000/api/movie/69/story/1/0 获取故事
      * http://v3.wufazhuce.com:8000/api/movie/69/story/0/0 获取全部故事
      * http://v3.wufazhuce.com:8000/api/comment/praiseandtime/movie/69/0
+     *
+     * http://v3.wufazhuce.com:8000/api/user/info/1030317
      */
     @GET("/api/music/idlist/{id}")
     Observable<IDList> getMusicIds(@Path("id") String id);
@@ -263,7 +266,7 @@ public interface Api {
 
     //手记
     @GET("/api/otherdiary/list/{id}/more/{index}")
-    Observable<BaseBean<List<Movie>>> getOtherDiaryByID(
+    Observable<BaseBean<List<OtherDiary>>> getOtherDiaryByID(
             @Path("id") String id, @Path("index") String index);
 
     @GET("/api/works/essay/{id}")

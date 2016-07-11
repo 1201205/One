@@ -8,8 +8,8 @@ import java.util.List;
 /**
  * Created by ray on 16/4/19.
  */
-public interface OtherPictureView extends BaseView{
-    void showPictures(List<OnePictureData> datas);
-    void refresh(List<OnePictureData> datas);
+public interface  OtherPictureView<T> extends BaseView{
+    void showList(List<T> datas);
+    void refresh(List<T> datas);
     void nothingGet();
 }

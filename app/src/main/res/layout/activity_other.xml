@@ -49,6 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <LinearLayout
+                    android:layout_marginRight="50dp"
                     android:visibility="gone"
                     android:id="@+id/dairy_ll"
                     android:orientation="vertical"
@@ -70,7 +71,6 @@
                 <LinearLayout
                     android:visibility="gone"
                     android:id="@+id/music_ll"
-                    android:layout_marginLeft="50dp"
                     android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">

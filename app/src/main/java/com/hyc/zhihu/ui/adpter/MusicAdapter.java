@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -36,6 +38,7 @@ import com.hyc.zhihu.player.MyPlayer;
 import com.hyc.zhihu.ui.MainActivity;
 import com.hyc.zhihu.ui.MusicMonthListActivity;
 import com.hyc.zhihu.ui.PictureActivity;
+import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.widget.ListViewForScrollView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -60,26 +63,31 @@ public class MusicAdapter extends PagerAdapter {
     private ImageView mPlayView;
     private int mPlayIndex;
 
+
     public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
         this.mLoadMoreListener = loadMoreListener;
     }
 
+
     private OnLoadMoreListener mLoadMoreListener;
+
 
     @Override
     public int getCount() {
         return viewBeans == null ? 0 : viewBeans.size();
     }
 
+
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
     }
 
+
     public MusicAdapter(List<MusicRelateListBean> relateBeans, List<Music> viewBean) {
         super();
         this.viewBeans = viewBean;
-//        this.mContext = context;
+        //        this.mContext = context;
         this.mRelateLists = relateBeans;
         mAdapters = new ArrayList<>();
         for (int i = 0; i < relateBeans.size(); i++) {
@@ -87,6 +95,7 @@ public class MusicAdapter extends PagerAdapter {
         }
         EventBus.getDefault().register(this);
     }
+
 
     @Override
     public int getItemPosition(Object object) {
@@ -97,6 +106,7 @@ public class MusicAdapter extends PagerAdapter {
             return POSITION_UNCHANGED;
         }
     }
+
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
@@ -110,6 +120,7 @@ public class MusicAdapter extends PagerAdapter {
         container.removeView((View) object);
         Log.e("test", "destroyItem----" + position);
     }
+
 
     @Subscribe
     public void onEvent(PlayCallBackEvent playEvent) {
@@ -130,13 +141,14 @@ public class MusicAdapter extends PagerAdapter {
         }
     }
 
+
     @Override
     public View instantiateItem(ViewGroup container, final int position) {
-//        int delay=0;
-//        if (mRefreshIndex==position) {
-//            mRefreshIndex=-1;
-//            delay=50;
-//        }
+        //        int delay=0;
+        //        if (mRefreshIndex==position) {
+        //            mRefreshIndex=-1;
+        //            delay=50;
+        //        }
         Context c = container.getContext();
         View view;
         final Music music = viewBeans.get(position);
@@ -146,8 +158,9 @@ public class MusicAdapter extends PagerAdapter {
             listView.setAdapter(new DateAdapter(getDateBeans(), MusicMonthListActivity.class));
         } else {
             view = LayoutInflater.from(c).inflate(R.layout.activity_question, null);
-            ListView listView = (ListView) view.findViewById(R.id.swipe_target);
-            SwipeToLoadLayout swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(R.id.swipeToLoadLayout);
+            final ListView listView = (ListView) view.findViewById(R.id.swipe_target);
+            final SwipeToLoadLayout swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(
+                R.id.swipeToLoadLayout);
             mRelateLists.get(position).setLayout(swipeToLoadLayout);
             View mHeader = LayoutInflater.from(c).inflate(R.layout.music_header, null);
             ManagedMediaPlayer.Status s = MyPlayer.getPlayer().getSourceStatus(music.getMusic_id());
@@ -166,8 +179,10 @@ public class MusicAdapter extends PagerAdapter {
                     }
                     mPlayIndex = position;
                     mPlayView = (ImageView) v;
-                    ManagedMediaPlayer.Status s = MyPlayer.getPlayer().getSourceStatus(music.getMusic_id());
-                    if (s == ManagedMediaPlayer.Status.IDLE || s == ManagedMediaPlayer.Status.STOPPED) {
+                    ManagedMediaPlayer.Status s = MyPlayer.getPlayer()
+                        .getSourceStatus(music.getMusic_id());
+                    if (s == ManagedMediaPlayer.Status.IDLE ||
+                        s == ManagedMediaPlayer.Status.STOPPED) {
                         PlayEvent e = new PlayEvent();
                         e.setSong(new Song(music.getTitle(), music.getMusic_id()));
                         e.setAction(PlayEvent.Action.PLAYITEM);
@@ -188,9 +203,9 @@ public class MusicAdapter extends PagerAdapter {
             });
             SimpleDraweeView musicIV = (SimpleDraweeView) mHeader.findViewById(R.id.music_iv);
             FrescoHelper.loadImage(musicIV, music.getCover());
-//            Picasso.with(mContext).load(music.getCover()).fit().into(musicIV);
+            //            Picasso.with(mContext).load(music.getCover()).fit().into(musicIV);
             SimpleDraweeView headIV = (SimpleDraweeView) mHeader.findViewById(R.id.head_iv);
-//            Picasso.with(mContext).load(music.getAuthor().getWeb_url()).into(headIV);
+            //            Picasso.with(mContext).load(music.getAuthor().getWeb_url()).into(headIV);
             FrescoHelper.loadImage(headIV, music.getAuthor().getWeb_url());
             TextView mAuthorTV = (TextView) mHeader.findViewById(R.id.name_tv);
             mAuthorTV.setText(music.getAuthor().getUser_name());
@@ -219,6 +234,7 @@ public class MusicAdapter extends PagerAdapter {
             commentNumTV.setText(music.getCommentnum() + "");
             TextView shareNumTV = (TextView) mHeader.findViewById(R.id.share_num_tv);
             shareNumTV.setText(music.getSharenum() + "");
+            View hot = mHeader.findViewById(R.id.hot_ll);
             List<MusicRelate> musicRelates = mRelateLists.get(position).getMusics();
             List<Comment> comments = mRelateLists.get(position).getHotComment();
             if (musicRelates != null && musicRelates.size() > 0) {
@@ -233,31 +249,54 @@ public class MusicAdapter extends PagerAdapter {
                 v.setVisibility(View.GONE);
             }
             if (comments != null && comments.size() > 0) {
-                ListViewForScrollView hotCommentsLV = (ListViewForScrollView) mHeader.findViewById(R.id.hot_lv);
+                ListViewForScrollView hotCommentsLV = (ListViewForScrollView) mHeader.findViewById(
+                    R.id.hot_lv);
                 CommentAdapter adapter = new CommentAdapter();
                 hotCommentsLV.setAdapter(adapter);
                 adapter.refreshComments(comments);
+                hot.setVisibility(View.VISIBLE);
+            } else {
+                hot.setVisibility(View.GONE);
             }
             if (mLoadMoreListener != null) {
-                swipeToLoadLayout.setOnLoadMoreListener(new com.aspsine.swipetoloadlayout.OnLoadMoreListener() {
-                    @Override
-                    public void onLoadMore() {
-                        mLoadMoreListener.loadMore(position, mRelateLists.get(position).getLastIndex());
-                    }
-                });
+                swipeToLoadLayout.setOnLoadMoreListener(
+                    new com.aspsine.swipetoloadlayout.OnLoadMoreListener() {
+                        @Override
+                        public void onLoadMore() {
+                            mLoadMoreListener.loadMore(position,
+                                mRelateLists.get(position).getLastIndex());
+                        }
+                    });
             }
 
-//            mAuthorHeaderIV = (CircleImageView) mHeader.findViewById(R.id.author_head_iv);
-//            mHeaderIV = (CircleImageView) mHeader.findViewById(R.id.head_iv);
-//            mAuthorNameTV = (TextView) mHeader.findViewById(R.id.author_name_tv);
-//            mRelateLV = (ListViewForScrollView) mHeader.findViewById(R.id.relate_lv);
-//            mRelateLL = (LinearLayout) mHeader.findViewById(R.id.relate_ll);
+            //            mAuthorHeaderIV = (CircleImageView) mHeader.findViewById(R.id.author_head_iv);
+            //            mHeaderIV = (CircleImageView) mHeader.findViewById(R.id.head_iv);
+            //            mAuthorNameTV = (TextView) mHeader.findViewById(R.id.author_name_tv);
+            //            mRelateLV = (ListViewForScrollView) mHeader.findViewById(R.id.relate_lv);
+            //            mRelateLL = (LinearLayout) mHeader.findViewById(R.id.relate_ll);
             listView.addHeaderView(mHeader);
             listView.setAdapter(mAdapters.get(position));
+            listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+                @Override public void onScrollStateChanged(AbsListView view, int scrollState) {
+                    if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                        if (mRelateLists.get(position).hasMoreComment() &&
+                            view.getLastVisiblePosition() == view.getCount() - 1 &&
+                            !ViewCompat.canScrollVertically(view, 1)) {
+                            swipeToLoadLayout.setLoadingMore(true);
+                        }
+                    }
+                }
+
+
+                @Override
+                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+                }
+            });
             final ImageView storyIV = (ImageView) mHeader.findViewById(R.id.story_iv);
             ImageView lyricIV = (ImageView) mHeader.findViewById(R.id.lyric_iv);
             final ImageView infoIV = (ImageView) mHeader.findViewById(R.id.info_iv);
-//            swipeToLoadLayout.setOnLoadMoreListener(this);
+            //            swipeToLoadLayout.setOnLoadMoreListener(this);
             storyIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -296,6 +335,7 @@ public class MusicAdapter extends PagerAdapter {
 
     }
 
+
     public void setRelate(int page, List<MusicRelate> musicRelates) {
         mCurrentId = mRelateLists.get(page).getId();
         mRelateLists.get(page).setHasRequested(true);
@@ -305,9 +345,11 @@ public class MusicAdapter extends PagerAdapter {
         }
     }
 
+
     public boolean neeRequest(int page) {
         return !mRelateLists.get(page).hasRequested();
     }
+
 
     public void setComment(int page, List<Comment> hot, List<Comment> normal) {
         mCurrentId = mRelateLists.get(page).getId();
@@ -324,63 +366,74 @@ public class MusicAdapter extends PagerAdapter {
         notifyDataSetChanged();
     }
 
-    public void refreshComment(int page, List<Comment> comments) {
-        mCurrentId = mRelateLists.get(page).getId();
-        mAdapters.get(page).refreshComments(comments);
-        String index = null;
-        if (comments.size() > 0) {
-            index = comments.get(comments.size() - 1).getId();
-        }
-        mRelateLists.get(page).setLastIndex(index);
-        MusicRelateListBean bean = mRelateLists.get(page);
 
+    public void refreshComment(int page, List<Comment> comments) {
+        String index = null;
+        MusicRelateListBean bean = mRelateLists.get(page);
         SwipeToLoadLayout v = bean.getLayout();
         if (v != null) {
             v.setLoadingMore(false);
         }
+        if (comments.size() > 0) {
+            index = comments.get(comments.size() - 1).getId();
+            mCurrentId = mRelateLists.get(page).getId();
+            mAdapters.get(page).refreshComments(comments);
+        } else {
+            bean.setHasMoreComment(false);
+            AppUtil.showToast(R.string.no_more);
+            if (v!=null) {
+                v.setLoadMoreEnabled(false);
+            }
+        }
+        bean.setLastIndex(index);
     }
+
 
     private View.OnClickListener getOnclickListener(final String title, final String url, final View vol) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                ActivityOptionsCompat compat=  ActivityOptionsCompat.makeSceneTransitionAnimation((MainActivity) mContext,new Pair<View, String>(v,PictureActivity.SHARE_TITLE),new Pair<View, String>(vol,PictureActivity.SHARE_PICTURE));
+                //                ActivityOptionsCompat compat=  ActivityOptionsCompat.makeSceneTransitionAnimation((MainActivity) mContext,new Pair<View, String>(v,PictureActivity.SHARE_TITLE),new Pair<View, String>(vol,PictureActivity.SHARE_PICTURE));
 
-                ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation((MainActivity) mContext, v, PictureActivity.SHARE_PICTURE);
+                ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    (MainActivity) mContext, v, PictureActivity.SHARE_PICTURE);
                 Intent intent = PictureActivity.newIntent(mContext, url, title);
-//                ((MainActivity) mContext).getWindow().setSharedElementEnterTransition(new ChangeImageTransform(mContext, null));
+                //                ((MainActivity) mContext).getWindow().setSharedElementEnterTransition(new ChangeImageTransform(mContext, null));
                 ActivityCompat.startActivity((MainActivity) mContext, intent, compat.toBundle());
-//                mContext.startActivity(intent, compat.toBundle());
+                //                mContext.startActivity(intent, compat.toBundle());
             }
         };
     }
 
 
     public void setCurrentItem(String id, OnePictureData data) {
-//        Log.e("test1", "显示信息");
-//        mCurrentId = id;
-//        for (int i = 0; i < viewBeans.size(); i++) {
-//            if (viewBeans.get(i).id.equals(id)) {
-//                viewBeans.get(i).data = data;
-//                viewBeans.get(i).state = PictureViewBean.NORMAL;
-//                Log.e("test1", "notifyDataSetChanged");
-//                DelayHandle.delay(150, new Runnable() {
-//                    @Override
-//                    public void run() {
-//                       notifyDataSetChanged();
-//                    }
-//                });
-//                break;
-//            }
-//        }
+        //        Log.e("test1", "显示信息");
+        //        mCurrentId = id;
+        //        for (int i = 0; i < viewBeans.size(); i++) {
+        //            if (viewBeans.get(i).id.equals(id)) {
+        //                viewBeans.get(i).data = data;
+        //                viewBeans.get(i).state = PictureViewBean.NORMAL;
+        //                Log.e("test1", "notifyDataSetChanged");
+        //                DelayHandle.delay(150, new Runnable() {
+        //                    @Override
+        //                    public void run() {
+        //                       notifyDataSetChanged();
+        //                    }
+        //                });
+        //                break;
+        //            }
+        //        }
 
     }
 
+
     private int mCurrentPage;
+
 
     public void setCurrentPage(int page) {
         mCurrentPage = page;
     }
+
 
     private List<DateBean> getDateBeans() {
         List<DateBean> dateBeans = new ArrayList<>();
@@ -398,6 +451,7 @@ public class MusicAdapter extends PagerAdapter {
         return dateBeans;
     }
 
+
     public static void main(String[] args) {
         GregorianCalendar calendar = new GregorianCalendar();
         GregorianCalendar temp = new GregorianCalendar(2012, 9, 1);
@@ -410,16 +464,18 @@ public class MusicAdapter extends PagerAdapter {
 
     }
 
+
     public void clear() {
         viewBeans.clear();
         mAdapters.clear();
         mRelateLists.clear();
-        for (MusicRelateListBean bean:mRelateLists) {
+        for (MusicRelateListBean bean : mRelateLists) {
             bean.setLayout(null);
         }
-        mPlayView=null;
+        mPlayView = null;
         EventBus.getDefault().unregister(this);
     }
+
 
     public interface OnLoadMoreListener {
         void loadMore(int page, String lastIndex);

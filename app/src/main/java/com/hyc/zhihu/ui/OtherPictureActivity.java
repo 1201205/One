@@ -31,7 +31,7 @@ import java.util.List;
  * Created by hyc on 2016/5/13.
  */
 public class OtherPictureActivity extends BaseActivity<OtherPicturePresenter>
-        implements OtherPictureView, LoaderManager.LoaderCallbacks<OtherPicturePresenter>, OnLoadMoreListener {
+        implements OtherPictureView<OnePictureData>, LoaderManager.LoaderCallbacks<OtherPicturePresenter>, OnLoadMoreListener {
     private String mID;
     private RecyclerView mRecyclerView;
     private SwipeToLoadLayout mSwipeToLoadLayout;
@@ -95,7 +95,7 @@ public class OtherPictureActivity extends BaseActivity<OtherPicturePresenter>
     public void onLoadFinished(Loader loader, OtherPicturePresenter data) {
         mPresenter = data;
         mPresenter.attachView();
-        mPresenter.showPicture("6109953");
+        mPresenter.showPicture(mID);
     }
 
 
@@ -106,7 +106,7 @@ public class OtherPictureActivity extends BaseActivity<OtherPicturePresenter>
 
 
     @Override
-    public void showPictures(List<OnePictureData> datas) {
+    public void showList(List<OnePictureData> datas) {
         mMonthPictureAdapter = new MonthPictureAdapter(datas, this);
         mRecyclerView.setAdapter(mMonthPictureAdapter);
         if (datas.size()<PAGE_COUNT) {
@@ -130,7 +130,7 @@ public class OtherPictureActivity extends BaseActivity<OtherPicturePresenter>
         } else {
             mSwipeToLoadLayout.setLoadingMore(false);
             mSwipeToLoadLayout.setLoadMoreEnabled(false);
-            AppUtil.showToast("客官，没有更多啦啦啦");
+            AppUtil.showToast(R.string.no_more);
         }
     }
 

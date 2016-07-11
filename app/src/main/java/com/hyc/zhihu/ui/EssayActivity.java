@@ -75,6 +75,7 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
     private ListViewForScrollView mRelateLV;
     private ListViewForScrollView mHotCommentsLV;
     private LinearLayout mRelateLL;
+    private LinearLayout mHotLL;
     private CommentAdapter mCommentAdapter;
     private String mID;
     public static final String ID = "id";
@@ -136,6 +137,7 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
         mContentTV = (TextView) mHeader.findViewById(R.id.content_tv);
         mAuthorDesTV = (TextView) mHeader.findViewById(R.id.author_des_tv);
         mDateTV = (TextView) mHeader.findViewById(R.id.date_tv);
+        mHotLL= (LinearLayout) mHeader.findViewById(R.id.hot_ll);
         mAuthorHeaderIV = (CircleImageView) mHeader.findViewById(R.id.author_head_iv);
         mHeaderIV = (CircleImageView) mHeader.findViewById(R.id.head_iv);
         mEditorTV = (TextView) mHeader.findViewById(R.id.editor_tv);
@@ -283,9 +285,14 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
 
     @Override
     public void showHotComments(List<Comment> comments) {
-        CommentAdapter adapter = new CommentAdapter();
-        mHotCommentsLV.setAdapter(adapter);
-        adapter.refreshComments(comments);
+        if (comments == null || comments.size() == 0) {
+            mHotLL.setVisibility(View.GONE);
+        } else {
+            CommentAdapter adapter = new CommentAdapter();
+            mHotCommentsLV.setAdapter(adapter);
+            adapter.refreshComments(comments);
+        }
+
     }
 
 

@@ -52,6 +52,7 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
     ReadingContentView<SerialContent, Serial>,
     OnLoadMoreListener,
     LoaderManager.LoaderCallbacks<SerialContentPresenter> {
+    public static final String ID = "id";
     private SwipeToLoadLayout swipeToLoadLayout;
     private View mHeader;
     private TextView mTitleTV;
@@ -70,9 +71,9 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
     private LinearLayout mRelateLL;
     private CommentAdapter mCommentAdapter;
     private String mID;
-    public static final String ID = "id";
     private boolean mHasMoreComments = true;
     private CircleTransform mTransform = new CircleTransform();
+    private LinearLayout mHotLL;
 
 
     @Override
@@ -152,6 +153,8 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
         mEditorTV.setText(content.getCharge_edt());
         mAuthorTV.setText(author.getUser_name());
         mAuthorNameTV.setText(author.getUser_name());
+        mHotLL = (LinearLayout) mHeader.findViewById(R.id.hot_ll);
+
         mSerialIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,20 +206,28 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
 
     @Override
     public void showHotComments(List<Comment> comments) {
-        CommentAdapter adapter = new CommentAdapter();
-        mHotCommentsLV.setAdapter(adapter);
-        adapter.refreshComments(comments);
+        if (comments == null || comments.size() == 0) {
+            mHotLL.setVisibility(View.GONE);
+        } else {
+            CommentAdapter adapter = new CommentAdapter();
+            mHotCommentsLV.setAdapter(adapter);
+            adapter.refreshComments(comments);
+        }
     }
+
 
     @Override
     protected void initLoader() {
         getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
     }
+
+
     @Override
     public void showNoComments() {
         AppUtil.showToast("没有更多评论啦~~~");
         mHasMoreComments = false;
     }
+
 
     @Override
     public Loader<SerialContentPresenter> onCreateLoader(int id, Bundle args) {

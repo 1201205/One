@@ -19,7 +19,6 @@ public class AppUtil {
     public static void showToast(String s) {
         Toast.makeText(MainApplication.getApplication(), s, Toast.LENGTH_LONG).show();
     }
-
     public static void showToast(int id) {
         Toast.makeText(MainApplication.getApplication(), id, Toast.LENGTH_LONG).show();
     }

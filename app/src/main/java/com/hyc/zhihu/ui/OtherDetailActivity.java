@@ -29,7 +29,7 @@ import com.squareup.picasso.Picasso;
  * Created by ray on 16/7/10.
  */
 public class OtherDetailActivity extends BaseActivity<OtherDetailPresenter>
-        implements OtherDetailView, LoaderManager.LoaderCallbacks<OtherDetailPresenter> {
+    implements OtherDetailView, LoaderManager.LoaderCallbacks<OtherDetailPresenter> {
 
     private String mID;
     private CircleImageView mHeadCV;
@@ -51,6 +51,7 @@ public class OtherDetailActivity extends BaseActivity<OtherDetailPresenter>
         intent.putExtra(S.ID, id);
         context.startActivity(intent);
     }
+
 
     @Override
     protected void initLoader() {
@@ -81,7 +82,14 @@ public class OtherDetailActivity extends BaseActivity<OtherDetailPresenter>
         mPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppUtil.startActivityWithID(mID, OtherDetailActivity.this, OtherPictureActivity.class);
+                AppUtil.startActivityWithID(mID, OtherDetailActivity.this,
+                    OtherPictureActivity.class);
+            }
+        });
+        mMusicLL.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                AppUtil.startActivityWithID(mID, OtherDetailActivity.this,
+                    OtherMusicActivity.class);
             }
         });
     }

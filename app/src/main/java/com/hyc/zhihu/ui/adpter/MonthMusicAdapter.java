@@ -38,7 +38,11 @@ public class MonthMusicAdapter extends RecyclerView.Adapter <MonthMusicAdapter.V
         View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.music_month_item,parent,false);
         return new ViewHolder(v);
     }
-
+    public void addItems(List<MusicMonthItem> datas){
+        int start=datas.size();
+        mDatas.addAll(datas);
+        notifyItemInserted(start);
+    }
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final MusicMonthItem item=mDatas.get(position);

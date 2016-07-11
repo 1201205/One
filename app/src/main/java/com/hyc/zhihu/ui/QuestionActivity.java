@@ -59,6 +59,7 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
     private ListViewForScrollView mHotCommentsLV;
     private LinearLayout mRelateLL;
     private CommentAdapter mCommentAdapter;
+    private LinearLayout mHotLL;
     private String mID;
     public static final String ID = "id";
     private boolean mHasMoreComments = true;
@@ -100,6 +101,8 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
         mEditorTV = (TextView) mHeader.findViewById(R.id.editor_tv);
         mRelateLV = (ListViewForScrollView) mHeader.findViewById(R.id.relate_lv);
         mRelateLL = (LinearLayout) mHeader.findViewById(R.id.relate_ll);
+        mHotLL = (LinearLayout) mHeader.findViewById(R.id.hot_ll);
+
         mHotCommentsLV = (ListViewForScrollView) mHeader.findViewById(R.id.hot_lv);
         listView.addHeaderView(mHeader);
         mCommentAdapter = new CommentAdapter();
@@ -164,9 +167,13 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
 
     @Override
     public void showHotComments(List<Comment> comments) {
-        CommentAdapter adapter = new CommentAdapter();
-        mHotCommentsLV.setAdapter(adapter);
-        adapter.refreshComments(comments);
+        if (comments == null || comments.size() == 0) {
+            mHotLL.setVisibility(View.GONE);
+        } else {
+            CommentAdapter adapter = new CommentAdapter();
+            mHotCommentsLV.setAdapter(adapter);
+            adapter.refreshComments(comments);
+        }
     }
 
 
