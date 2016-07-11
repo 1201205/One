@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.hyc.zhihu.R;
+import com.hyc.zhihu.base.BaseActivity;
 import com.hyc.zhihu.beans.OnePictureData;
 import com.hyc.zhihu.ui.MainActivity;
 import com.hyc.zhihu.ui.MonthPictureActivity;
@@ -36,7 +37,11 @@ public class MonthPictureAdapter extends RecyclerView.Adapter <MonthPictureAdapt
         View v= LayoutInflater.from(mContext).inflate(R.layout.month_picture_item,parent,false);
         return new ViewHolder(v);
     }
-
+    public void addItems(List<OnePictureData> datas){
+        int start=mDatas.size();
+        mDatas.addAll(datas);
+        notifyItemInserted(start);
+    }
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         Picasso.with(mContext).load(mDatas.get(position).getHp_img_original_url()).fit().into(holder.image);
@@ -44,12 +49,12 @@ public class MonthPictureAdapter extends RecyclerView.Adapter <MonthPictureAdapt
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(mContext,PictureDetailActivity.class);
-                ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation((MonthPictureActivity) mContext, v, "test1");
+                ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation((BaseActivity) mContext, v, "test1");
                 intent.putExtra(PictureDetailActivity.PICTURE_DATA,mDatas.get(position));
                 intent.putExtra("test2",mDatas.get(position).getHp_img_original_url());
 //                ((MonthPictureActivity) mContext).getWindow().setSharedElementEnterTransition(new ChangeImageTransform(mContext, null));
 //                mContext.startActivity(intent, compat.toBundle());
-                ActivityCompat.startActivity((MonthPictureActivity) mContext, intent, compat.toBundle());
+                ActivityCompat.startActivity((BaseActivity) mContext, intent, compat.toBundle());
             }
         });
     }

@@ -82,7 +82,7 @@ public class MonthPictureActivity extends BaseActivity<MonthPicturePresenter>
 
     @Override
     public void onLoaderReset(Loader loader) {
-
+        mPresenter=null;
     }
 
 

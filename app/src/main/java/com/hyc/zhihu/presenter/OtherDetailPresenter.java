@@ -1,5 +1,7 @@
 package com.hyc.zhihu.presenter;
 
+import android.os.Handler;
+
 import com.hyc.zhihu.base.BasePresenter;
 import com.hyc.zhihu.base.DefaultTransformer;
 import com.hyc.zhihu.base.ExceptionAction;

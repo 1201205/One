@@ -210,7 +210,7 @@ public interface Api {
      * 获取用户收藏的电影
      * http://v3.wufazhuce.com:8000/api/othercollection/4744180/more/5/0?
      * http://v3.wufazhuce.com:8000/api/othercollection/1914344/more/1/0?
-     * 获取用户手记
+     * 获取用户手记5541601
      * http://v3.wufazhuce.com:8000/api/otherdiary/list/1914344/more/0
      * 获取作者的文章
      * http://v3.wufazhuce.com:8000/api/works/essay/4814667?

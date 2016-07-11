@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.base.BaseActivity;
 import com.hyc.zhihu.base.BasePresenter;
@@ -21,16 +22,17 @@ import com.hyc.zhihu.presenter.OtherDetailPresenter;
 import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.OtherDetailView;
+import com.hyc.zhihu.widget.CircleImageView;
 import com.squareup.picasso.Picasso;
 
 /**
  * Created by ray on 16/7/10.
  */
 public class OtherDetailActivity extends BaseActivity<OtherDetailPresenter>
-    implements OtherDetailView, LoaderManager.LoaderCallbacks<OtherDetailPresenter> {
+        implements OtherDetailView, LoaderManager.LoaderCallbacks<OtherDetailPresenter> {
 
     private String mID;
-    private ImageView mHeadIV;
+    private CircleImageView mHeadCV;
     private TextView mNameTV;
     private TextView mDesTV;
     private LinearLayout mDairyLL;
@@ -44,24 +46,27 @@ public class OtherDetailActivity extends BaseActivity<OtherDetailPresenter>
     private ImageView mBackgroundIV;
 
 
-    public static void jumpTo(Context context,String id){
-        Intent intent=new Intent(context,OtherDetailActivity.class);
-        intent.putExtra(S.ID,id);
+    public static void jumpTo(Context context, String id) {
+        Intent intent = new Intent(context, OtherDetailActivity.class);
+        intent.putExtra(S.ID, id);
         context.startActivity(intent);
     }
 
-    @Override protected void initLoader() {
+    @Override
+    protected void initLoader() {
         getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
     }
 
 
-    @Override protected void handleIntent() {
+    @Override
+    protected void handleIntent() {
         mID = getIntent().getStringExtra(S.ID);
     }
 
 
-    @Override protected void initView() {
-        mHeadIV = (ImageView) findViewById(R.id.head_iv);
+    @Override
+    protected void initView() {
+        mHeadCV = (CircleImageView) findViewById(R.id.head_cv);
         mNameTV = (TextView) findViewById(R.id.name_tv);
         mDesTV = (TextView) findViewById(R.id.des_tv);
         mDairyLL = (LinearLayout) findViewById(R.id.dairy_ll);
@@ -72,17 +77,27 @@ public class OtherDetailActivity extends BaseActivity<OtherDetailPresenter>
         mPicture = findViewById(R.id.picture_rl);
         mMovie = findViewById(R.id.movie_rl);
         mBackgroundIV = (ImageView) findViewById(R.id.background_iv);
+
+        mPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppUtil.startActivityWithID(mID, OtherDetailActivity.this, OtherPictureActivity.class);
+            }
+        });
     }
 
 
-    @Override protected int getLayoutID() {
+    @Override
+    protected int getLayoutID() {
         return R.layout.activity_other;
     }
 
 
-    @Override public Loader<OtherDetailPresenter> onCreateLoader(int id, Bundle args) {
+    @Override
+    public Loader<OtherDetailPresenter> onCreateLoader(int id, Bundle args) {
         return new PresenterLoader<OtherDetailPresenter>(this, new PresenterFactory() {
-            @Override public BasePresenter create() {
+            @Override
+            public BasePresenter create() {
                 return new OtherDetailPresenter(OtherDetailActivity.this);
             }
         });
@@ -97,17 +112,22 @@ public class OtherDetailActivity extends BaseActivity<OtherDetailPresenter>
     }
 
 
-    @Override public void onLoaderReset(Loader<OtherDetailPresenter> loader) {
+    @Override
+    public void onLoaderReset(Loader<OtherDetailPresenter> loader) {
         loader = null;
     }
 
 
-    @Override public void showContent(Other other) {
+    @Override
+    public void showContent(Other other) {
         if (!TextUtils.isEmpty(other.getWeb_url())) {
-            Picasso.with(this).load(other.getWeb_url()).into(mHeadIV);
+            Picasso.with(this).load(other.getWeb_url()).into(mHeadCV);
         }
         if (!TextUtils.isEmpty(other.getBackground())) {
-            Picasso.with(this).load(other.getWeb_url()).into(mBackgroundIV);
+            Picasso.with(this).load(other.getBackground()).fit().into(mBackgroundIV);
+        } else {
+            Picasso.with(this).load(R.drawable.default_indi_bg).fit().into(mBackgroundIV);
+
         }
         mDesTV.setText(other.getDesc());
         mNameTV.setText(other.getUser_name());
@@ -117,23 +137,21 @@ public class OtherDetailActivity extends BaseActivity<OtherDetailPresenter>
     }
 
 
-    @Override public void showDairyAndMusic(OtherCenter otherCenter) {
-        if (otherCenter.getHas_essay() == 1) {
+    @Override
+    public void showDairyAndMusic(OtherCenter otherCenter) {
+        if (!TextUtils.isEmpty(otherCenter.getDiary())) {
             mDairyLL.setVisibility(View.VISIBLE);
-            if (!TextUtils.isEmpty(otherCenter.getDiary())) {
-                Picasso.with(this).load(otherCenter.getDiary()).into(mDairyIV);
-            }
+            Picasso.with(this).load(otherCenter.getDiary()).fit().into(mDairyIV);
         }
-        if (otherCenter.getHas_music() == 1) {
+        if (!TextUtils.isEmpty(otherCenter.getMusic())) {
             mMusicLL.setVisibility(View.VISIBLE);
-            if (!TextUtils.isEmpty(otherCenter.getMusic())) {
-                Picasso.with(this).load(otherCenter.getMusic()).into(mMusicIV);
-            }
+            Picasso.with(this).load(otherCenter.getMusic()).fit().into(mMusicIV);
         }
     }
 
 
-    @Override public void onNothingGet() {
-
+    @Override
+    public void onNothingGet() {
+        AppUtil.showToast("没有获取到数据哦。。。");
     }
 }

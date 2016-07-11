@@ -1,5 +1,7 @@
 package com.hyc.zhihu.base;
 
+import android.text.TextUtils;
+
 import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
 
@@ -14,7 +16,7 @@ public abstract class ExceptionAction implements Action1<Throwable> {
 
     @Override
     public void call(Throwable throwable) {
-        if (S.NO_THING_GET.equals(throwable.getMessage())) {
+        if (!TextUtils.isEmpty(throwable.getMessage())&&throwable.getMessage().contains(S.NO_THING_GET)) {
             onNothingGet();
         } else {
             AppUtil.showToast("网络错误，请检查");
