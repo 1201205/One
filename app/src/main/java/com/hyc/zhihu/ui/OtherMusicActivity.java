@@ -14,12 +14,17 @@ import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.base.BaseActivity;
 import com.hyc.zhihu.base.BasePresenter;
+import com.hyc.zhihu.base.BaseRecyclerAdapter;
+import com.hyc.zhihu.base.ListPresenter;
 import com.hyc.zhihu.base.PresenterFactory;
 import com.hyc.zhihu.base.PresenterLoader;
 import com.hyc.zhihu.beans.music.MusicMonthItem;
 import com.hyc.zhihu.presenter.MusicMonthPresenter;
 import com.hyc.zhihu.presenter.OtherMusicPresenter;
+import com.hyc.zhihu.ui.adpter.AdapterFactory;
+import com.hyc.zhihu.ui.adpter.ListPresenterFactory;
 import com.hyc.zhihu.ui.adpter.MonthMusicAdapter;
+import com.hyc.zhihu.ui.adpter.MonthMusicAdapter2;
 import com.hyc.zhihu.ui.adpter.MonthPictureAdapter;
 import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
@@ -32,14 +37,14 @@ import java.util.List;
 /**
  * Created by ray on 16/5/26.
  */
-public class OtherMusicActivity extends BaseActivity<OtherMusicPresenter>
-    implements OtherPictureView<MusicMonthItem>,
-    LoaderManager.LoaderCallbacks<OtherMusicPresenter>,
+public class OtherMusicActivity extends BaseActivity
+    implements OtherPictureView,
     OnLoadMoreListener {
     private RecyclerView mRecyclerView;
     private SwipeToLoadLayout mSwipeToLoadLayout;
     private String mID;
-    private MonthMusicAdapter mAdapter;
+    private String mType;
+    private BaseRecyclerAdapter mAdapter;
     private ImageView mNoItemIV;
     private boolean mCanLoad = true;
     private LinearLayoutManager mLayoutManager;
@@ -49,30 +54,12 @@ public class OtherMusicActivity extends BaseActivity<OtherMusicPresenter>
     @Override
     protected void handleIntent() {
         mID = getIntent().getStringExtra(S.ID);
+        mType = getIntent().getStringExtra(S.TYPE);
     }
 
 
     @Override
     protected void initView() {
-        HashMap<String,Integer> integerHashMap=new HashMap<>();
-        integerHashMap.put("多云",R.drawable.weather_cloudy);
-        integerHashMap.put("沙尘暴",R.drawable.weather_duststorm);
-        integerHashMap.put("雾",R.drawable.weather_foggy);
-        integerHashMap.put("小雨",R.drawable.weather_light_rain);
-        integerHashMap.put("阴",R.drawable.weather_overcast);
-        integerHashMap.put("晴",R.drawable.weather_sunny);
-        integerHashMap.put("阵雨",R.drawable.weather_shower);
-        integerHashMap.put("雾霾",R.drawable.weather_haze);
-        integerHashMap.put("大雨",R.drawable.weather_heavy_rain);
-        integerHashMap.put("大雪",R.drawable.weather_heavy_snow);
-        integerHashMap.put("雨冰",R.drawable.weather_ice_rain);
-        integerHashMap.put("小雪",R.drawable.weather_light_snow);
-        integerHashMap.put("中雨",R.drawable.weather_moderate_rain);
-        integerHashMap.put("雨夹雪",R.drawable.weather_sleet);
-        integerHashMap.put("阵雪",R.drawable.weather_snow_flurry);
-        integerHashMap.put("暴风雨",R.drawable.weather_storm);
-        integerHashMap.put("雷阵雨",R.drawable.weather_thundershower);
-
         mSwipeToLoadLayout = (SwipeToLoadLayout) findViewById(R.id.swipeToLoadLayout);
         mRecyclerView = (RecyclerView) findViewById(R.id.swipe_target);
         mLayoutManager = new LinearLayoutManager(this);
@@ -97,6 +84,9 @@ public class OtherMusicActivity extends BaseActivity<OtherMusicPresenter>
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
+        mPresenter= ListPresenterFactory.getPresenter(this,mType);
+        mPresenter.attachView();
+        ((ListPresenter)mPresenter).showList(mID);
     }
 
 
@@ -108,37 +98,55 @@ public class OtherMusicActivity extends BaseActivity<OtherMusicPresenter>
 
     @Override
     protected void initLoader() {
-        getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
+//        getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
     }
+
+//
+//    @Override
+//    public Loader<OtherMusicPresenter> onCreateLoader(int id, Bundle args) {
+//        return new PresenterLoader<OtherMusicPresenter>(this, new PresenterFactory() {
+//            @Override
+//            public BasePresenter create() {
+//                return new OtherMusicPresenter(OtherMusicActivity.this);
+//            }
+//        });
+//    }
+
+
+//    @Override
+//    public void onLoadFinished(Loader<OtherMusicPresenter> loader, OtherMusicPresenter data) {
+//        mPresenter = data;
+//        mPresenter.attachView();
+//        mPresenter.showList(mID);
+//    }
+
+
+//    @Override
+//    public void onLoaderReset(Loader<OtherMusicPresenter> loader) {
+//        mPresenter = null;
+//    }
+
+
+//    @Override public void showList(List<MusicMonthItem> datas) {
+//        mAdapter = new MonthMusicAdapter2(this,datas);
+//        mRecyclerView.setAdapter(mAdapter);
+//        if (datas.size() < PAGE_COUNT) {
+//            mCanLoad = false;
+//            mSwipeToLoadLayout.setLoadMoreEnabled(false);
+//        }
+//    }
+//
+//
+//    @Override public void refresh(List<MusicMonthItem> datas) {
+//        mSwipeToLoadLayout.setLoadingMore(false);
+//        mAdapter.addItems(datas);
+//    }
+
 
 
     @Override
-    public Loader<OtherMusicPresenter> onCreateLoader(int id, Bundle args) {
-        return new PresenterLoader<OtherMusicPresenter>(this, new PresenterFactory() {
-            @Override
-            public BasePresenter create() {
-                return new OtherMusicPresenter(OtherMusicActivity.this);
-            }
-        });
-    }
-
-
-    @Override
-    public void onLoadFinished(Loader<OtherMusicPresenter> loader, OtherMusicPresenter data) {
-        mPresenter = data;
-        mPresenter.attachView();
-        mPresenter.showList(mID);
-    }
-
-
-    @Override
-    public void onLoaderReset(Loader<OtherMusicPresenter> loader) {
-        mPresenter = null;
-    }
-
-
-    @Override public void showList(List<MusicMonthItem> datas) {
-        mAdapter = new MonthMusicAdapter(datas);
+    public void showList(List datas) {
+        mAdapter = AdapterFactory.getAdapter(this, datas,mType);
         mRecyclerView.setAdapter(mAdapter);
         if (datas.size() < PAGE_COUNT) {
             mCanLoad = false;
@@ -146,12 +154,11 @@ public class OtherMusicActivity extends BaseActivity<OtherMusicPresenter>
         }
     }
 
-
-    @Override public void refresh(List<MusicMonthItem> datas) {
+    @Override
+    public void refresh(List datas) {
         mSwipeToLoadLayout.setLoadingMore(false);
         mAdapter.addItems(datas);
     }
-
 
     @Override public void nothingGet() {
         mCanLoad = false;
@@ -167,6 +174,6 @@ public class OtherMusicActivity extends BaseActivity<OtherMusicPresenter>
 
 
     @Override public void onLoadMore() {
-        mPresenter.refresh();
+        ((ListPresenter)mPresenter).refresh();
     }
 }

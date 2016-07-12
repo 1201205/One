@@ -2,33 +2,38 @@ package com.hyc.zhihu.presenter;
 
 import android.text.TextUtils;
 
+import com.hyc.zhihu.base.BasePresenter;
 import com.hyc.zhihu.base.DefaultTransformer;
 import com.hyc.zhihu.base.ExceptionAction;
 import com.hyc.zhihu.base.ListPresenter;
 import com.hyc.zhihu.beans.BaseBean;
-import com.hyc.zhihu.beans.OtherDiary;
+import com.hyc.zhihu.beans.movie.Movie;
 import com.hyc.zhihu.net.Requests;
 import com.hyc.zhihu.view.OtherPictureView;
+
 import java.util.List;
+
 import rx.functions.Action1;
 
 /**
  * Created by Administrator on 2016/7/11.
  */
-public class OtherDairyPresenter extends ListPresenter<OtherPictureView<OtherDiary>> {
+public class OtherMoviePresenter extends ListPresenter<OtherPictureView<Movie>> {
     private String mIndex;
     private String mID;
 
-
-    public OtherDairyPresenter(OtherPictureView view) {
+    public OtherMoviePresenter(OtherPictureView view) {
         super(view);
         mRealView=view;
     }
-
     @Override
     public void showList(String id) {
         mView.showLoading();
         mID = id;
+        getAndShow();
+    }
+    @Override
+    public void refresh() {
         getAndShow();
     }
     @Override
@@ -37,20 +42,17 @@ public class OtherDairyPresenter extends ListPresenter<OtherPictureView<OtherDia
             mIndex = "0";
         }
         mCompositeSubscription.add(
-            Requests.getApi()
-                .getOtherDiaryByID(mID, mIndex)
-                .compose(new DefaultTransformer<BaseBean<List<OtherDiary>>, List<OtherDiary>>())
-                .subscribe(new Action1<List<OtherDiary>>() {
+                Requests.getApi().getOtherMovieByID(mID, mIndex).compose(new DefaultTransformer<BaseBean<List<Movie>>, List<Movie>>()).subscribe(new Action1<List<Movie>>() {
                     @Override
-                    public void call(List<OtherDiary> oneDairyDatas) {
+                    public void call(List<Movie> oneMuiscDatas) {
                         mRealView.dismissLoading();
                         if ("0".equals(mIndex)) {
-                            mRealView.showList(oneDairyDatas);
+                            mRealView.showList(oneMuiscDatas);
                         } else {
-                            mRealView.refresh(oneDairyDatas);
+                            mRealView.refresh(oneMuiscDatas);
                         }
 
-                        mIndex = oneDairyDatas.get(oneDairyDatas.size() - 1).getId();
+                        mIndex = oneMuiscDatas.get(oneMuiscDatas.size() - 1).getId();
                     }
                 }, new ExceptionAction() {
                     @Override
@@ -59,10 +61,5 @@ public class OtherDairyPresenter extends ListPresenter<OtherPictureView<OtherDia
                         mRealView.nothingGet();
                     }
                 }));
-    }
-
-    @Override
-    public void refresh() {
-        getAndShow();
     }
 }

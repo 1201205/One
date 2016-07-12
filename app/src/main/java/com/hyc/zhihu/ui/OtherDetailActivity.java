@@ -70,6 +70,7 @@ public class OtherDetailActivity extends BaseActivity<OtherDetailPresenter>
         mHeadCV = (CircleImageView) findViewById(R.id.head_cv);
         mNameTV = (TextView) findViewById(R.id.name_tv);
         mDesTV = (TextView) findViewById(R.id.des_tv);
+        mDesTV.setText(null);
         mDairyLL = (LinearLayout) findViewById(R.id.dairy_ll);
         mMusicLL = (LinearLayout) findViewById(R.id.music_ll);
         mDairyIV = (ImageView) findViewById(R.id.dairy_iv);
@@ -88,8 +89,20 @@ public class OtherDetailActivity extends BaseActivity<OtherDetailPresenter>
         });
         mMusicLL.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                AppUtil.startActivityWithID(mID, OtherDetailActivity.this,
+                AppUtil.startActivityWithIDAndType(mID,S.MUSIC, OtherDetailActivity.this,
                     OtherMusicActivity.class);
+            }
+        });
+        mDairyLL.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                AppUtil.startActivityWithIDAndType(mID,S.DAIRY, OtherDetailActivity.this,
+                        OtherMusicActivity.class);
+            }
+        });
+        mMovie.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                AppUtil.startActivityWithIDAndType(mID,S.MOVIE, OtherDetailActivity.this,
+                        OtherMusicActivity.class);
             }
         });
     }

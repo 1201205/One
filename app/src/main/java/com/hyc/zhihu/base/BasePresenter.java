@@ -21,4 +21,7 @@ public class BasePresenter<T extends BaseView> {
         mCompositeSubscription = null;
         mView=null;
     }
+//    public void refresh(){
+//
+//    }
 }
