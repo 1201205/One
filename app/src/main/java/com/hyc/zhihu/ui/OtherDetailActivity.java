@@ -78,6 +78,7 @@ public class OtherDetailActivity extends BaseActivity<OtherDetailPresenter>
         mArticle = findViewById(R.id.article_rl);
         mPicture = findViewById(R.id.picture_rl);
         mMovie = findViewById(R.id.movie_rl);
+        mReading=findViewById(R.id.reading_rl);
         mBackgroundIV = (ImageView) findViewById(R.id.background_iv);
 
         mPicture.setOnClickListener(new View.OnClickListener() {
@@ -103,6 +104,12 @@ public class OtherDetailActivity extends BaseActivity<OtherDetailPresenter>
             @Override public void onClick(View v) {
                 AppUtil.startActivityWithIDAndType(mID,S.MOVIE, OtherDetailActivity.this,
                         OtherMusicActivity.class);
+            }
+        });
+        mReading.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                AppUtil.startActivityWithID(mID, OtherDetailActivity.this,
+                    OtherReadingActivity.class);
             }
         });
     }
@@ -154,6 +161,11 @@ public class OtherDetailActivity extends BaseActivity<OtherDetailPresenter>
         mNameTV.setText(other.getUser_name());
         if (other.getIsauthor() == 1) {
             mArticle.setVisibility(View.VISIBLE);
+            mArticle.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    AppUtil.startActivityWithIDAndType(mID,S.WORK,OtherDetailActivity.this,OtherMusicActivity.class);
+                }
+            });
         }
     }
 

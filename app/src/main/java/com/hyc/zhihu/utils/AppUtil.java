@@ -72,7 +72,12 @@ public class AppUtil {
         intent.putExtra(S.ID, id);
         context.startActivity(intent);
     }
-    public static void startActivityWithIDAndType(String id,String type, Context context, Class clazz) {
+    public static void startActivityWithType(int type, Context context, Class clazz) {
+        Intent intent = new Intent(context, clazz);
+        intent.putExtra(S.TYPE, type);
+        context.startActivity(intent);
+    }
+    public static void startActivityWithIDAndType(String id,int type, Context context, Class clazz) {
         Intent intent = new Intent(context, clazz);
         intent.putExtra(S.ID, id);
         intent.putExtra(S.TYPE, type);

@@ -17,5 +17,5 @@ public interface OtherReadingView extends BaseView {
 
     void showSerials(List<Serial> serials);
 
-    void noMore(String type);
+    void noMore(int type);
 }

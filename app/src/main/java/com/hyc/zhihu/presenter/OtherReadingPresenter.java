@@ -59,7 +59,7 @@ public class OtherReadingPresenter extends BasePresenter<OtherReadingView> {
 //        });
     }
 
-    public void refresh(String type) {
+    public void refresh(int type) {
         switch (type) {
             case S.ESSAY:
                 getOtherEssay();
@@ -93,7 +93,7 @@ public class OtherReadingPresenter extends BasePresenter<OtherReadingView> {
     }
 
     private void getOtherQuestion() {
-        Requests.getApi().getOtherQuestionByID(mID, mEssayIndex).compose(new DefaultTransformer<BaseBean<List<Question>>, List<Question>>()).subscribe(new Action1<List<Question>>() {
+        Requests.getApi().getOtherQuestionByID(mID, mQuestionIndex).compose(new DefaultTransformer<BaseBean<List<Question>>, List<Question>>()).subscribe(new Action1<List<Question>>() {
             @Override
             public void call(List<Question> questions) {
                 mView.showQuestions(questions);
@@ -103,14 +103,14 @@ public class OtherReadingPresenter extends BasePresenter<OtherReadingView> {
         }, new ExceptionAction() {
             @Override
             public void onNothingGet() {
-                mView.noMore(S.ESSAY);
+                mView.noMore(S.QUESTION);
                 checkDismissLoading();
             }
         });
     }
 
     private void getOtherSerial() {
-        Requests.getApi().getOtherSerialByID(mID, mEssayIndex).compose(new DefaultTransformer<BaseBean<List<Serial>>, List<Serial>>()).subscribe(new Action1<List<Serial>>() {
+        Requests.getApi().getOtherSerialByID(mID, mSerialIndex).compose(new DefaultTransformer<BaseBean<List<Serial>>, List<Serial>>()).subscribe(new Action1<List<Serial>>() {
             @Override
             public void call(List<Serial> serials) {
                 mView.showSerials(serials);
@@ -120,7 +120,7 @@ public class OtherReadingPresenter extends BasePresenter<OtherReadingView> {
         }, new ExceptionAction() {
             @Override
             public void onNothingGet() {
-                mView.noMore(S.ESSAY);
+                mView.noMore(S.SERIAL);
                 checkDismissLoading();
             }
         });

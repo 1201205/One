@@ -1,5 +1,6 @@
 package com.hyc.zhihu.ui;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -30,6 +31,7 @@ import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.MusicMonthView;
 import com.hyc.zhihu.view.OtherPictureView;
+import com.hyc.zhihu.widget.DividerItemDecoration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +45,7 @@ public class OtherMusicActivity extends BaseActivity
     private RecyclerView mRecyclerView;
     private SwipeToLoadLayout mSwipeToLoadLayout;
     private String mID;
-    private String mType;
+    private int mType;
     private BaseRecyclerAdapter mAdapter;
     private ImageView mNoItemIV;
     private boolean mCanLoad = true;
@@ -54,7 +56,7 @@ public class OtherMusicActivity extends BaseActivity
     @Override
     protected void handleIntent() {
         mID = getIntent().getStringExtra(S.ID);
-        mType = getIntent().getStringExtra(S.TYPE);
+        mType = getIntent().getIntExtra(S.TYPE,1);
     }
 
 
@@ -87,6 +89,8 @@ public class OtherMusicActivity extends BaseActivity
         mPresenter= ListPresenterFactory.getPresenter(this,mType);
         mPresenter.attachView();
         ((ListPresenter)mPresenter).showList(mID);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,RecyclerView.VERTICAL,
+            Color.GRAY));
     }
 
 

@@ -2,9 +2,11 @@ package com.hyc.zhihu.ui.adpter;
 
 import com.hyc.zhihu.base.BasePresenter;
 import com.hyc.zhihu.base.ListPresenter;
+import com.hyc.zhihu.presenter.MovieListPresenter2;
 import com.hyc.zhihu.presenter.OtherDairyPresenter;
 import com.hyc.zhihu.presenter.OtherMoviePresenter;
 import com.hyc.zhihu.presenter.OtherMusicPresenter;
+import com.hyc.zhihu.presenter.OtherWorkPresenter;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.OtherPictureView;
 
@@ -12,7 +14,7 @@ import com.hyc.zhihu.view.OtherPictureView;
  * Created by Administrator on 2016/7/12.
  */
 public class ListPresenterFactory {
-    public static ListPresenter getPresenter(OtherPictureView view, String tag){
+    public static ListPresenter getPresenter(OtherPictureView view, int tag){
         switch (tag){
             case S.DAIRY:
                 return new OtherDairyPresenter(view);
@@ -20,6 +22,10 @@ public class ListPresenterFactory {
                 return new OtherMoviePresenter(view);
             case S.MUSIC:
                 return new OtherMusicPresenter(view);
+            case S.MOVIE_LIST:
+                return new MovieListPresenter2(view);
+            case S.WORK:
+                return new OtherWorkPresenter(view);
         }
         return null;
     }

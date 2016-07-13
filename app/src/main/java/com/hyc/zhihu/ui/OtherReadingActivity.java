@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
+import android.support.v4.view.ViewPager;
+import android.view.View;
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.base.BaseActivity;
 import com.hyc.zhihu.base.BasePresenter;
@@ -48,7 +50,7 @@ public class OtherReadingActivity extends BaseActivity<OtherReadingPresenter> im
         mSerial = ListFragment.getInstance(S.SERIAL);
         ListFragment.LoadMoreListener loadMoreListener=new ListFragment.LoadMoreListener() {
             @Override
-            public void loadMore(String type) {
+            public void loadMore(int type) {
                 mPresenter.refresh(type);
             }
         };
@@ -57,8 +59,26 @@ public class OtherReadingActivity extends BaseActivity<OtherReadingPresenter> im
         mSerial.setListener(loadMoreListener);
         mAdapter=new ListFragmentAdapter(getSupportFragmentManager());
         mAdapter.add(mEssay);
-        mAdapter.add(mQuestion);
         mAdapter.add(mSerial);
+        mAdapter.add(mQuestion);
+        final ViewPager pager= (ViewPager) findViewById(R.id.reading_vpg);
+        pager.setAdapter(mAdapter);
+        pager.setOffscreenPageLimit(3);
+        findViewById(R.id.essay_tv).setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                pager.setCurrentItem(0);
+            }
+        });
+        findViewById(R.id.serial_tv).setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                pager.setCurrentItem(1);
+            }
+        });
+        findViewById(R.id.question_tv).setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                pager.setCurrentItem(2);
+            }
+        });
     }
 
     @Override
@@ -104,16 +124,16 @@ public class OtherReadingActivity extends BaseActivity<OtherReadingPresenter> im
     }
 
     @Override
-    public void noMore(String type) {
+    public void noMore(int type) {
         switch (type){
             case S.ESSAY:
                 mEssay.noMore();
                 break;
             case S.QUESTION:
-                mEssay.noMore();
+                mQuestion.noMore();
                 break;
             case S.SERIAL:
-                mEssay.noMore();
+                mSerial.noMore();
                 break;
             default:
                 break;

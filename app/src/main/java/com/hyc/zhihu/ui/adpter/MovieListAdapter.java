@@ -2,9 +2,11 @@ package com.hyc.zhihu.ui.adpter;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -14,6 +16,7 @@ import com.hyc.zhihu.helper.FrescoHelper;
 import com.hyc.zhihu.ui.MovieContentActivity;
 import com.hyc.zhihu.utils.S;
 
+import com.squareup.picasso.Picasso;
 import java.util.List;
 
 /**
@@ -40,8 +43,18 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Movie movie = mMovies.get(position);
-        FrescoHelper.loadImage(holder.image, movie.getCover());
-        holder.score.setText(movie.getScore());
+        Picasso.with(holder.image.getContext()).load(movie.getCover()).fit().into(holder.image);
+        //FrescoHelper.loadImage(holder.image, movie.getCover());
+        if (TextUtils.isEmpty(movie.getScore())) {
+            holder.line.setVisibility(View.GONE);
+            holder.no.setVisibility(View.VISIBLE);
+            holder.score.setText("");
+        } else {
+            holder.line.setVisibility(View.VISIBLE);
+            holder.no.setVisibility(View.GONE);
+            holder.score.setText(movie.getScore());
+        }
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,13 +71,17 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        private SimpleDraweeView image;
+        private ImageView image;
+        private ImageView line;
         private TextView score;
+        private TextView no;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            image = (SimpleDraweeView) itemView.findViewById(R.id.image);
+            line = (ImageView) itemView.findViewById(R.id.line);
+            image = (ImageView) itemView.findViewById(R.id.image);
             score = (TextView) itemView.findViewById(R.id.score);
+            no = (TextView) itemView.findViewById(R.id.not_tv);
         }
     }
 

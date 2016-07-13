@@ -16,6 +16,7 @@ import com.hyc.zhihu.R;
 import com.hyc.zhihu.base.BaseActivity;
 import com.hyc.zhihu.ui.MovieListActivity;
 import com.hyc.zhihu.ui.MusicActivity;
+import com.hyc.zhihu.ui.OtherMusicActivity;
 import com.hyc.zhihu.ui.ReadingActivity;
 import com.hyc.zhihu.ui.adpter.ColorAdapter;
 import com.hyc.zhihu.utils.AppUtil;
@@ -75,7 +76,7 @@ public class NavigationFragment extends Fragment {
         mMoveTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), MovieListActivity.class));
+                AppUtil.startActivityWithType(S.MOVIE_LIST,getContext(), OtherMusicActivity.class);
             }
         });
         mReadTV.setOnClickListener(new View.OnClickListener() {

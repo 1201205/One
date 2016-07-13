@@ -21,7 +21,7 @@ public class ListFragmentAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return null;
+        return mFragments.get(position);
     }
     public void add(Fragment fragment){
         mFragments.add(fragment);

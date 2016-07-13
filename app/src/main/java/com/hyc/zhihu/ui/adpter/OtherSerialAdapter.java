@@ -28,7 +28,7 @@ public class OtherSerialAdapter extends BaseRecyclerAdapter<Serial> {
 
     @Override
     public void bindData(RecyclerViewHolder holder, int position, final Serial item) {
-        holder.setBackground(R.id.movie_iv,R.drawable.question_image).setText(R.id.name_tv, item.getTitle()).withItemClickListener(new View.OnClickListener() {
+        holder.setBackground(R.id.movie_iv,R.drawable.serial_image).setText(R.id.name_tv, item.getTitle()).withItemClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppUtil.startActivityWithID(item.getId(),v.getContext(),SerialActivity.class);

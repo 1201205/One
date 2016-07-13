@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyc.zhihu.helper.FrescoHelper;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by Administrator on 2016/7/12.
@@ -59,6 +60,16 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
     public RecyclerViewHolder setBackground(int viewId, int resId) {
         View view = findViewById(viewId);
         view.setBackgroundResource(resId);
+        return this;
+    }
+    public RecyclerViewHolder setVisible(int viewId, int visible) {
+        View view = findViewById(viewId);
+        view.setVisibility(visible);
+        return this;
+    }
+    public RecyclerViewHolder loadImageByPicasso(int viewId,String url) {
+        ImageView view = findViewById(viewId);
+        Picasso.with(view.getContext()).load(url).fit().into(view);
         return this;
     }
 

@@ -250,7 +250,7 @@ public interface Api {
             @Path("id") String id, @Path("index") String index);
 
     //问题
-    @GET("/api/othercollection/{id}/more/6/{index}")
+    @GET("/api/othercollection/{id}/more/2/{index}")
     Observable<BaseBean<List<Question>>> getOtherQuestionByID(
             @Path("id") String id, @Path("index") String index);
 

@@ -16,6 +16,7 @@ public abstract class ExceptionAction implements Action1<Throwable> {
 
     @Override
     public void call(Throwable throwable) {
+        throwable.printStackTrace();
         if (throwable instanceof NoThingGetException) {
             onNothingGet();
         } else {

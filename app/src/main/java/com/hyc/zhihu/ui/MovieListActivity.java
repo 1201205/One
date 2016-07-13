@@ -54,6 +54,7 @@ public class MovieListActivity extends BaseActivity<MovieListPresenter>
                     if (!mIsLoading && mHasMore &&
                         lastVisiblePosition >= mManager.getItemCount() - 1) {
                         mIsLoading = true;
+
                         mPresenter.refresh();
                     }
                 }
