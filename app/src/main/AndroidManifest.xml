@@ -31,7 +31,6 @@
         <activity  android:name=".ui.SerialActivity"></activity>
         <activity  android:name=".ui.EssayActivity"></activity>
         <activity  android:name=".ui.SerialListActivity"></activity>
-        <service android:name=".player.PlayerService"></service>
         <activity android:name=".ui.ReadingActivity"></activity>
         <activity android:name=".ui.MusicRelateActivity"></activity>
         <activity android:name=".ui.MusicMonthListActivity"></activity>
@@ -43,6 +42,9 @@
         <activity android:name=".ui.OtherDetailActivity"></activity>
         <activity android:name=".ui.OtherPictureActivity"></activity>
         <activity android:name=".ui.OtherMusicActivity"></activity>
+        <activity android:name=".ui.OtherReadingActivity"></activity>
+        <service android:name=".player.PlayerService"></service>
+
     </application>
 
 </manifest>

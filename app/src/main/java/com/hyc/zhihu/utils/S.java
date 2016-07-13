@@ -13,4 +13,7 @@ public interface S {
     String DAIRY = "dairy";
     String MOVIE = "movie";
     String TYPE = "type";
+    String ESSAY = "essay";
+    String QUESTION = "question";
+    String SERIAL = "serial";
 }

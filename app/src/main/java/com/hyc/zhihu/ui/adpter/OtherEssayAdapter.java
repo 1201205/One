@@ -6,10 +6,10 @@ import android.view.View;
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.base.BaseRecyclerAdapter;
 import com.hyc.zhihu.base.RecyclerViewHolder;
+import com.hyc.zhihu.beans.Essay;
 import com.hyc.zhihu.beans.movie.Movie;
-import com.hyc.zhihu.beans.music.MusicMonthItem;
+import com.hyc.zhihu.ui.EssayActivity;
 import com.hyc.zhihu.ui.MovieContentActivity;
-import com.hyc.zhihu.ui.MusicItemActivity;
 import com.hyc.zhihu.utils.AppUtil;
 
 import java.util.List;
@@ -17,8 +17,8 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/7/12.
  */
-public class OtherMovieAdapter extends BaseRecyclerAdapter<Movie> {
-    public OtherMovieAdapter(Context ctx, List<Movie> list) {
+public class OtherEssayAdapter extends BaseRecyclerAdapter<Essay> {
+    public OtherEssayAdapter(Context ctx, List<Essay> list) {
         super(ctx, list);
     }
     @Override
@@ -27,11 +27,11 @@ public class OtherMovieAdapter extends BaseRecyclerAdapter<Movie> {
     }
 
     @Override
-    public void bindData(RecyclerViewHolder holder, int position, final Movie item) {
-        holder.setBackground(R.id.movie_iv,R.drawable.center_movie_collection).setText(R.id.name_tv, item.getTitle()).withItemClickListener(new View.OnClickListener() {
+    public void bindData(RecyclerViewHolder holder, int position, final Essay item) {
+        holder.setBackground(R.id.movie_iv,R.drawable.essay_image).setText(R.id.name_tv, item.getHp_title()).withItemClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppUtil.startActivityWithID(item.getId(),v.getContext(),MovieContentActivity.class);
+                AppUtil.startActivityWithID(item.getContent_id(),v.getContext(),EssayActivity.class);
             }
         });
     }

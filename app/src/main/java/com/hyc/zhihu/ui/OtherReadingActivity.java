@@ -1,0 +1,122 @@
+package com.hyc.zhihu.ui;
+
+import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
+
+import com.hyc.zhihu.R;
+import com.hyc.zhihu.base.BaseActivity;
+import com.hyc.zhihu.base.BasePresenter;
+import com.hyc.zhihu.base.PresenterFactory;
+import com.hyc.zhihu.base.PresenterLoader;
+import com.hyc.zhihu.beans.Essay;
+import com.hyc.zhihu.beans.Question;
+import com.hyc.zhihu.beans.Serial;
+import com.hyc.zhihu.presenter.OtherReadingPresenter;
+import com.hyc.zhihu.ui.adpter.ListFragmentAdapter;
+import com.hyc.zhihu.ui.fragment.ListFragment;
+import com.hyc.zhihu.utils.AppUtil;
+import com.hyc.zhihu.utils.S;
+import com.hyc.zhihu.view.OtherReadingView;
+
+import java.util.List;
+
+/**
+ * Created by Administrator on 2016/7/13.
+ */
+public class OtherReadingActivity extends BaseActivity<OtherReadingPresenter> implements OtherReadingView, LoaderManager.LoaderCallbacks<OtherReadingPresenter> {
+    private String mID;
+    private ListFragment mEssay;
+    private ListFragment mQuestion;
+    private ListFragment mSerial;
+    private ListFragmentAdapter mAdapter;
+
+    @Override
+    protected void initLoader() {
+        getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
+    }
+
+    @Override
+    protected void handleIntent() {
+        mID = getIntent().getStringExtra(S.ID);
+    }
+
+    @Override
+    protected void initView() {
+        mEssay = ListFragment.getInstance(S.ESSAY);
+        mQuestion = ListFragment.getInstance(S.QUESTION);
+        mSerial = ListFragment.getInstance(S.SERIAL);
+        ListFragment.LoadMoreListener loadMoreListener=new ListFragment.LoadMoreListener() {
+            @Override
+            public void loadMore(String type) {
+                mPresenter.refresh(type);
+            }
+        };
+        mEssay.setListener(loadMoreListener);
+        mQuestion.setListener(loadMoreListener);
+        mSerial.setListener(loadMoreListener);
+        mAdapter=new ListFragmentAdapter(getSupportFragmentManager());
+        mAdapter.add(mEssay);
+        mAdapter.add(mQuestion);
+        mAdapter.add(mSerial);
+    }
+
+    @Override
+    protected int getLayoutID() {
+        return R.layout.activity_other_reading;
+    }
+
+    @Override
+    public Loader<OtherReadingPresenter> onCreateLoader(int id, Bundle args) {
+        return new PresenterLoader<OtherReadingPresenter>(this, new PresenterFactory() {
+            @Override
+            public BasePresenter create() {
+                return new OtherReadingPresenter(OtherReadingActivity.this);
+            }
+        });
+    }
+
+    @Override
+    public void onLoadFinished(Loader<OtherReadingPresenter> loader, OtherReadingPresenter data) {
+        mPresenter = data;
+        mPresenter.attachView();
+        mPresenter.getReadings(mID);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<OtherReadingPresenter> loader) {
+        mPresenter = null;
+    }
+
+    @Override
+    public void showEssays(List<Essay> essays) {
+        mEssay.showList(essays);
+    }
+
+    @Override
+    public void showQuestions(List<Question> questions) {
+        mQuestion.showList(questions);
+    }
+
+    @Override
+    public void showSerials(List<Serial> serials) {
+        mSerial.showList(serials);
+    }
+
+    @Override
+    public void noMore(String type) {
+        switch (type){
+            case S.ESSAY:
+                mEssay.noMore();
+                break;
+            case S.QUESTION:
+                mEssay.noMore();
+                break;
+            case S.SERIAL:
+                mEssay.noMore();
+                break;
+            default:
+                break;
+        }
+    }
+}

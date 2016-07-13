@@ -22,11 +22,7 @@ public class ErrorCheckerTransformer<T extends BaseBean<R>, R>
             @Override
             public R call(T t) {
                 if (null == t || null == t.getData()||(t.getData() instanceof List && ((List) t.getData()).size()==0)) {
-                    try {
-                        throw new NoThingGetException(S.NO_THING_GET);
-                    } catch (NoThingGetException e) {
-                        throw Exceptions.propagate(e);
-                    }
+                        throw new NoThingGetException();
                 }
                 return t.getData();
             }

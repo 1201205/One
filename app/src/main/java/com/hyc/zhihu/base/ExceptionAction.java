@@ -16,7 +16,7 @@ public abstract class ExceptionAction implements Action1<Throwable> {
 
     @Override
     public void call(Throwable throwable) {
-        if (!TextUtils.isEmpty(throwable.getMessage())&&throwable.getMessage().contains(S.NO_THING_GET)) {
+        if (throwable instanceof NoThingGetException) {
             onNothingGet();
         } else {
             AppUtil.showToast("网络错误，请检查");
