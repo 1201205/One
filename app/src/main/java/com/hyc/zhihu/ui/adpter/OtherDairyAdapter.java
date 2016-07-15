@@ -9,6 +9,7 @@ import com.hyc.zhihu.base.RecyclerViewHolder;
 import com.hyc.zhihu.beans.OtherDiary;
 import com.hyc.zhihu.beans.music.MusicMonthItem;
 import com.hyc.zhihu.ui.MusicItemActivity;
+import com.hyc.zhihu.ui.PictureActivity;
 import com.hyc.zhihu.utils.AppUtil;
 
 import java.util.HashMap;
@@ -53,7 +54,7 @@ public class OtherDairyAdapter extends BaseRecyclerAdapter<OtherDiary> {
         holder.setText(R.id.name_tv, item.getContent()).setText(R.id.date_tv, item.getInput_date()).setImageResource(R.id.weather_iv, getID(item.getWeather())).withItemClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                AppUtil.startActivityWithID(item.getId(),v.getContext(),MusicItemActivity.class);
+                AppUtil.startActivityWithUrl(item.getPicture(),v.getContext(),PictureActivity.class);
             }
         });
     }

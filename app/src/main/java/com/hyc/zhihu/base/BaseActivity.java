@@ -27,7 +27,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        mColor = SPUtil.get(this, S.THEME, AppUtil.getColor(R.color.google_blue));
+        mColor = SPUtil.get( S.THEME, AppUtil.getColor(R.color.google_blue));
         getWindow().setStatusBarColor(mColor);
         super.onCreate(savedInstanceState);
         setContentView(getLayoutID());
@@ -91,7 +91,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     }
 
     public void changeColor() {
-        mColor = SPUtil.get(this, S.THEME, AppUtil.getColor(R.color.google_blue));
+        mColor = SPUtil.get( S.THEME, AppUtil.getColor(R.color.google_blue));
         getWindow().setStatusBarColor(mColor);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(mColor));
     }

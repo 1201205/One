@@ -20,6 +20,7 @@ import com.hyc.zhihu.beans.OnePictureData;
 import com.hyc.zhihu.beans.PictureViewBean;
 import com.hyc.zhihu.presenter.PicturePresenterImp;
 import com.hyc.zhihu.ui.adpter.PictureAdapter;
+import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.view.PictureView;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public class PictureFragment extends Fragment implements PictureView, LoaderMana
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getLoaderManager().initLoader(111111, null, this);
+        getLoaderManager().initLoader(AppUtil.getID(), null, this);
     }
 
     @Override

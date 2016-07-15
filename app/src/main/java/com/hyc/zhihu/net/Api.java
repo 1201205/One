@@ -57,7 +57,7 @@ public interface Api {
     //获取阅读list
     //http://v3.wufazhuce.com:8000/api/reading/index/0?
     @GET("/api/hp/idlist/{id}")
-    Observable<IDList> getPictureIds(@Path("id") String id);
+    Observable<BaseBean<List<String>>> getPictureIds(@Path("id") String id);
 
     @GET("/api/hp/detail/{id}")
     Observable<BaseBean<OnePictureData>> getPictureById(

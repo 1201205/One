@@ -3,6 +3,7 @@ package com.hyc.zhihu.utils;
 import android.os.HandlerThread;
 import android.util.Log;
 
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
@@ -41,9 +42,25 @@ public class RealmUtil {
                 sRealm.commitTransaction();
             }
         });
-
     }
-
+    public static <E extends RealmModel> List<E> getListByCount(final Class<E> clazz, final int count){
+        Realm temp=Realm.getDefaultInstance();
+        temp.beginTransaction();
+        List<E> realmResults = temp.where(clazz).findAll().subList(0,count);
+        temp.commitTransaction();
+        return realmResults;
+    }
+    public static <E extends RealmModel> void save(final List<E> o) {
+        mExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+//                sRealm=Realm.getDefaultInstance();
+                sRealm.beginTransaction();
+                sRealm.copyToRealm(o);
+                sRealm.commitTransaction();
+            }
+        });
+    }
     public static <E extends RealmModel> RealmResults<E> findByKeyBackGround(final Class<E> clazz, final String fieldName, final String value) {
         FutureTask task = new FutureTask(new Callable() {
             @Override

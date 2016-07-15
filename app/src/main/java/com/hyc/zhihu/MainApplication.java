@@ -53,8 +53,8 @@ public class MainApplication extends Application {
     }
 
     private void checkFirstInit(File file) {
-        if (SPUtil.get(this, S.FIRST_INIT, false)) {
-            SPUtil.put(this, S.FIRST_INIT, true);
+        if (SPUtil.get( S.FIRST_INIT, false)) {
+            SPUtil.put( S.FIRST_INIT, true);
         }
     }
 }

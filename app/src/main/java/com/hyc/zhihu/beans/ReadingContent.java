@@ -1,13 +1,17 @@
 package com.hyc.zhihu.beans;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by Administrator on 2016/5/16.
  */
-public class ReadingContent {
+public class ReadingContent extends RealmObject{
     private String title;
     private String content;
     private String author;
     private boolean hasAudio;
+    @PrimaryKey
     private String id;
 
     public String getId() {
@@ -20,7 +24,6 @@ public class ReadingContent {
 
     public ReadingContent(String title, boolean hasAudio, String author, String content, String id) {
         this.title = title;
-
         this.hasAudio = hasAudio;
         this.author = author;
         this.content = content;

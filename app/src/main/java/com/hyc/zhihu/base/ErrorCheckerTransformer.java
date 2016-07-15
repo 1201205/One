@@ -5,6 +5,7 @@ import com.hyc.zhihu.utils.S;
 
 import java.util.List;
 
+import okhttp3.OkHttpClient;
 import rx.Observable;
 import rx.exceptions.Exceptions;
 import rx.functions.Func1;

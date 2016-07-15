@@ -72,6 +72,11 @@ public class AppUtil {
         intent.putExtra(S.ID, id);
         context.startActivity(intent);
     }
+    public static void startActivityWithUrl(String url, Context context, Class clazz) {
+        Intent intent = new Intent(context, clazz);
+        intent.putExtra(S.URL, url);
+        context.startActivity(intent);
+    }
     public static void startActivityWithType(int type, Context context, Class clazz) {
         Intent intent = new Intent(context, clazz);
         intent.putExtra(S.TYPE, type);

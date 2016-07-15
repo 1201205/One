@@ -43,7 +43,7 @@ public class NavigationFragment extends Fragment {
         mReadTV = (TextView) view.findViewById(R.id.read_tv);
         mColorGV = (RecyclerView) view.findViewById(R.id.color_rv);
         mMainBg = view.findViewById(R.id.main_ll);
-        mMainBg.setBackgroundColor(SPUtil.get(getActivity(), S.THEME, AppUtil.getColor(R.color.google_blue)));
+        mMainBg.setBackgroundColor(SPUtil.get( S.THEME, AppUtil.getColor(R.color.google_blue)));
         return view;
     }
 
@@ -60,7 +60,7 @@ public class NavigationFragment extends Fragment {
         colorAdapter.setItemClickListener(new ColorAdapter.ItemClickListener() {
             @Override
             public void OnItemClicked(int color) {
-                SPUtil.put(getContext(), S.THEME, color);
+                SPUtil.put(S.THEME, color);
                 mMainBg.setBackgroundColor(color);
                 ((BaseActivity) getActivity()).changeColor();
             }

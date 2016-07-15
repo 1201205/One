@@ -1,6 +1,8 @@
 package com.hyc.zhihu.presenter;
 
 import com.hyc.zhihu.base.BasePresenter;
+import com.hyc.zhihu.base.DefaultTransformer;
+import com.hyc.zhihu.base.ExceptionAction;
 import com.hyc.zhihu.beans.BaseBean;
 import com.hyc.zhihu.beans.DateReading;
 import com.hyc.zhihu.beans.HeadScrollItem;
@@ -13,12 +15,16 @@ import com.hyc.zhihu.beans.SerialContent;
 import com.hyc.zhihu.net.Requests;
 import com.hyc.zhihu.presenter.base.IReadingPresenter;
 import com.hyc.zhihu.utils.JsonUtil;
+import com.hyc.zhihu.utils.RealmUtil;
 import com.hyc.zhihu.view.ReadingView;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmModel;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -48,12 +54,11 @@ public class ReadingPresenter extends BasePresenter<ReadingView> implements IRea
     public void getAndShowHead() {
         mCompositeSubscription.add(
 
-                Requests.getApi().getScrollHeads().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<BaseBean<List<HeadScrollItem>>>() {
+                Requests.getApi().getScrollHeads().compose(new DefaultTransformer<BaseBean<List<HeadScrollItem>>, List<HeadScrollItem>>()).subscribe(new Action1<List<HeadScrollItem>>() {
                     @Override
-                    public void call(BaseBean<List<HeadScrollItem>> headItems) {
-                        mView.showHead(headItems.getData());
+                    public void call(List<HeadScrollItem> headItems) {
+                        mView.showHead(headItems);
                         mView.dismissLoading();
-
                     }
                 }));
     }
@@ -62,19 +67,18 @@ public class ReadingPresenter extends BasePresenter<ReadingView> implements IRea
     public void getAndShowList(int index) {
         mCompositeSubscription.add(
 
-                Requests.getApi().getReadingList(index).map(new Func1<BaseBean<List<DateReading>>, List<RealReading>>() {
+                Requests.getApi().getReadingList(index).compose(new DefaultTransformer<BaseBean<List<DateReading>>, List<DateReading>>()).map(new Func1<List<DateReading>, List<RealReading>>() {
                     @Override
-                    public List<RealReading> call(BaseBean<List<DateReading>> readings) {
+                    public List<RealReading> call(List<DateReading> readings) {
                         List<RealReading> realReadings = new ArrayList<RealReading>();
-                        List<DateReading> dateReading = readings.getData();
                         if (mIndexer == null) {
                             mIndexer = new LinkedHashMap<Integer, String>();
                         }
-                        int dateCount = dateReading.size();
+                        int dateCount = readings.size();
                         int count = 0;
                         for (int i = 0; i < dateCount; i++) {
-                            List<Reading> readingList = dateReading.get(i).getItems();
-                            mIndexer.put(count + mLastCount, dateReading.get(i).getDate());
+                            List<Reading> readingList = readings.get(i).getItems();
+                            mIndexer.put(count + mLastCount, readings.get(i).getDate());
 //                    mTitle.add(readingList.get(0).getTime());
                             int readingCount = readingList.size();
                             for (int j = 0; j < readingCount; j++) {
@@ -86,16 +90,30 @@ public class ReadingPresenter extends BasePresenter<ReadingView> implements IRea
                                 count++;
                             }
                         }
+                        RealmUtil.save(realReadings);
                         mLastCount += realReadings.size();
                         return realReadings;
                     }
-                }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<List<RealReading>>() {
+                }).subscribe(new Action1<List<RealReading>>() {
                     @Override
                     public void call(List<RealReading> realReadings) {
                         mView.showList(realReadings, mIndexer);
-
+                    }
+                }, new ExceptionAction() {
+                    @Override
+                    public void onNothingGet() {
+                        showCachedInfo();
                     }
                 }));
+    }
+
+    private void showCachedInfo() {
+        Observable.just(RealmUtil.getListByCount(RealReading.class,9)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<List<RealReading>>() {
+            @Override
+            public void call(List<RealReading> realmModels) {
+                mView.showList(realmModels, mIndexer);
+            }
+        });
     }
 
     private RealReading getRealReading(Reading r) {
@@ -123,6 +141,6 @@ public class ReadingPresenter extends BasePresenter<ReadingView> implements IRea
                 content.setContent(q.getAnswer_content());
                 content.setId(q.getQuestion_id());
         }
-        return new RealReading(r.getTime(), content, r.getType());
+        return new RealReading(r.getTime(), content, r.getType(),content.getId());
     }
 }

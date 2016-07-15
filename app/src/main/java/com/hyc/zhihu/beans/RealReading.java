@@ -1,9 +1,21 @@
 package com.hyc.zhihu.beans;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by Administrator on 2016/5/16.
  */
-public class RealReading {
+public class RealReading extends RealmObject{
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    @PrimaryKey
+    private String id;
     private String time;
     private int type;
     private ReadingContent content;
@@ -32,9 +44,10 @@ public class RealReading {
         this.content = content;
     }
 
-    public RealReading(String time, ReadingContent content, int type) {
+    public RealReading(String time, ReadingContent content, int type,String id) {
         this.time = time;
         this.content = content;
         this.type = type;
+        this.id=id;
     }
 }

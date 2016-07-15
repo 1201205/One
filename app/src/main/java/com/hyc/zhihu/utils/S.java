@@ -11,10 +11,14 @@ public interface S {
     String THEME = "color";
     String TYPE = "type";
     String NO_THING_GET = "no_thing_get";
+    String URL = "extra_image_url";
+    String PICTURE_ID = "picture_id";
+
+
+
     int MUSIC = 1;
     int DAIRY = 2;
     int MOVIE = 3;
-
     int ESSAY = 4;
     int QUESTION = 5;
     int SERIAL = 6;
