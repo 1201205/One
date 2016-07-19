@@ -44,7 +44,11 @@
         <activity android:name=".ui.OtherMusicActivity"></activity>
         <activity android:name=".ui.OtherReadingActivity"></activity>
         <service android:name=".player.PlayerService"></service>
-
+        <receiver android:name=".base.NetWorkReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

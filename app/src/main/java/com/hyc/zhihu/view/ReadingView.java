@@ -14,5 +14,5 @@ import java.util.List;
  */
 public interface ReadingView extends BaseView {
     void showHead(List<HeadScrollItem> headScrollItems);
-    void showList(List<RealReading> realReadings,LinkedHashMap<Integer,String> indexer);
+    void showList(List<RealReading> realReadings,LinkedHashMap<Integer,String> indexer,boolean needToClear);
 }

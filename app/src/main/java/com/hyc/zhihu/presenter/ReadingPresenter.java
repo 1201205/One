@@ -1,5 +1,8 @@
 package com.hyc.zhihu.presenter;
 
+import android.util.Log;
+import android.view.KeyEvent;
+
 import com.hyc.zhihu.base.BasePresenter;
 import com.hyc.zhihu.base.DefaultTransformer;
 import com.hyc.zhihu.base.ExceptionAction;
@@ -37,6 +40,7 @@ public class ReadingPresenter extends BasePresenter<ReadingView> implements IRea
     private List<String> mTitle;
     private LinkedHashMap<Integer, String> mIndexer;
     private int mLastCount;
+    private boolean showCache;
 
     public ReadingPresenter(ReadingView view) {
         super(view);
@@ -44,10 +48,15 @@ public class ReadingPresenter extends BasePresenter<ReadingView> implements IRea
     }
 
     @Override
-    public void showContent() {
+    public void showContent(boolean hasNetWork) {
         mView.showLoading();
-        getAndShowHead();
-        getAndShowList(0);
+        if (hasNetWork) {
+            getAndShowHead();
+            getAndShowList(0);
+        } else {
+            showCachedInfo();
+        }
+
     }
 
     @Override
@@ -64,7 +73,7 @@ public class ReadingPresenter extends BasePresenter<ReadingView> implements IRea
     }
 
     @Override
-    public void getAndShowList(int index) {
+    public void getAndShowList(final int index) {
         mCompositeSubscription.add(
 
                 Requests.getApi().getReadingList(index).compose(new DefaultTransformer<BaseBean<List<DateReading>>, List<DateReading>>()).map(new Func1<List<DateReading>, List<RealReading>>() {
@@ -97,7 +106,8 @@ public class ReadingPresenter extends BasePresenter<ReadingView> implements IRea
                 }).subscribe(new Action1<List<RealReading>>() {
                     @Override
                     public void call(List<RealReading> realReadings) {
-                        mView.showList(realReadings, mIndexer);
+                        mView.showList(realReadings, mIndexer,index==0);
+//                        showCachedInfo();
                     }
                 }, new ExceptionAction() {
                     @Override
@@ -108,10 +118,14 @@ public class ReadingPresenter extends BasePresenter<ReadingView> implements IRea
     }
 
     private void showCachedInfo() {
+        showCache=true;
         Observable.just(RealmUtil.getListByCount(RealReading.class,9)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<List<RealReading>>() {
             @Override
             public void call(List<RealReading> realmModels) {
-                mView.showList(realmModels, mIndexer);
+                mView.showList(realmModels, mIndexer,true);
+                for (RealReading realReading:realmModels) {
+                    Log.e("realm--",realReading.getTime());
+                }
             }
         });
     }

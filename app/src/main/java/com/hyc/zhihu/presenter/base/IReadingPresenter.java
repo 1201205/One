@@ -5,6 +5,6 @@ package com.hyc.zhihu.presenter.base;
  */
 public interface IReadingPresenter {
     void getAndShowHead();
-    void showContent();
+    void showContent(boolean hasNetWork);
     void getAndShowList(int index);
 }

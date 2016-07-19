@@ -45,7 +45,9 @@ public class ReadingAdapter extends BaseAdapter implements SectionIndexer {
         this.mContext = context;
         mRealReadings = new ArrayList<>();
     }
-
+    public void clear(){
+        mRealReadings.clear();
+    }
     public void refreshList(List<RealReading> realReadings, LinkedHashMap<Integer, String> indexer) {
         mIndexer = indexer;
         mRealReadings.addAll(realReadings);

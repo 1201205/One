@@ -27,14 +27,20 @@ import com.hyc.zhihu.base.PresenterFactory;
 import com.hyc.zhihu.base.PresenterLoader;
 import com.hyc.zhihu.beans.HeadScrollItem;
 import com.hyc.zhihu.beans.RealReading;
+import com.hyc.zhihu.event.NetWorkChangeEvent;
 import com.hyc.zhihu.presenter.ReadingPresenter;
 import com.hyc.zhihu.ui.adpter.LoopViewPagerAdapter;
 import com.hyc.zhihu.ui.adpter.ReadingAdapter;
 import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 import com.hyc.zhihu.utils.AppUtil;
+import com.hyc.zhihu.utils.DateUtil;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.ReadingView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -49,7 +55,7 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
     private TextView titleLayout;
 
     private ViewPager viewPager;
-
+    private boolean canLoadMore;
     private ViewGroup indicators;
     private LoopViewPagerAdapter mPagerAdapter;
     private ReadingAdapter mReadingAdapter;
@@ -60,6 +66,7 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         mReadingAdapter = new ReadingAdapter(this);
         listView = (ListView) findViewById(R.id.swipe_target);
         listView.setAdapter(mReadingAdapter);
@@ -161,6 +168,7 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
                 jumpToContent(reading);
             }
         });
+        swipeToLoadLayout.setLoadMoreEnabled(NetWorkChangeEvent.hasNetWork);
     }
 
 
@@ -222,7 +230,10 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
 
 
     @Override
-    public void showList(List<RealReading> realReadings, LinkedHashMap<Integer, String> indexer) {
+    public void showList(List<RealReading> realReadings, LinkedHashMap<Integer, String> indexer,boolean needToClear) {
+        if (needToClear) {
+            mReadingAdapter.clear();
+        }
         mReadingAdapter.refreshList(realReadings, indexer);
         swipeToLoadLayout.setLoadingMore(false);
     }
@@ -245,7 +256,7 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
     public void onLoadFinished(Loader<ReadingPresenter> loader, ReadingPresenter data) {
         mPresenter = data;
         mPresenter.attachView();
-        mPresenter.showContent();
+        mPresenter.showContent(NetWorkChangeEvent.hasNetWork);
     }
 
 
@@ -258,5 +269,34 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
     @Override
     public void onLoadMore() {
         mPresenter.getAndShowList(++mIndex);
+    }
+
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
+    @Subscribe
+    public void onEvent(NetWorkChangeEvent event){
+
+        /**
+         * 逻辑处理->有网络—>判断时间  时间相同就设置可以更新
+         * 时间不同  就直接重新请求
+         *
+         * 无网络——>设置不能更新
+         *
+         */
+        if (NetWorkChangeEvent.hasNetWork) {
+            if (DateUtil.StringToDate(mReadingAdapter.getItem(0).getTime()).before(new Date())) {
+                mPresenter.showContent(NetWorkChangeEvent.hasNetWork);
+            }
+        } else {
+            if (swipeToLoadLayout.isRefreshing()) {
+                swipeToLoadLayout.setLoadingMore(false);
+            }
+        }
+        swipeToLoadLayout.setLoadMoreEnabled(NetWorkChangeEvent.hasNetWork);
+
     }
 }
