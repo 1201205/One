@@ -56,7 +56,6 @@ public class RealReading extends RealmObject{
     public void setContent(ReadingContent content) {
         this.content = content;
     }
-
     public RealReading(String time, ReadingContent content, int type,String id) {
         this.time = time;
         this.content = content;

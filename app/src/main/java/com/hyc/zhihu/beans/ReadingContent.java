@@ -21,7 +21,6 @@ public class ReadingContent extends RealmObject{
     public void setId(String id) {
         this.id = id;
     }
-
     public ReadingContent(String title, boolean hasAudio, String author, String content, String id) {
         this.title = title;
         this.hasAudio = hasAudio;

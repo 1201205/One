@@ -1,5 +1,6 @@
 package com.hyc.zhihu.presenter;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 
@@ -17,11 +18,16 @@ import com.hyc.zhihu.beans.RealReading;
 import com.hyc.zhihu.beans.SerialContent;
 import com.hyc.zhihu.net.Requests;
 import com.hyc.zhihu.presenter.base.IReadingPresenter;
+import com.hyc.zhihu.utils.DateStyle;
+import com.hyc.zhihu.utils.DateUtil;
 import com.hyc.zhihu.utils.JsonUtil;
 import com.hyc.zhihu.utils.RealmUtil;
+import com.hyc.zhihu.utils.S;
+import com.hyc.zhihu.utils.SPUtil;
 import com.hyc.zhihu.view.ReadingView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -101,6 +107,9 @@ public class ReadingPresenter extends BasePresenter<ReadingView> implements IRea
                         }
                         RealmUtil.save(realReadings);
                         mLastCount += realReadings.size();
+                        if (index==0) {
+                            SPUtil.put(S.READING_DATE,realReadings.get(0).getTime());
+                        }
                         return realReadings;
                     }
                 }).subscribe(new Action1<List<RealReading>>() {
@@ -119,13 +128,31 @@ public class ReadingPresenter extends BasePresenter<ReadingView> implements IRea
 
     private void showCachedInfo() {
         showCache=true;
-        Observable.just(RealmUtil.getListByCount(RealReading.class,9)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<List<RealReading>>() {
+        String lastDate=SPUtil.get(S.READING_DATE,null);
+        if (TextUtils.isEmpty(lastDate)) {
+            return;
+        }
+     Date date= DateUtil.addDay(DateUtil.StringToDate(lastDate),-5);
+        Observable.just(RealmUtil.getListByCount(RealReading.class,date)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<List<RealReading>>() {
             @Override
             public void call(List<RealReading> realmModels) {
+                if (mIndexer == null) {
+                    mIndexer = new LinkedHashMap<Integer, String>();
+                }
+                String temp=null;
+                int count=0;
+                for (RealReading realReading :realmModels){
+                    if (!realReading.getTime().equals(temp)) {
+                        temp=realReading.getTime();
+                        mIndexer.put(count, DateUtil.StringToString(realReading.getTime(), DateStyle.YYYY_MM_DD));
+                    }
+                    count++;
+                }
                 mView.showList(realmModels, mIndexer,true);
                 for (RealReading realReading:realmModels) {
                     Log.e("realm--",realReading.getTime());
                 }
+                mView.dismissLoading();
             }
         });
     }

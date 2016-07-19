@@ -3,6 +3,7 @@ package com.hyc.zhihu.utils;
 import android.os.HandlerThread;
 import android.util.Log;
 
+import io.realm.Sort;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -44,11 +45,11 @@ public class RealmUtil {
             }
         });
     }
-    public static <E extends RealmModel> List<E> getListByCount(final Class<E> clazz, final int count){
+    public static <E extends RealmModel> List<E> getListByCount(final Class<E> clazz, Date date){
         Realm temp=Realm.getDefaultInstance();
         Log.e("test3","---------");
         temp.beginTransaction();
-        List<E> realmResults = temp.where(clazz).greaterThan("date",DateUtil.StringToDate("2016-06-29 21:00:00")).findAll();
+        List<E> realmResults = temp.where(clazz).greaterThan("date",date).findAllSorted("date", Sort.DESCENDING);
         temp.commitTransaction();
         return realmResults;
     }

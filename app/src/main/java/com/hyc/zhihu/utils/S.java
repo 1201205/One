@@ -14,6 +14,8 @@ public interface S {
     String URL = "extra_image_url";
     String PICTURE_ID = "picture_id";
 
+    String READING_DATE="reading_date";
+
 
 
     int MUSIC = 1;

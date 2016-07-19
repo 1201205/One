@@ -81,7 +81,6 @@ public class DateUtil {
         Date myDate = null;
         if (date != null) {
             Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);
             calendar.add(dateType, amount);
             myDate = calendar.getTime();
         }
@@ -204,8 +203,7 @@ public class DateUtil {
     }
     public static Date CurrentDate() {
         DateStyle dateStyle = getDateStyle("yyyy-MM-dd");
-        DateToString(new Date(),DateStyle.YYYY_MM_DD);
-        return StringToDate(date, dateStyle);
+        return StringToDate(DateToString(new Date(),DateStyle.YYYY_MM_DD));
     }
     /**
      * 将日期字符串转化为日期。失败返回null。

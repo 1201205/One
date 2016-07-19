@@ -288,7 +288,7 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
          *
          */
         if (NetWorkChangeEvent.hasNetWork) {
-            if (DateUtil.StringToDate(mReadingAdapter.getItem(0).getTime()).before(new Date())) {
+            if (DateUtil.addDay(DateUtil.StringToDate(mReadingAdapter.getItem(0).getTime()),1).before(new Date())) {
                 mPresenter.showContent(NetWorkChangeEvent.hasNetWork);
             }
         } else {

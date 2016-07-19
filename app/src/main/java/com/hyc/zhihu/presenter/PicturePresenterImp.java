@@ -18,7 +18,9 @@ import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.utils.SPUtil;
 import com.hyc.zhihu.view.PictureView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -101,14 +103,21 @@ public class PicturePresenterImp extends BasePresenter<PictureView> implements I
             return;
         }
        String[] ids= s.split("-");
-        mIds=new ArrayList<>();
-        mIds.toArray(ids);
-        Observable.just(Observable.just(getOnePictureDataByRealm(mIds.get(0)))).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Observable<OnePictureData>>() {
-            @Override
-            public void call(Observable<OnePictureData> onePictureDataObservable) {
-                showFirstPicture(onePictureDataObservable);
-            }
-        });
+        mIds=Arrays.asList(ids);
+        if (mIds.size()==0) {
+            return;
+        }
+        Observable.just(Observable.just(getOnePictureDataByRealm(mIds.get(0)))).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
+            new Action1<Observable<OnePictureData>>() {
+                @Override
+                public void call(Observable<OnePictureData> onePictureDataObservable) {
+                    showFirstPicture(onePictureDataObservable);
+                }
+            }, new ExceptionAction() {
+                @Override public void onNothingGet() {
+
+                }
+            });
     }
 
     private Observable<OnePictureData> getOnePictureData(String s){
