@@ -72,7 +72,11 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
         Picasso.with(view.getContext()).load(url).fit().into(view);
         return this;
     }
-
+    public RecyclerViewHolder loadImageByPicasso(int viewId,String url,int placeHolder) {
+        ImageView view = findViewById(viewId);
+        Picasso.with(view.getContext()).load(url).placeholder(placeHolder).fit().into(view);
+        return this;
+    }
     public RecyclerViewHolder setClickListener(int viewId, View.OnClickListener listener) {
         View view = findViewById(viewId);
         view.setOnClickListener(listener);

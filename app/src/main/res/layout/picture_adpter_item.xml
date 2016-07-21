@@ -41,16 +41,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="left"
-                    android:text="vol.1306" />
+                    android:gravity="left"/>
 
                 <TextView
                     android:id="@+id/name_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.5"
-                    android:gravity="right"
-                    android:text="过去的四月 龚琳悬 作品" />
+                    android:gravity="right" />
             </LinearLayout>
 
             <TextView
@@ -58,16 +56,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/des_ll"
-                android:layout_marginTop="30dp"
-                android:text="11111" />
+                android:layout_marginTop="30dp"/>
 
             <TextView
                 android:id="@+id/date_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:gravity="right"
-                android:text="wed 04 May.2016" />
+                android:gravity="right"/>
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>

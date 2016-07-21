@@ -104,7 +104,7 @@ public class LoopViewPagerAdapter extends BaseLoopPagerAdapter {
             });
         }
 
-        Picasso.with(parent.getContext()).load(data.getCover()).fit().into(holder.ivBanner);
+        Picasso.with(parent.getContext()).load(data.getCover()).placeholder(R.drawable.default_reading_banner_image).fit().into(holder.ivBanner);
         return convertView;
     }
 

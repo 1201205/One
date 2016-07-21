@@ -41,6 +41,7 @@ import com.hyc.zhihu.ui.PictureActivity;
 import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.widget.ListViewForScrollView;
 
+import com.squareup.picasso.Picasso;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -201,8 +202,8 @@ public class MusicAdapter extends PagerAdapter {
                     }
                 }
             });
-            SimpleDraweeView musicIV = (SimpleDraweeView) mHeader.findViewById(R.id.music_iv);
-            FrescoHelper.loadImage(musicIV, music.getCover());
+            ImageView musicIV = (ImageView) mHeader.findViewById(R.id.music_iv);
+            Picasso.with(mHeader.getContext()).load(music.getCover()).placeholder(R.drawable.default_music_cover).into(musicIV);
             //            Picasso.with(mContext).load(music.getCover()).fit().into(musicIV);
             SimpleDraweeView headIV = (SimpleDraweeView) mHeader.findViewById(R.id.head_iv);
             //            Picasso.with(mContext).load(music.getAuthor().getWeb_url()).into(headIV);

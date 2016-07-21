@@ -43,6 +43,7 @@ import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.MusicItemView;
 import com.hyc.zhihu.widget.ListViewForScrollView;
 
+import com.squareup.picasso.Picasso;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -67,7 +68,7 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
     SwipeToLoadLayout swipeToLoadLayout;
     private boolean mHasMoreComments = true;
     private View mHeader;
-    SimpleDraweeView musicIV;
+    ImageView musicIV;
     SimpleDraweeView headIV;
     TextView mAuthorTV;
     TextView desTV;
@@ -132,7 +133,7 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
         });
         swipeToLoadLayout.setOnLoadMoreListener(this);
         mHeader = LayoutInflater.from(this).inflate(R.layout.music_header, null);
-        musicIV = (SimpleDraweeView) mHeader.findViewById(R.id.music_iv);
+        musicIV = (ImageView) mHeader.findViewById(R.id.music_iv);
         playIV = (ImageView) mHeader.findViewById(R.id.play_iv);
 
         headIV = (SimpleDraweeView) mHeader.findViewById(R.id.head_iv);
@@ -269,7 +270,7 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
         } else {
             playIV.setImageResource(R.drawable.music_play_selector);
         }
-        FrescoHelper.loadImage(musicIV, music.getCover());
+        Picasso.with(mHeader.getContext()).load(music.getCover()).placeholder(R.drawable.default_music_cover).into(musicIV);
         FrescoHelper.loadImage(headIV, music.getAuthor().getWeb_url());
         mAuthorTV.setText(music.getAuthor().getUser_name());
         desTV.setText(music.getAuthor().getDesc());

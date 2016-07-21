@@ -17,7 +17,9 @@ import com.hyc.zhihu.ui.MovieContentActivity;
 import com.hyc.zhihu.utils.S;
 
 import com.squareup.picasso.Picasso;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Administrator on 2016/5/30.
@@ -26,8 +28,18 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
     private List<Movie> mMovies;
 
+    private List<Integer> mBackGrounds;
+    private Random mRandom;
+
     public MovieListAdapter(List<Movie> movies) {
         mMovies = movies;
+        mRandom=new Random();
+        mBackGrounds=new ArrayList<>();
+        mBackGrounds.add(R.drawable.movie_placeholder_0);
+        mBackGrounds.add(R.drawable.movie_placeholder_1);
+        mBackGrounds.add(R.drawable.movie_placeholder_2);
+        mBackGrounds.add(R.drawable.movie_placeholder_3);
+        mBackGrounds.add(R.drawable.movie_placeholder_4);
     }
 
     public void refresh(List<Movie> movies) {
@@ -43,7 +55,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Movie movie = mMovies.get(position);
-        Picasso.with(holder.image.getContext()).load(movie.getCover()).fit().into(holder.image);
+        Picasso.with(holder.image.getContext()).load(movie.getCover()).placeholder(mBackGrounds.get(mRandom.nextInt(5))).fit().into(holder.image);
         //FrescoHelper.loadImage(holder.image, movie.getCover());
         if (TextUtils.isEmpty(movie.getScore())) {
             holder.line.setVisibility(View.GONE);
