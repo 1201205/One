@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_ll"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:id="@+id/main_ll"
+
     android:background="@color/white"
     android:orientation="vertical">
 
@@ -12,21 +13,21 @@
         android:src="@drawable/head_nav" />
 
     <TextView
+        style="@style/NavigationText"
         android:id="@+id/read_tv"
         android:drawableLeft="@drawable/music_about_default"
-        style="@style/NavigationText"
         android:text="@string/reading" />
 
     <TextView
+        style="@style/NavigationText"
         android:id="@+id/music_tv"
         android:drawableLeft="@drawable/music_lyric_default"
-        style="@style/NavigationText"
         android:text="@string/music" />
 
     <TextView
+        style="@style/NavigationText"
         android:id="@+id/movie_tv"
         android:drawableLeft="@drawable/movie_ticket"
-        style="@style/NavigationText"
         android:text="@string/movie" />
 
 </LinearLayout>
