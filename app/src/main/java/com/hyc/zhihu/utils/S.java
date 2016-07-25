@@ -13,7 +13,7 @@ public interface S {
     String NO_THING_GET = "no_thing_get";
     String URL = "extra_image_url";
     String PICTURE_ID = "picture_id";
-
+    String TITLE="title";
     String READING_DATE="reading_date";
 
 

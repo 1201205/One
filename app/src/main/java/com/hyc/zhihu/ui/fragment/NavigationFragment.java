@@ -43,7 +43,7 @@ public class NavigationFragment extends Fragment {
         mReadTV = (TextView) view.findViewById(R.id.read_tv);
 //        mColorGV = (RecyclerView) view.findViewById(R.id.color_rv);
         mMainBg = view.findViewById(R.id.main_ll);
-        mMainBg.setBackgroundColor(SPUtil.get( S.THEME, AppUtil.getColor(R.color.google_blue)));
+        //mMainBg.setBackgroundColor(SPUtil.get( S.THEME, AppUtil.getColor(R.color.google_blue)));
         return view;
     }
 
@@ -76,7 +76,7 @@ public class NavigationFragment extends Fragment {
         mMoveTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppUtil.startActivityWithType(S.MOVIE_LIST,getContext(), OtherMusicActivity.class);
+                AppUtil.startActivityWithType(S.MOVIE_LIST,getContext(), OtherMusicActivity.class,R.string.movie);
             }
         });
         mReadTV.setOnClickListener(new View.OnClickListener() {

@@ -4,11 +4,13 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.view.View;
 import android.widget.Toast;
 
 import com.hyc.zhihu.MainApplication;
 import com.hyc.zhihu.R;
 
+import com.hyc.zhihu.ui.OtherDetailActivity;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -96,14 +98,21 @@ public class AppUtil {
         intent.putExtra(S.ID, id);
         context.startActivity(intent);
     }
+    public static void startActivityWithID(String id, Context context, Class clazz,int title) {
+        Intent intent = new Intent(context, clazz);
+        intent.putExtra(S.ID, id);
+        intent.putExtra(S.TITLE,AppUtil.getString(title));
+        context.startActivity(intent);
+    }
     public static void startActivityWithUrl(String url, Context context, Class clazz) {
         Intent intent = new Intent(context, clazz);
         intent.putExtra(S.URL, url);
         context.startActivity(intent);
     }
-    public static void startActivityWithType(int type, Context context, Class clazz) {
+    public static void startActivityWithType(int type, Context context, Class clazz,int title) {
         Intent intent = new Intent(context, clazz);
         intent.putExtra(S.TYPE, type);
+        intent.putExtra(S.TITLE,AppUtil.getString(title));
         context.startActivity(intent);
     }
     public static void startActivityWithIDAndType(String id,int type, Context context, Class clazz) {
@@ -111,5 +120,20 @@ public class AppUtil {
         intent.putExtra(S.ID, id);
         intent.putExtra(S.TYPE, type);
         context.startActivity(intent);
+    }
+    public static void startActivityWithIDAndType(String id,int type, Context context, Class clazz,int title) {
+        Intent intent = new Intent(context, clazz);
+        intent.putExtra(S.ID, id);
+        intent.putExtra(S.TYPE, type);
+        intent.putExtra(S.TITLE,AppUtil.getString(title));
+        context.startActivity(intent);
+    }
+    public static View.OnClickListener getOtherClickListener(final String id, final Context context) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OtherDetailActivity.jumpTo(context, id);
+            }
+        };
     }
 }

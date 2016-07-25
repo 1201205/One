@@ -12,6 +12,7 @@ import com.hyc.zhihu.base.BaseActivity;
 import com.hyc.zhihu.base.BasePresenter;
 import com.hyc.zhihu.base.PresenterFactory;
 import com.hyc.zhihu.base.PresenterLoader;
+import com.hyc.zhihu.beans.DateBean;
 import com.hyc.zhihu.beans.music.MusicMonthItem;
 import com.hyc.zhihu.presenter.MusicMonthPresenter;
 import com.hyc.zhihu.ui.adpter.MonthMusicAdapter;
@@ -28,13 +29,13 @@ import java.util.List;
 public class MusicMonthListActivity extends BaseActivity<MusicMonthPresenter>
     implements MusicMonthView, LoaderManager.LoaderCallbacks<MusicMonthPresenter> {
     private RecyclerView mRecyclerView;
-    private String mDate;
+    private DateBean mDate;
     public static final String DATE = "date";
 
 
     @Override
     protected void handleIntent() {
-        mDate = getIntent().getStringExtra(DATE);
+        mDate = getIntent().getParcelableExtra(DATE);
     }
 
 
@@ -71,7 +72,7 @@ public class MusicMonthListActivity extends BaseActivity<MusicMonthPresenter>
     public void onLoadFinished(Loader<MusicMonthPresenter> loader, MusicMonthPresenter data) {
         mPresenter = data;
         mPresenter.attachView();
-        mPresenter.showList(mDate);
+        mPresenter.showList(mDate.realDate);
     }
 
 
@@ -85,5 +86,10 @@ public class MusicMonthListActivity extends BaseActivity<MusicMonthPresenter>
     public void showList(List<MusicMonthItem> items) {
         MonthMusicAdapter adapter = new MonthMusicAdapter(items);
         mRecyclerView.setAdapter(adapter);
+    }
+
+
+    @Override protected String getTitleString() {
+        return mDate.date;
     }
 }

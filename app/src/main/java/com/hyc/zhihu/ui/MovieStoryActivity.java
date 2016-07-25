@@ -103,6 +103,11 @@ public class MovieStoryActivity extends BaseActivity<MovieStoryPresenter> implem
     }
 
 
+    @Override protected String getTitleString() {
+        return AppUtil.getString(R.string.all_movie_story);
+    }
+
+
     @Override
     public void onLoadMore() {
         mPresenter.refreshList();

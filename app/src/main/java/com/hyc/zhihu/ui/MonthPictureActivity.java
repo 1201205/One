@@ -14,6 +14,7 @@ import com.hyc.zhihu.base.BaseActivity;
 import com.hyc.zhihu.base.BasePresenter;
 import com.hyc.zhihu.base.PresenterFactory;
 import com.hyc.zhihu.base.PresenterLoader;
+import com.hyc.zhihu.beans.DateBean;
 import com.hyc.zhihu.beans.OnePictureData;
 import com.hyc.zhihu.presenter.MonthPicturePresenter;
 import com.hyc.zhihu.ui.adpter.MonthPictureAdapter;
@@ -29,7 +30,7 @@ import java.util.List;
  */
 public class MonthPictureActivity extends BaseActivity<MonthPicturePresenter>
     implements MonthPictureView, LoaderManager.LoaderCallbacks<MonthPicturePresenter> {
-    private String mDate;
+    private DateBean mDate;
     private RecyclerView mRecyclerView;
     public static final String DATE = "date";
 
@@ -45,7 +46,7 @@ public class MonthPictureActivity extends BaseActivity<MonthPicturePresenter>
 
     @Override
     protected void handleIntent() {
-        mDate = getIntent().getStringExtra(DATE);
+        mDate = getIntent().getParcelableExtra(DATE);
     }
 
 
@@ -76,7 +77,7 @@ public class MonthPictureActivity extends BaseActivity<MonthPicturePresenter>
     public void onLoadFinished(Loader loader, MonthPicturePresenter data) {
         mPresenter = data;
         mPresenter.attachView();
-        mPresenter.getAndShowPictures(mDate);
+        mPresenter.getAndShowPictures(mDate.realDate);
     }
 
 
@@ -96,4 +97,8 @@ public class MonthPictureActivity extends BaseActivity<MonthPicturePresenter>
         getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
     }
 
+
+    @Override protected String getTitleString() {
+        return mDate.date;
+    }
 }

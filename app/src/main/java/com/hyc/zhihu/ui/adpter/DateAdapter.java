@@ -61,7 +61,7 @@ public class DateAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(c, mClazz);
-                intent.putExtra(MonthPictureActivity.DATE,dateBean.realDate);
+                intent.putExtra(MonthPictureActivity.DATE,dateBean);
                 c.startActivity(intent);
             }
         });

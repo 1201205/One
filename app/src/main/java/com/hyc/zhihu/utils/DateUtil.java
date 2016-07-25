@@ -647,6 +647,14 @@ public class DateUtil {
         }
         return null;
     }
+    public static String getMonthDate(String date){
+        DateStyle dateStyle = getDateStyle(date);
+        if (dateStyle != null) {
+            Date myDate = StringToDate(date, dateStyle);
+            return getMonthabbreviation(myDate).name_enShort+"."+getYear(myDate);
+        }
+        return null;
+    }
     public static Month getMonthabbreviation(Date date) {
         Month month=null;
         int monthNumber = getMonth(date);

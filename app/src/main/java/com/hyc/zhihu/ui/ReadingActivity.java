@@ -235,6 +235,13 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
         mReadingAdapter.refreshList(realReadings, indexer);
         swipeToLoadLayout.setLoadingMore(false);
     }
+
+
+    @Override protected String getTitleString() {
+        return AppUtil.getString(R.string.reading);
+    }
+
+
     @Override
     protected void initLoader() {
         getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);

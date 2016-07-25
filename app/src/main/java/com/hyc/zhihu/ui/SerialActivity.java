@@ -73,7 +73,6 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
     private CommentAdapter mCommentAdapter;
     private String mID;
     private boolean mHasMoreComments = true;
-    private CircleTransform mTransform = new CircleTransform();
     private LinearLayout mHotLL;
 
 
@@ -147,9 +146,12 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
             mHeaderIV.setImageResource(R.drawable.head);
             mAuthorHeaderIV.setImageResource(R.drawable.head);
         }
-        mAuthorNameTV.setOnClickListener(getOnclickListener());
-        mHeaderIV.setOnClickListener(getOnclickListener());
-        mAuthorHeaderIV.setOnClickListener(getOnclickListener());
+        String id=author.getUser_id();
+        View.OnClickListener listener=AppUtil.getOtherClickListener(id,this);
+        mAuthorTV.setOnClickListener(listener);
+        mAuthorNameTV.setOnClickListener(listener);
+        mHeaderIV.setOnClickListener(listener);
+        mAuthorHeaderIV.setOnClickListener(listener);
         mTitleTV.setText(content.getTitle());
         mDesTV.setText(author.getDesc());
         mDateTV.setText(DateUtil.getCommentDate(content.getMaketime()));
@@ -228,7 +230,7 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
 
     @Override
     public void showNoComments() {
-        AppUtil.showToast("没有更多评论啦~~~");
+        AppUtil.showToast(R.string.no_more);
         mHasMoreComments = false;
     }
 
@@ -268,58 +270,4 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
         TextView tv;
     }
 
-
-    class TestAdapter extends BaseAdapter {
-        TestAdapter() {
-
-        }
-
-
-        @Override
-        public int getCount() {
-            return 100;
-        }
-
-
-        @Override
-        public Integer getItem(int position) {
-            return position;
-        }
-
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder h = null;
-            if (convertView == null) {
-                convertView = LayoutInflater.from(SerialActivity.this)
-                    .inflate(R.layout.layout_title, null);
-                h = new ViewHolder();
-                h.tv = (TextView) convertView.findViewById(R.id.title);
-                convertView.setTag(h);
-            } else {
-                h = (ViewHolder) convertView.getTag();
-            }
-            h.tv.setText(position + "");
-            return convertView;
-        }
-    }
-    private View.OnClickListener mListener;
-
-    private View.OnClickListener getOnclickListener() {
-        if (mListener == null) {
-            mListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    OtherDetailActivity.jumpTo(SerialActivity.this, mID);
-                }
-            };
-        }
-        return mListener;
-    }
 }

@@ -156,7 +156,8 @@ public class PictureAdapter extends PagerAdapter {
 
         while (temp.before(calendar)) {
             String s = format.format(temp.getTime());
-            dateBeans.add(new DateBean(s, s + "%2000:00:00"));
+            String month=DateUtil.getMonthDate(s);
+            dateBeans.add(new DateBean(month, s + "%2000:00:00"));
             temp.add(GregorianCalendar.MONTH, 1);
         }
         Collections.reverse(dateBeans);

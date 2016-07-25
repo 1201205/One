@@ -146,6 +146,11 @@ public class MusicActivity extends BaseActivity<MusicPresenter>
     }
 
 
+    @Override protected String getTitleString() {
+        return AppUtil.getString(R.string.music);
+    }
+
+
     @Override
     protected void onDestroy() {
         if (mAdapter!=null) {

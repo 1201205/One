@@ -112,12 +112,10 @@ public class CommentAdapter extends BaseAdapter {
         } else {
             holder.score.setVisibility(View.GONE);
         }
+        View.OnClickListener listener=AppUtil.getOtherClickListener(user.getUser_id(),holder.name.getContext());
         holder.name.setText(user.getUser_name());
-        holder.name.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                OtherDetailActivity.jumpTo(v.getContext(), user.getUser_id());
-            }
-        });
+        holder.name.setOnClickListener(listener);
+        holder.head.setOnClickListener(listener);
         holder.date.setText(DateUtil.getCommentDate(comment.getInput_date()));
         holder.num.setText(String.valueOf(comment.getPraisenum()));
         if (TextUtils.isEmpty(comment.getQuote())) {

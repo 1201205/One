@@ -139,4 +139,9 @@ public class OtherReadingActivity extends BaseActivity<OtherReadingPresenter> im
                 break;
         }
     }
+
+
+    @Override protected String getTitleString() {
+        return AppUtil.getString(R.string.other_essay);
+    }
 }

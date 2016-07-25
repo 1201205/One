@@ -95,6 +95,11 @@ public class MovieListActivity extends BaseActivity<MovieListPresenter>
     }
 
 
+    @Override protected String getTitleString() {
+        return AppUtil.getString(R.string.movie);
+    }
+
+
     @Override
     public void onLoadFinished(Loader<MovieListPresenter> loader, MovieListPresenter data) {
         mPresenter = data;

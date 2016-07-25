@@ -78,7 +78,7 @@ public class OtherDetailActivity extends BaseActivity<OtherDetailPresenter>
         mArticle = findViewById(R.id.article_rl);
         mPicture = findViewById(R.id.picture_rl);
         mMovie = findViewById(R.id.movie_rl);
-        mReading=findViewById(R.id.reading_rl);
+        mReading = findViewById(R.id.reading_rl);
         mBackgroundIV = (ImageView) findViewById(R.id.background_iv);
 
         mPicture.setOnClickListener(new View.OnClickListener() {
@@ -90,26 +90,26 @@ public class OtherDetailActivity extends BaseActivity<OtherDetailPresenter>
         });
         mMusicLL.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                AppUtil.startActivityWithIDAndType(mID,S.MUSIC, OtherDetailActivity.this,
-                    OtherMusicActivity.class);
+                AppUtil.startActivityWithIDAndType(mID, S.MUSIC, OtherDetailActivity.this,
+                    OtherMusicActivity.class,R.string.music_list);
             }
         });
         mDairyLL.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                AppUtil.startActivityWithIDAndType(mID,S.DAIRY, OtherDetailActivity.this,
-                        OtherMusicActivity.class);
+                AppUtil.startActivityWithIDAndType(mID, S.DAIRY, OtherDetailActivity.this,
+                    OtherMusicActivity.class,R.string.note);
             }
         });
         mMovie.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                AppUtil.startActivityWithIDAndType(mID,S.MOVIE, OtherDetailActivity.this,
-                        OtherMusicActivity.class);
+                AppUtil.startActivityWithIDAndType(mID, S.MOVIE, OtherDetailActivity.this,
+                    OtherMusicActivity.class,R.string.movie);
             }
         });
         mReading.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 AppUtil.startActivityWithID(mID, OtherDetailActivity.this,
-                    OtherReadingActivity.class);
+                    OtherReadingActivity.class,R.string.other_essay);
             }
         });
     }
@@ -152,7 +152,11 @@ public class OtherDetailActivity extends BaseActivity<OtherDetailPresenter>
             Picasso.with(this).load(other.getWeb_url()).into(mHeadCV);
         }
         if (!TextUtils.isEmpty(other.getBackground())) {
-            Picasso.with(this).load(other.getBackground()).fit().into(mBackgroundIV);
+            Picasso.with(this)
+                .load(other.getBackground())
+                .fit()
+                .placeholder(R.drawable.default_indi_bg)
+                .into(mBackgroundIV);
         } else {
             Picasso.with(this).load(R.drawable.default_indi_bg).fit().into(mBackgroundIV);
 
@@ -163,7 +167,8 @@ public class OtherDetailActivity extends BaseActivity<OtherDetailPresenter>
             mArticle.setVisibility(View.VISIBLE);
             mArticle.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
-                    AppUtil.startActivityWithIDAndType(mID,S.WORK,OtherDetailActivity.this,OtherMusicActivity.class);
+                    AppUtil.startActivityWithIDAndType(mID, S.WORK, OtherDetailActivity.this,
+                        OtherMusicActivity.class,R.string.other_reading);
                 }
             });
         }
@@ -180,11 +185,22 @@ public class OtherDetailActivity extends BaseActivity<OtherDetailPresenter>
             mMusicLL.setVisibility(View.VISIBLE);
             Picasso.with(this).load(otherCenter.getMusic()).fit().into(mMusicIV);
         }
+        if (mDairyLL.getVisibility() == View.VISIBLE && mMusicLL.getVisibility() != View.VISIBLE) {
+            LinearLayout.LayoutParams params
+                = (LinearLayout.LayoutParams) mDairyLL.getLayoutParams();
+            params.rightMargin = 0;
+            mDairyLL.setLayoutParams(params);
+        }
     }
 
 
     @Override
     public void onNothingGet() {
         AppUtil.showToast(R.string.nothing_get);
+    }
+
+
+    @Override protected String getTitleString() {
+        return AppUtil.getString(R.string.other_detail);
     }
 }

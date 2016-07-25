@@ -50,6 +50,7 @@ public class OtherMusicActivity extends BaseActivity
     private ImageView mNoItemIV;
     private boolean mCanLoad = true;
     private LinearLayoutManager mLayoutManager;
+    private String mTitle;
     private static final int PAGE_COUNT = 20;
 
 
@@ -57,6 +58,12 @@ public class OtherMusicActivity extends BaseActivity
     protected void handleIntent() {
         mID = getIntent().getStringExtra(S.ID);
         mType = getIntent().getIntExtra(S.TYPE,1);
+        mTitle=getIntent().getStringExtra(S.TITLE);
+    }
+
+
+    @Override protected String getTitleString() {
+        return mTitle;
     }
 
 

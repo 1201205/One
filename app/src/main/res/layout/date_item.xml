@@ -10,7 +10,7 @@
        android:paddingLeft="10dp"
        android:paddingRight="10dp"
        android:id="@+id/date_tv"
-       android:textSize="21sp"
+       android:textSize="17sp"
        android:layout_marginLeft="30dp"
        android:gravity="center_vertical"
        android:layout_width="match_parent"

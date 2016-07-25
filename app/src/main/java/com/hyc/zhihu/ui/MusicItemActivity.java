@@ -271,7 +271,11 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
         } else {
             playIV.setImageResource(R.drawable.music_play_selector);
         }
+        View.OnClickListener listener=AppUtil.getOtherClickListener(music.getAuthor().getUser_id(),this);
+        headIV.setOnClickListener(listener);
+        mAuthorTV.setOnClickListener(listener);
         Picasso.with(mHeader.getContext()).load(music.getCover()).placeholder(R.drawable.default_music_cover).into(musicIV);
+
         FrescoHelper.loadImage(headIV, music.getAuthor().getWeb_url());
         mAuthorTV.setText(music.getAuthor().getUser_name());
         desTV.setText(music.getAuthor().getDesc());
@@ -336,5 +340,10 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
     @Override
     protected void initLoader() {
         getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
+    }
+
+
+    @Override protected String getTitleString() {
+        return AppUtil.getString(R.string.solo);
     }
 }

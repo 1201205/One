@@ -203,6 +203,7 @@ public class MovieContentActivity extends BaseActivity<MovieContentPresenter> im
 
     @Override
     public void showContent(MovieContent data) {
+        mTitleView.setText(data.getTitle());
         FrescoHelper.loadImage(mCoverSDV, data.getDetailcover());
         mScoreTV.setText(data.getScore());
         LinearLayoutManager manager = new LinearLayoutManager(this);

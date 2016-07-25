@@ -134,6 +134,12 @@ public class OtherPictureActivity extends BaseActivity<OtherPicturePresenter>
         }
     }
 
+
+    @Override protected String getTitleString() {
+        return AppUtil.getString(R.string.other_picture);
+    }
+
+
     @Override
     protected void initLoader() {
         getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);

@@ -211,6 +211,9 @@ public class MusicAdapter extends PagerAdapter {
             FrescoHelper.loadImage(headIV, music.getAuthor().getWeb_url());
             TextView mAuthorTV = (TextView) mHeader.findViewById(R.id.name_tv);
             mAuthorTV.setText(music.getAuthor().getUser_name());
+            View.OnClickListener listener=AppUtil.getOtherClickListener(music.getAuthor().getUser_id(),mAuthorTV.getContext());
+            mAuthorTV.setOnClickListener(listener);
+            headIV.setOnClickListener(listener);
             TextView desTV = (TextView) mHeader.findViewById(R.id.des_tv);
             desTV.setText(music.getAuthor().getDesc());
             TextView musicTitleTV = (TextView) mHeader.findViewById(R.id.music_title_tv);
@@ -445,7 +448,8 @@ public class MusicAdapter extends PagerAdapter {
 
         while (temp.before(calendar)) {
             String s = format.format(temp.getTime());
-            dateBeans.add(new DateBean(s, s + "%2000:00:00"));
+            String moth=DateUtil.getMonthDate(s);
+            dateBeans.add(new DateBean(moth, s + "%2000:00:00"));
             temp.add(GregorianCalendar.MONTH, 1);
         }
         Collections.reverse(dateBeans);

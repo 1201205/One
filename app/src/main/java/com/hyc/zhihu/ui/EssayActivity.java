@@ -96,7 +96,6 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mListener = null;
         EventBus.getDefault().unregister(this);
     }
 
@@ -173,9 +172,12 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
             mHeaderIV.setImageResource(R.drawable.head);
             mAuthorHeaderIV.setImageResource(R.drawable.head);
         }
-        mAuthorNameTV.setOnClickListener(getOnclickListener());
-        mHeaderIV.setOnClickListener(getOnclickListener());
-        mAuthorHeaderIV.setOnClickListener(getOnclickListener());
+        String id=author.getUser_id();
+        View.OnClickListener listener=AppUtil.getOtherClickListener(id,this);
+        mAuthorTV.setOnClickListener(listener);
+        mAuthorNameTV.setOnClickListener(listener);
+        mHeaderIV.setOnClickListener(listener);
+        mAuthorHeaderIV.setOnClickListener(listener);
         if (TextUtils.isEmpty(content.getSub_title())) {
             mDesTV.setVisibility(View.GONE);
         } else {
@@ -330,18 +332,5 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
         mPresenter.getAndShowCommentList();
     }
 
-    private View.OnClickListener mListener;
-
-    private View.OnClickListener getOnclickListener() {
-        if (mListener == null) {
-            mListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    OtherDetailActivity.jumpTo(EssayActivity.this, mID);
-                }
-            };
-        }
-        return mListener;
-    }
 
 }

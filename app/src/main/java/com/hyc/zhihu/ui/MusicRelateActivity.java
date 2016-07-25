@@ -304,6 +304,9 @@ public class MusicRelateActivity extends BaseActivity<MusicRelatePresenter> impl
         });
         Picasso.with(this).load(music.getCover()).fit().placeholder(R.drawable.default_music_cover).into(mMusicIV);
         FrescoHelper.loadImage(mHeadIV, music.getAuthor().getWeb_url());
+        View.OnClickListener listener=AppUtil.getOtherClickListener(music.getAuthor().getUser_id(),this);
+        mHeadIV.setOnClickListener(listener);
+        mAuthorTV.setOnClickListener(listener);
         mAuthorTV.setText(music.getAuthor().getUser_name());
         mDesTV.setText(music.getAuthor().getDesc());
         mMusicTitleTV.setText(music.getTitle());
