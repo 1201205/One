@@ -146,7 +146,7 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
 
     @Override
     protected String getTitleString() {
-        return "问题";
+        return AppUtil.getString(R.string.question);
     }
 
 
@@ -179,7 +179,7 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
 
     @Override
     public void showNoComments() {
-        AppUtil.showToast("没有更多评论啦~~~");
+        AppUtil.showToast(R.string.no_more);
         mHasMoreComments = false;
     }
     @Override
@@ -259,7 +259,7 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
             } else {
                 h = (ViewHolder) convertView.getTag();
             }
-            h.tv.setText(position + "");
+            h.tv.setText(String.valueOf(position));
             return convertView;
         }
     }

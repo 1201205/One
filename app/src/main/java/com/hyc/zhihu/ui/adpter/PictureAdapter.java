@@ -27,6 +27,8 @@ import com.hyc.zhihu.ui.MainActivity;
 import com.hyc.zhihu.ui.MonthPictureActivity;
 import com.hyc.zhihu.ui.MusicActivity;
 import com.hyc.zhihu.ui.PictureActivity;
+import com.hyc.zhihu.utils.AppUtil;
+import com.hyc.zhihu.utils.DateUtil;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
@@ -73,16 +75,10 @@ public class PictureAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
-        Log.e("test1", "删除item--" + position);
     }
 
     @Override
     public View instantiateItem(ViewGroup container, int position) {
-//        int delay=0;
-//        if (mRefreshIndex==position) {
-//            mRefreshIndex=-1;
-//            delay=50;
-//        }
         View view;
         if (position == viewBeans.size() - 1) {
             view = LayoutInflater.from(mContext).inflate(R.layout.date_list, null);
@@ -96,23 +92,13 @@ public class PictureAdapter extends PagerAdapter {
             final TextView content = (TextView) view.findViewById(R.id.main_tv);
             final TextView date = (TextView) view.findViewById(R.id.date_tv);
             final PictureViewBean viewBean = viewBeans.get(position);
-            Log.e("test1", "重新刷新view" + position);
             if (viewBean.state == PictureViewBean.NORMAL) {
                 final OnePictureData bean = viewBeans.get(position).data;
-//                picture.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        //共享元素
-//                        ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation((MainActivity) mContext, picture, PictureActivity.SHARE_VIEW);
-//                        Intent intent = PictureActivity.newIntent(mContext, bean.getHp_img_original_url());
-//                        ActivityCompat.startActivity((MainActivity) mContext, intent, compat.toBundle());
-//                    }
-//                });
                 picture.setOnClickListener(getOnclickListener(bean.getHp_title(),bean.getHp_img_original_url(),vol));
                 name.setText(bean.getHp_author());
                 vol.setText(bean.getHp_title());
                 content.setText(bean.getHp_content());
-                date.setText(bean.getLast_update_date());
+                date.setText(DateUtil.getOneDate(bean.getHp_makettime()));
                 Picasso.with(mContext).load(bean.getHp_img_original_url()).placeholder(R.drawable.default_hp_image).fit().into(picture);
             }
             view.setTag(viewBean.id);
@@ -139,13 +125,11 @@ public class PictureAdapter extends PagerAdapter {
 
 
     public void setCurrentItem(String id, OnePictureData data) {
-        Log.e("test1", "显示信息");
         mCurrentId = id;
         for (int i = 0; i < viewBeans.size(); i++) {
             if (viewBeans.get(i).id.equals(id)) {
                 viewBeans.get(i).data = data;
                 viewBeans.get(i).state = PictureViewBean.NORMAL;
-                Log.e("test1", "notifyDataSetChanged");
                 DelayHandle.delay(150, new Runnable() {
                     @Override
                     public void run() {
@@ -176,7 +160,7 @@ public class PictureAdapter extends PagerAdapter {
             temp.add(GregorianCalendar.MONTH, 1);
         }
         Collections.reverse(dateBeans);
-        dateBeans.get(0).date = "本月";
+        dateBeans.get(0).date = AppUtil.getString(R.string.current_month);
         return dateBeans;
     }
 

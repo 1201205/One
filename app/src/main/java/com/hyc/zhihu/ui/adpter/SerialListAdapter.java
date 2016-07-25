@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.beans.SerialListItem;
+import com.hyc.zhihu.utils.AppUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +62,7 @@ public class SerialListAdapter extends BaseAdapter {
         } else {
             h = (ViewHolder) convertView.getTag();
         }
-        h.tv.setText("第" + mItems.get(position).getNumber() + "话");
+        h.tv.setText(String.format(AppUtil.getString(R.string.serial_count),mItems.get(position).getNumber()));
         if (mOnItemClickListener!=null) {
             h.tv.setOnClickListener(new View.OnClickListener() {
                 @Override

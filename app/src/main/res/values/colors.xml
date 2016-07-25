@@ -24,4 +24,5 @@
     <color name="transparent">#00000000</color>
     <color name="loading_yellow">#F6B965</color>
     <color name="loading_pink">#F04D61</color>
+    <color name="title_gray">#4E5C6C</color>
 </resources>

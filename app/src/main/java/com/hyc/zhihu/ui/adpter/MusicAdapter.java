@@ -39,6 +39,7 @@ import com.hyc.zhihu.ui.MainActivity;
 import com.hyc.zhihu.ui.MusicMonthListActivity;
 import com.hyc.zhihu.ui.PictureActivity;
 import com.hyc.zhihu.utils.AppUtil;
+import com.hyc.zhihu.utils.DateUtil;
 import com.hyc.zhihu.widget.ListViewForScrollView;
 
 import com.squareup.picasso.Picasso;
@@ -215,7 +216,7 @@ public class MusicAdapter extends PagerAdapter {
             TextView musicTitleTV = (TextView) mHeader.findViewById(R.id.music_title_tv);
             musicTitleTV.setText(music.getTitle());
             TextView timeTV = (TextView) mHeader.findViewById(R.id.time_tv);
-            timeTV.setText("May 23.2016");
+            timeTV.setText(DateUtil.getCommentDate(music.getMaketime()));
             TextView titleTV = (TextView) mHeader.findViewById(R.id.title_tv);
             titleTV.setText(music.getStory_title());
             TextView authorNameTV = (TextView) mHeader.findViewById(R.id.author_name_tv);
@@ -230,11 +231,11 @@ public class MusicAdapter extends PagerAdapter {
             TextView editorTV = (TextView) mHeader.findViewById(R.id.editor_tv);
             editorTV.setText(music.getCharge_edt());
             TextView likeNumTV = (TextView) mHeader.findViewById(R.id.like_num_tv);
-            likeNumTV.setText(music.getPraisenum() + "");
+            likeNumTV.setText(String.valueOf(music.getPraisenum()));
             TextView commentNumTV = (TextView) mHeader.findViewById(R.id.comment_num_tv);
-            commentNumTV.setText(music.getCommentnum() + "");
+            commentNumTV.setText(String.valueOf(music.getCommentnum()));
             TextView shareNumTV = (TextView) mHeader.findViewById(R.id.share_num_tv);
-            shareNumTV.setText(music.getSharenum() + "");
+            shareNumTV.setText(String.valueOf(music.getSharenum()));
             View hot = mHeader.findViewById(R.id.hot_ll);
             List<MusicRelate> musicRelates = mRelateLists.get(position).getMusics();
             List<Comment> comments = mRelateLists.get(position).getHotComment();
@@ -448,23 +449,9 @@ public class MusicAdapter extends PagerAdapter {
             temp.add(GregorianCalendar.MONTH, 1);
         }
         Collections.reverse(dateBeans);
-        dateBeans.get(0).date = "本月";
+        dateBeans.get(0).date = AppUtil.getString(R.string.current_month);
         return dateBeans;
     }
-
-
-    public static void main(String[] args) {
-        GregorianCalendar calendar = new GregorianCalendar();
-        GregorianCalendar temp = new GregorianCalendar(2012, 9, 1);
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
-        while (temp.before(calendar)) {
-            System.out.println(format.format(temp.getTime()));
-            temp.add(GregorianCalendar.MONTH, 1);
-        }
-
-    }
-
 
     public void clear() {
         viewBeans.clear();

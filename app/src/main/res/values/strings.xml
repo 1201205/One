@@ -1,6 +1,40 @@
 <resources>
-    <string name="app_name">zhihu</string>
+    <string name="app_name">一个</string>
     <string name="net_error">网络错误，请检查网络连接情况</string>
     <string name="no_more">客官，没有更多啦啦啦</string>
-
+    <string name="parse_error">解析出错了哦。。。。</string>
+    <string name="none_point_error">嗨！我是空指针异常</string>
+    <string name="do_not_get_id">未获取到ID</string>
+    <string name="show_cache">网络有问题，将展示缓存数据</string>
+    <string name="movie_count">%1$s条电影故事</string>
+    <string name="nothing_get">没有获取到数据哦。。。</string>
+    <string name="question">问题</string>
+    <string name="serial">连载</string>
+    <string name="note">小记</string>
+    <string name="music_list">歌单</string>
+    <string name="other_reading">ta的文章</string>
+    <string name="other_collect">ta的收藏</string>
+    <string name="other_picture">图文</string>
+    <string name="other_essay">文章</string>
+    <string name="essay">短文</string>
+    <string name="movie">电影</string>
+    <string name="listen">收听</string>
+    <string name="related_commend">相关推荐</string>
+    <string name="comment_list">评论列表</string>
+    <string name="hot_comment">以上是热门评论</string>
+    <string name="rate">评分</string>
+    <string name="movie_story">电影故事</string>
+    <string name="all_movie_story">全部电影故事</string>
+    <string name="one_movie">一个 · 电影表</string>
+    <string name="not_show">暂未上映</string>相似歌曲
+    <string name="music_story">音乐故事</string>
+    <string name="similar_music">相似歌曲</string>
+    <string name="lyric">歌词</string>
+    <string name="home">首页</string>
+    <string name="reading">阅读</string>
+    <string name="music">音乐</string>
+    <string name="like">喜欢</string>
+    <string name="share">分享</string>
+    <string name="serial_count">第%1$s话</string>
+    <string name="current_month">本月</string>
 </resources>

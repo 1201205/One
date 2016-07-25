@@ -1,5 +1,7 @@
 package com.hyc.zhihu.utils;
 
+import android.view.KeyEvent;
+
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -624,6 +626,70 @@ public class DateUtil {
         return week;
     }
 
+    /**
+     * 转换成app中显示的格式
+     * @param date
+     * @return
+     */
+    public static String getCommentDate(String date){
+        DateStyle dateStyle = getDateStyle(date);
+        if (dateStyle != null) {
+            Date myDate = StringToDate(date, dateStyle);
+           return getMonthabbreviation(myDate).name_enShort+" "+getDay(myDate)+"."+getYear(myDate);
+        }
+        return null;
+    }
+    public static String getOneDate(String date){
+        DateStyle dateStyle = getDateStyle(date);
+        if (dateStyle != null) {
+            Date myDate = StringToDate(date, dateStyle);
+            return getWeek(myDate).name_enShort+" "+getDay(myDate)+" "+getMonthabbreviation(myDate).name_enShort+"."+getYear(myDate);
+        }
+        return null;
+    }
+    public static Month getMonthabbreviation(Date date) {
+        Month month=null;
+        int monthNumber = getMonth(date);
+        switch (monthNumber) {
+            case 1:
+                month = Month.JANUARY;
+                break;
+            case 2:
+                month = Month.FEBRUARY;
+                break;
+            case 3:
+                month = Month.MARCH;
+                break;
+            case 4:
+                month = Month.APRIL;
+                break;
+            case 5:
+                month = Month.MAY;
+                break;
+            case 6:
+                month = Month.JUNE;
+                break;
+            case 7:
+                month = Month.JULY;
+                break;
+            case 8:
+                month = Month.AUGUST;
+                break;
+            case 9:
+                month = Month.SEPTEMBER;
+                break;
+            case 10:
+                month = Month.OCTOBER;
+                break;
+            case 11:
+                month = Month.NOVEMBER;
+                break;
+            case 12:
+                month = Month.DECEMBER;
+                break;
+        }
+        return month;
+    }
     /**
      * 获取日期的星期。失败返回null。
      * @param date 日期

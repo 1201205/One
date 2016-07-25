@@ -14,17 +14,17 @@
         <TextView
             android:id="@+id/essay_tv"
             style="@style/OtherReadingText"
-            android:text="短文" />
+            android:text="@string/essay" />
 
         <TextView
             android:id="@+id/serial_tv"
             style="@style/OtherReadingText"
-            android:text="连载" />
+            android:text="@string/serial" />
 
         <TextView
             android:id="@+id/question_tv"
             style="@style/OtherReadingText"
-            android:text="问题" />
+            android:text="@string/question" />
     </LinearLayout>
     <android.support.v4.view.ViewPager
         android:id="@+id/reading_vpg"

@@ -77,8 +77,6 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
         indicators = (ViewGroup) v.findViewById(R.id.indicators);
         viewPager.addOnPageChangeListener(mPagerAdapter);
         titleLayout = (TextView) findViewById(R.id.title);
-//        RecyclerView recyclerView=null;
-//        final LinearLayoutManager manager=null;
 //        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 //            @Override
 //            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

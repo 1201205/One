@@ -27,8 +27,8 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        mColor = SPUtil.get( S.THEME, AppUtil.getColor(R.color.google_blue));
-        getWindow().setStatusBarColor(mColor);
+//        mColor = SPUtil.get( S.THEME, AppUtil.getColor(R.color.google_blue));
+//        getWindow().setStatusBarColor(mColor);
         super.onCreate(savedInstanceState);
         setContentView(getLayoutID());
         if (getIntent() != null) {
@@ -70,7 +70,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     }
 
     protected String getTitleString() {
-        return "一个";
+        return AppUtil.getString(R.string.app_name);
     }
 
     @Override
@@ -90,11 +90,11 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     }
 
-    public void changeColor() {
-        mColor = SPUtil.get( S.THEME, AppUtil.getColor(R.color.google_blue));
-        getWindow().setStatusBarColor(mColor);
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(mColor));
-    }
+//    public void changeColor() {
+//        mColor = SPUtil.get( S.THEME, AppUtil.getColor(R.color.google_blue));
+//        getWindow().setStatusBarColor(mColor);
+//        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(mColor));
+//    }
 
     @Override
     protected void onDestroy() {

@@ -34,6 +34,7 @@ import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.MusicRelateView;
+import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -59,7 +60,7 @@ public class MusicRelateActivity extends BaseActivity<MusicRelatePresenter> impl
 
 
     private ImageView mPlayIV;
-    private SimpleDraweeView mMusicIV;
+    private ImageView mMusicIV;
     private SimpleDraweeView mHeadIV;
     private TextView mAuthorTV;
     private TextView mDesTV;
@@ -127,7 +128,7 @@ public class MusicRelateActivity extends BaseActivity<MusicRelatePresenter> impl
         //                }
         //            }
         //        });
-        mMusicIV = (SimpleDraweeView) mHeader.findViewById(R.id.music_iv);
+        mMusicIV = (ImageView) mHeader.findViewById(R.id.music_iv);
         //        FrescoHelper.loadImage(mMusicIV, music.getCover());
         //            Picasso.with(mContext).load(music.getCover()).fit().into(mMusicIV);
         mHeadIV = (SimpleDraweeView) mHeader.findViewById(R.id.head_iv);
@@ -301,7 +302,7 @@ public class MusicRelateActivity extends BaseActivity<MusicRelatePresenter> impl
                 }
             }
         });
-        FrescoHelper.loadImage(mMusicIV, music.getCover());
+        Picasso.with(this).load(music.getCover()).fit().placeholder(R.drawable.default_music_cover).into(mMusicIV);
         FrescoHelper.loadImage(mHeadIV, music.getAuthor().getWeb_url());
         mAuthorTV.setText(music.getAuthor().getUser_name());
         mDesTV.setText(music.getAuthor().getDesc());
@@ -309,9 +310,9 @@ public class MusicRelateActivity extends BaseActivity<MusicRelatePresenter> impl
         mLyricTV.setText(music.getLyric());
         mInfoTV.setText(music.getInfo());
         mEditorTV.setText(music.getCharge_edt());
-        mLikeNumTV.setText(music.getPraisenum() + "");
-        mCommentNumTV.setText(music.getCommentnum() + "");
-        mShareNumTV.setText(music.getSharenum() + "");
+        mLikeNumTV.setText(String.valueOf(music.getPraisenum()));
+        mCommentNumTV.setText(String.valueOf(music.getCommentnum()));
+        mShareNumTV.setText(String.valueOf(music.getSharenum()));
     }
 
 

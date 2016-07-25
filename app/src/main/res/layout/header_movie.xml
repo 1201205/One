@@ -70,7 +70,7 @@
                 android:drawableLeft="@drawable/plz_grade_selector"
                 android:gravity="center"
                 android:layout_centerVertical="true"
-                android:text="评分"
+                android:text="@string/rate"
                 android:textColor="@color/gray_tv"
                 android:textSize="13sp"/>
         </RelativeLayout>
@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:text="电影故事"
+                android:text="@string/movie_story"
                 android:textSize="13sp"/>
 
             <ImageView
@@ -200,7 +200,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="10dp"
-                android:text="全部电影故事"
+                android:text="@string/all_movie_story"
                 android:textColor="@color/google_blue"
                 android:textSize="13sp"/>
         </RelativeLayout>
@@ -217,7 +217,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="3"
-                android:text="一个 · 电影表"
+                android:text="@string/one_movie"
                 android:textColor="@color/gray_tv"
                 android:textSize="13sp"/>
 
@@ -281,7 +281,7 @@
                 android:background="@color/gray"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:text="评论列表"
+                android:text="@string/comment_list"
                 android:textColor="@color/gray_tv"
                 android:textSize="13sp"/>
 
@@ -308,7 +308,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="30dp"
                 android:paddingRight="30dp"
-                android:text="以上是热门评论"
+                android:text="@string/hot_comment"
                 android:textColor="@color/google_blue"
                 android:textSize="13sp"/>
 

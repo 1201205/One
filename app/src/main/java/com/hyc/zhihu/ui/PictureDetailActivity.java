@@ -12,6 +12,7 @@ import com.hyc.zhihu.R;
 import com.hyc.zhihu.base.BaseActivity;
 import com.hyc.zhihu.beans.OnePictureData;
 import com.hyc.zhihu.utils.AppUtil;
+import com.hyc.zhihu.utils.DateUtil;
 import com.hyc.zhihu.view.PictureDetailView;
 import com.squareup.picasso.Picasso;
 
@@ -74,7 +75,7 @@ public class PictureDetailActivity extends BaseActivity implements PictureDetail
         mNameTV.setText(mData.getHp_author());
         mVolTV.setText(mData.getHp_title());
         mContentTV.setText(mData.getHp_content());
-        mDateTV.setText(mData.getLast_update_date());
+        mDateTV.setText(DateUtil.getOneDate(mData.getLast_update_date()));
     }
 
     @Override

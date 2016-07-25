@@ -10,9 +10,7 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -38,9 +36,9 @@ import com.hyc.zhihu.presenter.EssayContentPresenter;
 import com.hyc.zhihu.ui.adpter.CommentAdapter;
 import com.hyc.zhihu.ui.adpter.EssayAdapter;
 import com.hyc.zhihu.utils.AppUtil;
+import com.hyc.zhihu.utils.DateUtil;
 import com.hyc.zhihu.view.ReadingContentView;
 import com.hyc.zhihu.widget.CircleImageView;
-import com.hyc.zhihu.widget.CircleTransform;
 import com.hyc.zhihu.widget.ListViewForScrollView;
 import com.squareup.picasso.Picasso;
 
@@ -98,6 +96,7 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mListener = null;
         EventBus.getDefault().unregister(this);
     }
 
@@ -137,7 +136,7 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
         mContentTV = (TextView) mHeader.findViewById(R.id.content_tv);
         mAuthorDesTV = (TextView) mHeader.findViewById(R.id.author_des_tv);
         mDateTV = (TextView) mHeader.findViewById(R.id.date_tv);
-        mHotLL= (LinearLayout) mHeader.findViewById(R.id.hot_ll);
+        mHotLL = (LinearLayout) mHeader.findViewById(R.id.hot_ll);
         mAuthorHeaderIV = (CircleImageView) mHeader.findViewById(R.id.author_head_iv);
         mHeaderIV = (CircleImageView) mHeader.findViewById(R.id.head_iv);
         mEditorTV = (TextView) mHeader.findViewById(R.id.editor_tv);
@@ -161,11 +160,6 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
     @Override
     public void showContent(final Essay content) {
         final RealArticleAuthor author = content.getAuthor().get(0);
-        mAuthorNameTV.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                OtherDetailActivity.jumpTo(EssayActivity.this,author.getUser_id());
-            }
-        });
         if (!TextUtils.isEmpty(author.getWeb_url())) {
             Picasso.with(this)
                     .load(author.getWeb_url())
@@ -179,6 +173,9 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
             mHeaderIV.setImageResource(R.drawable.head);
             mAuthorHeaderIV.setImageResource(R.drawable.head);
         }
+        mAuthorNameTV.setOnClickListener(getOnclickListener());
+        mHeaderIV.setOnClickListener(getOnclickListener());
+        mAuthorHeaderIV.setOnClickListener(getOnclickListener());
         if (TextUtils.isEmpty(content.getSub_title())) {
             mDesTV.setVisibility(View.GONE);
         } else {
@@ -220,7 +217,7 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
         }
         mTitleTV.setText(content.getHp_title());
         mAuthorDesTV.setText(author.getDesc());
-        mDateTV.setText(content.getHp_makettime());
+        mDateTV.setText(DateUtil.getCommentDate(content.getHp_makettime()));
         mContentTV.setText(Html.fromHtml(content.getHp_content()));
         mEditorTV.setText(content.getHp_author_introduce());
         mAuthorTV.setText(content.getHp_author());
@@ -298,7 +295,7 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
 
     @Override
     public void showNoComments() {
-        AppUtil.showToast("没有更多评论啦~~~");
+        AppUtil.showToast(R.string.no_more);
         mHasMoreComments = false;
     }
 
@@ -333,50 +330,18 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
         mPresenter.getAndShowCommentList();
     }
 
+    private View.OnClickListener mListener;
 
-    static class ViewHolder {
-        TextView tv;
+    private View.OnClickListener getOnclickListener() {
+        if (mListener == null) {
+            mListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    OtherDetailActivity.jumpTo(EssayActivity.this, mID);
+                }
+            };
+        }
+        return mListener;
     }
 
-
-    class TestAdapter extends BaseAdapter {
-        TestAdapter() {
-
-        }
-
-
-        @Override
-        public int getCount() {
-            return 100;
-        }
-
-
-        @Override
-        public Integer getItem(int position) {
-            return position;
-        }
-
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder h = null;
-            if (convertView == null) {
-                convertView = LayoutInflater.from(EssayActivity.this)
-                        .inflate(R.layout.layout_title, null);
-                h = new ViewHolder();
-                h.tv = (TextView) convertView.findViewById(R.id.title);
-                convertView.setTag(h);
-            } else {
-                h = (ViewHolder) convertView.getTag();
-            }
-            h.tv.setText(position + "");
-            return convertView;
-        }
-    }
 }

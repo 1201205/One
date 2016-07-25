@@ -3,6 +3,7 @@ package com.hyc.zhihu.base;
 import android.text.TextUtils;
 
 import com.google.gson.JsonParseException;
+import com.hyc.zhihu.R;
 import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
 
@@ -25,17 +26,17 @@ public abstract class ExceptionAction implements Action1<Throwable> {
         if (throwable instanceof NoThingGetException) {
             onNothingGet();
         }else if (throwable instanceof JsonParseException) {
-            AppUtil.showToast("解析出错了哦。。。。");
+            AppUtil.showToast(R.string.parse_error);
         } else if (throwable instanceof NullPointerException) {
-            AppUtil.showToast("嗨！我是空指针异常");
+            AppUtil.showToast(R.string.none_point_error);
             Exceptions.propagate(throwable);
         }else if(throwable instanceof SocketException){
-            AppUtil.showToast("网络错误，请检查");
+            AppUtil.showToast(R.string.net_error);
         } else if (throwable instanceof UnknownHostException) {
-            AppUtil.showToast("网络错误，请检查");
+            AppUtil.showToast(R.string.net_error);
             onNoNetWork();
         } else {
-            AppUtil.showToast("网络错误，请检查");
+            AppUtil.showToast(R.string.net_error);
         }
     }
 }

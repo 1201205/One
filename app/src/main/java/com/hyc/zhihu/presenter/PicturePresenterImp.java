@@ -3,6 +3,7 @@ package com.hyc.zhihu.presenter;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.hyc.zhihu.R;
 import com.hyc.zhihu.base.BasePresenter;
 import com.hyc.zhihu.base.DefaultTransformer;
 import com.hyc.zhihu.base.ExceptionAction;
@@ -87,11 +88,11 @@ public class PicturePresenterImp extends BasePresenter<PictureView> implements I
                 }, new ExceptionAction() {
                     @Override
                     public void onNothingGet() {
-                        AppUtil.showToast("未获取到id");
+                        AppUtil.showToast(R.string.do_not_get_id);
                     }
                     @Override
                     public void onNoNetWork(){
-                        AppUtil.showToast("网络有问题，将展示缓存数据");
+                        AppUtil.showToast(R.string.show_cache);
                         showCachedInfo();
                     }
                 }));
@@ -164,7 +165,6 @@ public class PicturePresenterImp extends BasePresenter<PictureView> implements I
 
         OnePictureData data = RealmUtil.findByKeyOne(OnePictureData.class, "hpcontent_id", s);
         if (data != null && data.isValid()) {
-            Log.e("哈哈哈", "从数据库查找成功");
             data = Realm.getDefaultInstance().copyFromRealm(data);
         }
         return data;
@@ -172,7 +172,6 @@ public class PicturePresenterImp extends BasePresenter<PictureView> implements I
 
     @Override
     public OnePictureData getPictureById(final String id) {
-        Log.e("test1", "获取信息--" + id);
 //        mView.showLoading();
         Observable<OnePictureData> orm = Observable.just(getOnePictureDataByRealm(id)).subscribeOn(Schedulers.io());
         Observable<OnePictureData> net = Requests.getApi().getPictureById(id).subscribeOn(Schedulers.io()).map(new Func1<BaseBean<OnePictureData>, OnePictureData>() {

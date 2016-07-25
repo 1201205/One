@@ -39,13 +39,6 @@ public class PictureFragment extends Fragment implements PictureView, LoaderMana
         getLoaderManager().initLoader(AppUtil.getID(), null, this);
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-//        if (isVisibleToUser) {
-//        }
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -61,7 +54,6 @@ public class PictureFragment extends Fragment implements PictureView, LoaderMana
             public void onPageSelected(int position) {
                 mPictureAdapter.setCurrentPage(position);
                 mPresenter.gotoPosition(position);
-                Log.e("test1", "选中位置--" + position);
             }
 
             @Override
@@ -76,15 +68,6 @@ public class PictureFragment extends Fragment implements PictureView, LoaderMana
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.e("test10", Thread.currentThread().getName());
-//        mPresenter.getPictureIdsAndFirstItem();
-//        mViewPager.setOffscreenPageLimit(3);
 
     }
 

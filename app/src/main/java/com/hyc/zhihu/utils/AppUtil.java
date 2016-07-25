@@ -23,20 +23,44 @@ public class AppUtil {
         Toast.makeText(MainApplication.getApplication(), id, Toast.LENGTH_LONG).show();
     }
 
+    /**
+     * 用过id获取Drawable
+     * @param id
+     * @return
+     */
     public static Drawable getDrawable(int id) {
         return MainApplication.getApplication().getResources().getDrawable(id);
     }
 
+    /**
+     * dp转px
+     * @param dipValue
+     * @return
+     */
     public static int dip2px(float dipValue) {
         final float scale = MainApplication.getApplication().getResources().getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
     }
 
+    /**
+     * sp转px
+     * @param spValue
+     * @return
+     */
     public static int sp2px(float spValue) {
         final float fontScale = MainApplication.getApplication().getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
     }
 
+    public static String getString(int id){
+        return MainApplication.getApplication().getString(id);
+    }
+
+    /**
+     * 获取颜色
+     * @param id
+     * @return
+     */
     public static int getColor(int id) {
         return MainApplication.getApplication().getResources().getColor(R.color.google_blue);
     }

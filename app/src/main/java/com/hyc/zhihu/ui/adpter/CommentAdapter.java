@@ -26,6 +26,7 @@ import com.hyc.zhihu.beans.User;
 import com.hyc.zhihu.helper.FrescoHelper;
 import com.hyc.zhihu.ui.OtherDetailActivity;
 import com.hyc.zhihu.utils.AppUtil;
+import com.hyc.zhihu.utils.DateUtil;
 import com.hyc.zhihu.widget.CircleImageView;
 import com.hyc.zhihu.widget.CircleTransform;
 import com.squareup.picasso.Picasso;
@@ -117,8 +118,8 @@ public class CommentAdapter extends BaseAdapter {
                 OtherDetailActivity.jumpTo(v.getContext(), user.getUser_id());
             }
         });
-        holder.date.setText(comment.getInput_date());
-        holder.num.setText(comment.getPraisenum() + "");
+        holder.date.setText(DateUtil.getCommentDate(comment.getInput_date()));
+        holder.num.setText(String.valueOf(comment.getPraisenum()));
         if (TextUtils.isEmpty(comment.getQuote())) {
             holder.other.setVisibility(View.GONE);
         } else {

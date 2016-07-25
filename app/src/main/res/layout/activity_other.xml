@@ -64,7 +64,7 @@
                         android:textColor="@color/white"
                         android:textSize="17sp"
                         android:layout_gravity="center_horizontal"
-                        android:text="小记"
+                        android:text="@string/note"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
@@ -83,7 +83,7 @@
                         android:textColor="@color/white"
                         android:textSize="17sp"
                         android:layout_gravity="center_horizontal"
-                        android:text="歌单"
+                        android:text="@string/music_list"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
@@ -100,7 +100,7 @@
                 android:drawablePadding="10dp"
                 android:drawableLeft="@drawable/his_article"
                 android:layout_marginLeft="10dp"
-                android:text="ta的文章"
+                android:text="@string/other_reading"
                 android:textSize="17sp"
                 android:textColor="@color/black_tv"
                 android:layout_width="wrap_content"
@@ -122,7 +122,7 @@
             android:gravity="center_vertical"
             android:textSize="17sp"
             android:textColor="@color/black_tv"
-            android:text="ta的收藏"
+            android:text="@string/other_collect"
             android:layout_width="match_parent"
             android:layout_height="50dp"/>
         <RelativeLayout
@@ -135,7 +135,7 @@
                 android:drawablePadding="10dp"
                 android:drawableLeft="@drawable/center_image_collection"
                 android:layout_marginLeft="10dp"
-                android:text="图文"
+                android:text="@string/other_picture"
                 android:textSize="17sp"
                 android:textColor="@color/black_tv"
                 android:layout_width="wrap_content"
@@ -161,7 +161,7 @@
                 android:drawablePadding="10dp"
                 android:drawableLeft="@drawable/center_reading_collection"
                 android:layout_marginLeft="10dp"
-                android:text="文章"
+                android:text="@string/other_essay"
                 android:textSize="17sp"
                 android:textColor="@color/black_tv"
                 android:layout_width="wrap_content"
@@ -187,7 +187,7 @@
                 android:drawablePadding="10dp"
                 android:drawableLeft="@drawable/center_movie_collection"
                 android:layout_marginLeft="10dp"
-                android:text="电影"
+                android:text="@string/movie"
                 android:textSize="17sp"
                 android:textColor="@color/black_tv"
                 android:layout_width="wrap_content"

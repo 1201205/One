@@ -1,5 +1,6 @@
 package com.hyc.zhihu.presenter;
 
+import com.hyc.zhihu.R;
 import com.hyc.zhihu.base.BasePresenter;
 import com.hyc.zhihu.beans.BaseBean;
 import com.hyc.zhihu.beans.OnePictureData;
@@ -35,7 +36,7 @@ public class MonthPicturePresenter extends BasePresenter<MonthPictureView> imple
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        AppUtil.showToast("网络错误");
+                        AppUtil.showToast(R.string.net_error);
                     }
                 }));
     }

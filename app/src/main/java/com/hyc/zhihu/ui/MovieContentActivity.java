@@ -35,11 +35,13 @@ import com.hyc.zhihu.ui.adpter.CommentAdapter;
 import com.hyc.zhihu.ui.adpter.MovieStoryPictureAdapter;
 import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 import com.hyc.zhihu.utils.AppUtil;
+import com.hyc.zhihu.utils.DateUtil;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.MovieContentView;
 import com.hyc.zhihu.widget.ListViewForScrollView;
 import com.hyc.zhihu.widget.RectGridView;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -239,14 +241,29 @@ public class MovieContentActivity extends BaseActivity<MovieContentPresenter> im
     @Override
     public void showStory(MovieStoryWrapper wrapper) {
         MovieStory story = wrapper.getData().get(0);
+        mNameTV.setText(story.getUser().getUser_name());
         FrescoHelper.loadImage(mHeadIV, story.getUser().getWeb_url());
-        mDateTV.setText(story.getInput_date());
-        mNumTV.setText(story.getPraisenum() + "");
+        mDateTV.setText(DateUtil.getCommentDate(story.getInput_date()));
+        mNumTV.setText(String.valueOf(story.getPraisenum()));
         mTitleTV.setText(story.getTitle());
         mContentTV.setText(story.getContent());
-        mCountTV.setText(wrapper.getCount() + "条电影故事");
+        mCountTV.setText(String.format(AppUtil.getString(R.string.movie_count),wrapper.getCount()));
+        mNameTV.setOnClickListener(getOnclickListener());
+        mHeadIV.setOnClickListener(getOnclickListener());
     }
+    private View.OnClickListener mListener;
 
+    private View.OnClickListener getOnclickListener() {
+        if (mListener == null) {
+            mListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    OtherDetailActivity.jumpTo(MovieContentActivity.this, mID);
+                }
+            };
+        }
+        return mListener;
+    }
 
     @Override
     public void onLoadMore() {

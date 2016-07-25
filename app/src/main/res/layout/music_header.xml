@@ -107,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginBottom="6dp"
-                    android:text="音乐故事" />
+                    android:text="@string/music_story" />
 
                 <ImageView
                     android:id="@+id/story_iv"
@@ -294,7 +294,7 @@
                 android:drawableRight="@drawable/music_list_play"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:text="相似歌曲"
+                android:text="@string/similar_music"
                 android:textColor="@color/gray_tv"
                 android:textSize="13sp" />
 
@@ -321,7 +321,7 @@
                 android:background="@color/gray"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:text="评论列表"
+                android:text="@string/comment_list"
                 android:textColor="@color/gray_tv"
                 android:textSize="13sp" />
 
@@ -349,7 +349,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="30dp"
                 android:paddingRight="30dp"
-                android:text="以上是热门评论"
+                android:text="@string/hot_comment"
                 android:textColor="@color/google_blue"
                 android:textSize="13sp" />
 

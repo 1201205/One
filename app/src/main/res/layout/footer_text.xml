@@ -6,7 +6,7 @@
     android:layout_height="60dp"
     android:textColor="@color/black_tv"
     android:textSize="16sp"
-    android:text="没有更多了~~"
+    android:text="@string/no_more"
     android:gravity="center"
     />
 

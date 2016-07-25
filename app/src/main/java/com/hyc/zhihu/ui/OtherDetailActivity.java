@@ -185,6 +185,6 @@ public class OtherDetailActivity extends BaseActivity<OtherDetailPresenter>
 
     @Override
     public void onNothingGet() {
-        AppUtil.showToast("没有获取到数据哦。。。");
+        AppUtil.showToast(R.string.nothing_get);
     }
 }

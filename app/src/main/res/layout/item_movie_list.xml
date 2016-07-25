@@ -25,7 +25,7 @@
         android:textSize="17sp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:text="暂未上映"
+        android:text="@string/not_show"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <TextView

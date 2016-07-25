@@ -98,7 +98,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:layout_marginBottom="6dp"
-                    android:text="歌词" />
+                    android:text="@string/lyric" />
 
                 <ImageView
                     android:id="@+id/lyric_iv"
@@ -239,7 +239,7 @@
                 android:background="@color/gray"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:text="评论列表"
+                android:text="@string/comment_list"
                 android:textColor="@color/gray_tv"
                 android:textSize="13sp" />
         </LinearLayout>

@@ -36,6 +36,7 @@ import com.hyc.zhihu.ui.adpter.CommentAdapter;
 import com.hyc.zhihu.ui.adpter.SerialAdapter;
 import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 import com.hyc.zhihu.utils.AppUtil;
+import com.hyc.zhihu.utils.DateUtil;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.ReadingContentView;
 import com.hyc.zhihu.widget.CircleImageView;
@@ -146,9 +147,12 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
             mHeaderIV.setImageResource(R.drawable.head);
             mAuthorHeaderIV.setImageResource(R.drawable.head);
         }
+        mAuthorNameTV.setOnClickListener(getOnclickListener());
+        mHeaderIV.setOnClickListener(getOnclickListener());
+        mAuthorHeaderIV.setOnClickListener(getOnclickListener());
         mTitleTV.setText(content.getTitle());
         mDesTV.setText(author.getDesc());
-        mDateTV.setText(content.getMaketime());
+        mDateTV.setText(DateUtil.getCommentDate(content.getMaketime()));
         mContentTV.setText(Html.fromHtml(content.getContent()));
         mEditorTV.setText(content.getCharge_edt());
         mAuthorTV.setText(author.getUser_name());
@@ -185,7 +189,7 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
 
     @Override
     protected String getTitleString() {
-        return "连载";
+        return AppUtil.getString(R.string.serial);
     }
 
 
@@ -304,5 +308,18 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
             h.tv.setText(position + "");
             return convertView;
         }
+    }
+    private View.OnClickListener mListener;
+
+    private View.OnClickListener getOnclickListener() {
+        if (mListener == null) {
+            mListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    OtherDetailActivity.jumpTo(SerialActivity.this, mID);
+                }
+            };
+        }
+        return mListener;
     }
 }

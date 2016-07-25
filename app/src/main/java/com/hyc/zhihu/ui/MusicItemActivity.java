@@ -39,6 +39,7 @@ import com.hyc.zhihu.ui.adpter.CommentAdapter;
 import com.hyc.zhihu.ui.adpter.MusicRelateAdapter;
 import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 import com.hyc.zhihu.utils.AppUtil;
+import com.hyc.zhihu.utils.DateUtil;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.MusicItemView;
 import com.hyc.zhihu.widget.ListViewForScrollView;
@@ -275,7 +276,7 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
         mAuthorTV.setText(music.getAuthor().getUser_name());
         desTV.setText(music.getAuthor().getDesc());
         musicTitleTV.setText(music.getTitle());
-        timeTV.setText("May 23.2016");
+        timeTV.setText(DateUtil.getCommentDate(music.getMaketime()));
         titleTV.setText(music.getStory_title());
         authorNameTV.setText(music.getStory_author().getUser_name());
         contentTV.setText(Html.fromHtml(music.getStory()));

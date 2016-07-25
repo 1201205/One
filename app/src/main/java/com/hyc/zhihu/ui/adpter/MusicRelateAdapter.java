@@ -62,7 +62,6 @@ public class MusicRelateAdapter extends RecyclerView.Adapter<MusicRelateAdapter.
 
     @Override
     public int getItemCount() {
-        Log.e("test1111---","获取个数---"+mMusicRelates.size());
         return mMusicRelates.size();
     }
 
