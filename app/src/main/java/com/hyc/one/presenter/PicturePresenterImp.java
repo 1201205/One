@@ -2,7 +2,6 @@ package com.hyc.one.presenter;
 
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.hyc.one.R;
 import com.hyc.one.base.BasePresenter;
 import com.hyc.one.base.DefaultTransformer;
@@ -17,12 +16,10 @@ import com.hyc.one.utils.RealmUtil;
 import com.hyc.one.utils.S;
 import com.hyc.one.utils.SPUtil;
 import com.hyc.one.view.PictureView;
-
+import io.realm.Realm;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import io.realm.Realm;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -34,9 +31,9 @@ import rx.schedulers.Schedulers;
  * Created by ray on 16/5/5.
  */
 public class PicturePresenterImp extends BasePresenter<PictureView> implements IPicturePresenter {
+    ArrayList<PictureViewBean> viewBeans;
     private List<String> mIds;
     private int mCurrentPage;
-    ArrayList<PictureViewBean> viewBeans;
     private Action1 mThrowableAction = new Action1<Throwable>() {
         @Override
         public void call(Throwable throwable) {
@@ -51,7 +48,7 @@ public class PicturePresenterImp extends BasePresenter<PictureView> implements I
 
     @Override
     public void getPictureIdsAndFirstItem() {
-        //mView.showLoading();
+        mView.showLoading();
         mCompositeSubscription.add(
 
                 Requests.getApi().getPictureIds("0").compose(new DefaultTransformer<BaseBean<List<String>>, List<String>>()).map(new Func1<List<String>, String>() {

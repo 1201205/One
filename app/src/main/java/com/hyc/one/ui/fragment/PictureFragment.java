@@ -9,7 +9,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.hyc.one.R;
 import com.hyc.one.base.BaseActivity;
 import com.hyc.one.base.BasePresenter;
@@ -21,7 +20,6 @@ import com.hyc.one.presenter.PicturePresenterImp;
 import com.hyc.one.ui.adpter.PictureAdapter;
 import com.hyc.one.utils.AppUtil;
 import com.hyc.one.view.PictureView;
-
 import java.util.List;
 
 /**
@@ -112,7 +110,6 @@ public class PictureFragment extends Fragment implements PictureView, LoaderMana
     @Override
     public void dismissLoading() {
         ((BaseActivity) getActivity()).dismissLoading();
-
     }
 
     @Override

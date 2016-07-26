@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.hyc.one.R;
 import com.hyc.one.widget.MyLoadingView;
 
@@ -20,8 +19,9 @@ import com.hyc.one.widget.MyLoadingView;
  * Created by hyc on 2016/6/22.
  */
 public class LoadingDialogFragment extends DialogFragment {
-    private MyLoadingView mLoadingView;
     public static LoadingDialogFragment sFragment;
+    private MyLoadingView mLoadingView;
+
 
     public static LoadingDialogFragment getInstance() {
         if (sFragment == null) {
@@ -33,8 +33,6 @@ public class LoadingDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.e("test1","dialog--onViewCreated");
-        Log.e("test1",Log.getStackTraceString(new Throwable()));
         mLoadingView.startAnim();
     }
 
@@ -50,11 +48,12 @@ public class LoadingDialogFragment extends DialogFragment {
     public void dismissAllowingStateLoss() {
         if (mLoadingView != null) {
             mLoadingView.stopAnim();
-            Log.e("test1","结束动画");
         }
-        Log.e("test1","调用消失");
         if (getFragmentManager()==null||getFragmentManager().beginTransaction() == null) {
 //            dismiss();
+            Log.e("test1", "跳过dismiss?????");
+            Log.e("test1", Log.getStackTraceString(new Throwable()));
+
         } else {
             super.dismissAllowingStateLoss();
         }

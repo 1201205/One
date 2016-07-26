@@ -13,10 +13,8 @@ import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyc.one.R;
 import com.hyc.one.base.BaseActivity;
 import com.hyc.one.base.BasePresenter;
@@ -26,7 +24,7 @@ import com.hyc.one.beans.Comment;
 import com.hyc.one.beans.movie.MovieContent;
 import com.hyc.one.beans.movie.MovieStory;
 import com.hyc.one.beans.movie.MovieStoryWrapper;
-import com.hyc.one.helper.FrescoHelper;
+import com.hyc.one.helper.PicassoHelper;
 import com.hyc.one.presenter.MovieContentPresenter;
 import com.hyc.one.ui.adpter.CommentAdapter;
 import com.hyc.one.ui.adpter.MovieStoryPictureAdapter;
@@ -34,9 +32,9 @@ import com.hyc.one.utils.AppUtil;
 import com.hyc.one.utils.DateUtil;
 import com.hyc.one.utils.S;
 import com.hyc.one.view.MovieContentView;
+import com.hyc.one.widget.CircleImageView;
 import com.hyc.one.widget.ListViewForScrollView;
 import com.hyc.one.widget.RectGridView;
-
 import java.util.List;
 
 /**
@@ -52,8 +50,8 @@ public class MovieContentActivity extends BaseActivity<MovieContentPresenter> im
     private ListViewForScrollView mHotCommentsLV;
     private CommentAdapter mCommentAdapter;
     private ListView listView;
-    private SimpleDraweeView mCoverSDV;
-    private SimpleDraweeView mHeadIV;
+    private ImageView mCoverSDV;
+    private CircleImageView mHeadIV;
     private TextView mNameTV;
     private TextView mDateTV;
     private TextView mNumTV;
@@ -69,12 +67,14 @@ public class MovieContentActivity extends BaseActivity<MovieContentPresenter> im
     private TextView mInfoTV;
     private TextView mScoreTV;
     private boolean mHasMoreComments = true;
+    private View.OnClickListener mListener;
 
 
     @Override
     protected void handleIntent() {
         mID = getIntent().getStringExtra(S.ID);
     }
+
 
     @Override
     protected void initView() {
@@ -98,9 +98,9 @@ public class MovieContentActivity extends BaseActivity<MovieContentPresenter> im
             }
         });
         mHeader = LayoutInflater.from(this).inflate(R.layout.header_movie, null);
-        mCoverSDV = (SimpleDraweeView) mHeader.findViewById(R.id.cover_sdv);
+        mCoverSDV = (ImageView) mHeader.findViewById(R.id.cover_sdv);
         mScoreTV = (TextView) mHeader.findViewById(R.id.score_tv);
-        mHeadIV = (SimpleDraweeView) mHeader.findViewById(R.id.head_iv);
+        mHeadIV = (CircleImageView) mHeader.findViewById(R.id.head_iv);
         mNameTV = (TextView) mHeader.findViewById(R.id.name_tv);
         mDateTV = (TextView) mHeader.findViewById(R.id.date_tv);
         mNumTV = (TextView) mHeader.findViewById(R.id.num_tv);
@@ -186,10 +186,12 @@ public class MovieContentActivity extends BaseActivity<MovieContentPresenter> im
         mPresenter.getAndShowContent(mID);
     }
 
+
     @Override
     protected void initLoader() {
         getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
     }
+
 
     @Override
     public void onLoaderReset(Loader<MovieContentPresenter> loader) {
@@ -200,7 +202,7 @@ public class MovieContentActivity extends BaseActivity<MovieContentPresenter> im
     @Override
     public void showContent(MovieContent data) {
         mTitleView.setText(data.getTitle());
-        FrescoHelper.loadImage(mCoverSDV, data.getDetailcover());
+        PicassoHelper.load(this, data.getDetailcover(), mCoverSDV);
         mScoreTV.setText(data.getScore());
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -240,7 +242,7 @@ public class MovieContentActivity extends BaseActivity<MovieContentPresenter> im
     public void showStory(MovieStoryWrapper wrapper) {
         MovieStory story = wrapper.getData().get(0);
         mNameTV.setText(story.getUser().getUser_name());
-        FrescoHelper.loadImage(mHeadIV, story.getUser().getWeb_url());
+        PicassoHelper.load(this, story.getUser().getWeb_url(), mHeadIV, R.drawable.head);
         mDateTV.setText(DateUtil.getCommentDate(story.getInput_date()));
         mNumTV.setText(String.valueOf(story.getPraisenum()));
         mTitleTV.setText(story.getTitle());
@@ -250,7 +252,6 @@ public class MovieContentActivity extends BaseActivity<MovieContentPresenter> im
         mHeadIV.setOnClickListener(getOnclickListener());
     }
 
-    private View.OnClickListener mListener;
 
     private View.OnClickListener getOnclickListener() {
         if (mListener == null) {
