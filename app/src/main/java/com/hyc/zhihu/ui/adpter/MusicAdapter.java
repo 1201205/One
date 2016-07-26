@@ -21,7 +21,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.beans.Comment;
 import com.hyc.zhihu.beans.DateBean;
@@ -32,7 +31,7 @@ import com.hyc.zhihu.beans.music.MusicRelate;
 import com.hyc.zhihu.beans.music.MusicRelateListBean;
 import com.hyc.zhihu.event.PlayCallBackEvent;
 import com.hyc.zhihu.event.PlayEvent;
-import com.hyc.zhihu.helper.FrescoHelper;
+import com.hyc.zhihu.helper.PicassoHelper;
 import com.hyc.zhihu.player.ManagedMediaPlayer;
 import com.hyc.zhihu.player.MyPlayer;
 import com.hyc.zhihu.ui.MainActivity;
@@ -40,9 +39,10 @@ import com.hyc.zhihu.ui.MusicMonthListActivity;
 import com.hyc.zhihu.ui.PictureActivity;
 import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.DateUtil;
+import com.hyc.zhihu.widget.CircleImageView;
 import com.hyc.zhihu.widget.ListViewForScrollView;
-
 import com.squareup.picasso.Picasso;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -162,7 +162,7 @@ public class MusicAdapter extends PagerAdapter {
             view = LayoutInflater.from(c).inflate(R.layout.activity_question, null);
             final ListView listView = (ListView) view.findViewById(R.id.swipe_target);
             final SwipeToLoadLayout swipeToLoadLayout = (SwipeToLoadLayout) view.findViewById(
-                R.id.swipeToLoadLayout);
+                    R.id.swipeToLoadLayout);
             mRelateLists.get(position).setLayout(swipeToLoadLayout);
             View mHeader = LayoutInflater.from(c).inflate(R.layout.music_header, null);
             ManagedMediaPlayer.Status s = MyPlayer.getPlayer().getSourceStatus(music.getMusic_id());
@@ -182,9 +182,9 @@ public class MusicAdapter extends PagerAdapter {
                     mPlayIndex = position;
                     mPlayView = (ImageView) v;
                     ManagedMediaPlayer.Status s = MyPlayer.getPlayer()
-                        .getSourceStatus(music.getMusic_id());
+                            .getSourceStatus(music.getMusic_id());
                     if (s == ManagedMediaPlayer.Status.IDLE ||
-                        s == ManagedMediaPlayer.Status.STOPPED) {
+                            s == ManagedMediaPlayer.Status.STOPPED) {
                         PlayEvent e = new PlayEvent();
                         e.setSong(new Song(music.getTitle(), music.getMusic_id()));
                         e.setAction(PlayEvent.Action.PLAYITEM);
@@ -206,12 +206,13 @@ public class MusicAdapter extends PagerAdapter {
             ImageView musicIV = (ImageView) mHeader.findViewById(R.id.music_iv);
             Picasso.with(mHeader.getContext()).load(music.getCover()).placeholder(R.drawable.default_music_cover).into(musicIV);
             //            Picasso.with(mContext).load(music.getCover()).fit().into(musicIV);
-            SimpleDraweeView headIV = (SimpleDraweeView) mHeader.findViewById(R.id.head_iv);
+            CircleImageView headIV = (CircleImageView) mHeader.findViewById(R.id.head_iv);
+            PicassoHelper.load(mContext, music.getAuthor().getWeb_url(), headIV, R.drawable.head);
             //            Picasso.with(mContext).load(music.getAuthor().getWeb_url()).into(headIV);
-            FrescoHelper.loadImage(headIV, music.getAuthor().getWeb_url());
+//            FrescoHelper.loadImage(headIV, music.getAuthor().getWeb_url());
             TextView mAuthorTV = (TextView) mHeader.findViewById(R.id.name_tv);
             mAuthorTV.setText(music.getAuthor().getUser_name());
-            View.OnClickListener listener=AppUtil.getOtherClickListener(music.getAuthor().getUser_id(),mAuthorTV.getContext());
+            View.OnClickListener listener = AppUtil.getOtherClickListener(music.getAuthor().getUser_id(), mAuthorTV.getContext());
             mAuthorTV.setOnClickListener(listener);
             headIV.setOnClickListener(listener);
             TextView desTV = (TextView) mHeader.findViewById(R.id.des_tv);
@@ -255,7 +256,7 @@ public class MusicAdapter extends PagerAdapter {
             }
             if (comments != null && comments.size() > 0) {
                 ListViewForScrollView hotCommentsLV = (ListViewForScrollView) mHeader.findViewById(
-                    R.id.hot_lv);
+                        R.id.hot_lv);
                 CommentAdapter adapter = new CommentAdapter();
                 hotCommentsLV.setAdapter(adapter);
                 adapter.refreshComments(comments);
@@ -265,13 +266,13 @@ public class MusicAdapter extends PagerAdapter {
             }
             if (mLoadMoreListener != null) {
                 swipeToLoadLayout.setOnLoadMoreListener(
-                    new com.aspsine.swipetoloadlayout.OnLoadMoreListener() {
-                        @Override
-                        public void onLoadMore() {
-                            mLoadMoreListener.loadMore(position,
-                                mRelateLists.get(position).getLastIndex());
-                        }
-                    });
+                        new com.aspsine.swipetoloadlayout.OnLoadMoreListener() {
+                            @Override
+                            public void onLoadMore() {
+                                mLoadMoreListener.loadMore(position,
+                                        mRelateLists.get(position).getLastIndex());
+                            }
+                        });
             }
 
             //            mAuthorHeaderIV = (CircleImageView) mHeader.findViewById(R.id.author_head_iv);
@@ -282,11 +283,12 @@ public class MusicAdapter extends PagerAdapter {
             listView.addHeaderView(mHeader);
             listView.setAdapter(mAdapters.get(position));
             listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-                @Override public void onScrollStateChanged(AbsListView view, int scrollState) {
+                @Override
+                public void onScrollStateChanged(AbsListView view, int scrollState) {
                     if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                         if (mRelateLists.get(position).hasMoreComment() &&
-                            view.getLastVisiblePosition() == view.getCount() - 1 &&
-                            !ViewCompat.canScrollVertically(view, 1)) {
+                                view.getLastVisiblePosition() == view.getCount() - 1 &&
+                                !ViewCompat.canScrollVertically(view, 1)) {
                             swipeToLoadLayout.setLoadingMore(true);
                         }
                     }
@@ -386,7 +388,7 @@ public class MusicAdapter extends PagerAdapter {
         } else {
             bean.setHasMoreComment(false);
             AppUtil.showToast(R.string.no_more);
-            if (v!=null) {
+            if (v != null) {
                 v.setLoadMoreEnabled(false);
             }
         }
@@ -401,7 +403,7 @@ public class MusicAdapter extends PagerAdapter {
                 //                ActivityOptionsCompat compat=  ActivityOptionsCompat.makeSceneTransitionAnimation((MainActivity) mContext,new Pair<View, String>(v,PictureActivity.SHARE_TITLE),new Pair<View, String>(vol,PictureActivity.SHARE_PICTURE));
 
                 ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    (MainActivity) mContext, v, PictureActivity.SHARE_PICTURE);
+                        (MainActivity) mContext, v, PictureActivity.SHARE_PICTURE);
                 Intent intent = PictureActivity.newIntent(mContext, url, title);
                 //                ((MainActivity) mContext).getWindow().setSharedElementEnterTransition(new ChangeImageTransform(mContext, null));
                 ActivityCompat.startActivity((MainActivity) mContext, intent, compat.toBundle());
@@ -448,7 +450,7 @@ public class MusicAdapter extends PagerAdapter {
 
         while (temp.before(calendar)) {
             String s = format.format(temp.getTime());
-            String moth=DateUtil.getMonthDate(s);
+            String moth = DateUtil.getMonthDate(s);
             dateBeans.add(new DateBean(moth, s + "%2000:00:00"));
             temp.add(GregorianCalendar.MONTH, 1);
         }

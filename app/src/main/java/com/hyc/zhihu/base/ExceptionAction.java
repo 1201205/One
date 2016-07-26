@@ -1,11 +1,8 @@
 package com.hyc.zhihu.base;
 
-import android.text.TextUtils;
-
 import com.google.gson.JsonParseException;
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.utils.AppUtil;
-import com.hyc.zhihu.utils.S;
 
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -19,18 +16,21 @@ import rx.functions.Action1;
 public abstract class ExceptionAction implements Action1<Throwable> {
 
     public abstract void onNothingGet();
-    protected void onNoNetWork(){}
+
+    protected void onNoNetWork() {
+    }
+
     @Override
     public void call(Throwable throwable) {
         throwable.printStackTrace();
         if (throwable instanceof NoThingGetException) {
             onNothingGet();
-        }else if (throwable instanceof JsonParseException) {
+        } else if (throwable instanceof JsonParseException) {
             AppUtil.showToast(R.string.parse_error);
         } else if (throwable instanceof NullPointerException) {
             AppUtil.showToast(R.string.none_point_error);
             Exceptions.propagate(throwable);
-        }else if(throwable instanceof SocketException){
+        } else if (throwable instanceof SocketException) {
             AppUtil.showToast(R.string.net_error);
         } else if (throwable instanceof UnknownHostException) {
             AppUtil.showToast(R.string.net_error);

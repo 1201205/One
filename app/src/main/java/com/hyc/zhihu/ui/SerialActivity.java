@@ -2,7 +2,6 @@ package com.hyc.zhihu.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewCompat;
@@ -10,9 +9,7 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -29,18 +26,14 @@ import com.hyc.zhihu.beans.Comment;
 import com.hyc.zhihu.beans.RealArticleAuthor;
 import com.hyc.zhihu.beans.Serial;
 import com.hyc.zhihu.beans.SerialContent;
-import com.hyc.zhihu.beans.SerialList;
-import com.hyc.zhihu.presenter.QuestionContentPresenter;
 import com.hyc.zhihu.presenter.SerialContentPresenter;
 import com.hyc.zhihu.ui.adpter.CommentAdapter;
 import com.hyc.zhihu.ui.adpter.SerialAdapter;
-import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.DateUtil;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.ReadingContentView;
 import com.hyc.zhihu.widget.CircleImageView;
-import com.hyc.zhihu.widget.CircleTransform;
 import com.hyc.zhihu.widget.ListViewForScrollView;
 import com.squareup.picasso.Picasso;
 
@@ -50,10 +43,9 @@ import java.util.List;
  * Created by ray on 16/5/18.
  */
 public class SerialActivity extends BaseActivity<SerialContentPresenter> implements
-    ReadingContentView<SerialContent, Serial>,
-    OnLoadMoreListener,
-    LoaderManager.LoaderCallbacks<SerialContentPresenter> {
-    public static final String ID = "id";
+        ReadingContentView<SerialContent, Serial>,
+        OnLoadMoreListener,
+        LoaderManager.LoaderCallbacks<SerialContentPresenter> {
     private SwipeToLoadLayout swipeToLoadLayout;
     private View mHeader;
     private TextView mTitleTV;
@@ -78,7 +70,7 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
 
     @Override
     protected void handleIntent() {
-        mID = getIntent().getStringExtra(ID);
+        mID = getIntent().getStringExtra(S.ID);
     }
 
 
@@ -91,7 +83,7 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     if (mHasMoreComments && view.getLastVisiblePosition() == view.getCount() - 1 &&
-                        !ViewCompat.canScrollVertically(view, 1)) {
+                            !ViewCompat.canScrollVertically(view, 1)) {
                         swipeToLoadLayout.setLoadingMore(true);
                     }
                 }
@@ -135,19 +127,19 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
         RealArticleAuthor author = content.getAuthor();
         if (!TextUtils.isEmpty(author.getWeb_url())) {
             Picasso.with(this)
-                .load(author.getWeb_url())
-                .placeholder(R.drawable.head)
-                .into(mHeaderIV);
+                    .load(author.getWeb_url())
+                    .placeholder(R.drawable.head)
+                    .into(mHeaderIV);
             Picasso.with(this)
-                .load(author.getWeb_url())
-                .placeholder(R.drawable.head)
-                .into(mAuthorHeaderIV);
+                    .load(author.getWeb_url())
+                    .placeholder(R.drawable.head)
+                    .into(mAuthorHeaderIV);
         } else {
             mHeaderIV.setImageResource(R.drawable.head);
             mAuthorHeaderIV.setImageResource(R.drawable.head);
         }
-        String id=author.getUser_id();
-        View.OnClickListener listener=AppUtil.getOtherClickListener(id,this);
+        String id = author.getUser_id();
+        View.OnClickListener listener = AppUtil.getOtherClickListener(id, this);
         mAuthorTV.setOnClickListener(listener);
         mAuthorNameTV.setOnClickListener(listener);
         mHeaderIV.setOnClickListener(listener);
@@ -197,7 +189,7 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
 
     private void jumpToNewSerial(Serial s) {
         Intent i = new Intent(this, SerialActivity.class);
-        i.putExtra(SerialActivity.ID, s.getId());
+        i.putExtra(S.ID, s.getId());
         startActivity(i);
     }
 
@@ -232,6 +224,8 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
     public void showNoComments() {
         AppUtil.showToast(R.string.no_more);
         mHasMoreComments = false;
+        swipeToLoadLayout.setLoadingMore(false);
+        swipeToLoadLayout.setLoadMoreEnabled(false);
     }
 
 
@@ -265,9 +259,5 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
         mPresenter.getAndShowCommentList();
     }
 
-
-    static class ViewHolder {
-        TextView tv;
-    }
 
 }

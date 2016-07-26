@@ -13,10 +13,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp">
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            app:roundAsCircle="true"
-            app:placeholderImage="@drawable/head"
+        <com.hyc.zhihu.widget.CircleImageView
             android:id="@+id/head_iv"
             android:layout_width="40dp"
             android:layout_height="40dp"/>

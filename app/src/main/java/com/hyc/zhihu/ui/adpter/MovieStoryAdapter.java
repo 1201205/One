@@ -3,8 +3,6 @@ package com.hyc.zhihu.ui.adpter;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
-import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,13 +11,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyc.zhihu.R;
-import com.hyc.zhihu.beans.Comment;
 import com.hyc.zhihu.beans.User;
 import com.hyc.zhihu.beans.movie.MovieStory;
-import com.hyc.zhihu.helper.FrescoHelper;
+import com.hyc.zhihu.helper.PicassoHelper;
 import com.hyc.zhihu.utils.AppUtil;
+import com.hyc.zhihu.widget.CircleImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +57,7 @@ public class MovieStoryAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie_story, null);
             holder = new ViewHolder();
-            holder.head = (SimpleDraweeView) convertView.findViewById(R.id.head_iv);
+            holder.head = (CircleImageView) convertView.findViewById(R.id.head_iv);
             holder.name = (TextView) convertView.findViewById(R.id.name_tv);
             holder.num = (TextView) convertView.findViewById(R.id.num_tv);
             holder.date = (TextView) convertView.findViewById(R.id.date_tv);
@@ -71,9 +68,7 @@ public class MovieStoryAdapter extends BaseAdapter {
         }
         MovieStory comment = mStories.get(position);
         User user = comment.getUser();
-        if (!TextUtils.isEmpty(user.getWeb_url())) {
-            FrescoHelper.loadImage(holder.head, user.getWeb_url());
-        }
+        PicassoHelper.load(holder.head.getContext(), user.getWeb_url(), holder.head, R.drawable.head);
         holder.name.setText(user.getUser_name());
         holder.date.setText(comment.getInput_date());
         holder.num.setText(comment.getPraisenum() + "");
@@ -82,7 +77,7 @@ public class MovieStoryAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
-        private SimpleDraweeView head;
+        private CircleImageView head;
         private TextView name;
         private TextView date;
         private TextView num;

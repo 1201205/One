@@ -11,7 +11,6 @@ import com.hyc.zhihu.helper.FrescoHelper;
 import com.hyc.zhihu.player.PlayerService;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.utils.SPUtil;
-import com.squareup.leakcanary.LeakCanary;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -59,8 +58,8 @@ public class MainApplication extends Application {
     }
 
     private void checkFirstInit(File file) {
-        if (SPUtil.get( S.FIRST_INIT, false)) {
-            SPUtil.put( S.FIRST_INIT, true);
+        if (SPUtil.get(S.FIRST_INIT, false)) {
+            SPUtil.put(S.FIRST_INIT, true);
         }
     }
 

@@ -299,6 +299,8 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
     public void showNoComments() {
         AppUtil.showToast(R.string.no_more);
         mHasMoreComments = false;
+        swipeToLoadLayout.setLoadingMore(false);
+        swipeToLoadLayout.setLoadMoreEnabled(false);
     }
 
 

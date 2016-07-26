@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,13 +27,6 @@ public class LoadingDialogFragment extends DialogFragment {
             sFragment = new LoadingDialogFragment();
         }
         return sFragment;
-    }
-
-
-    @Override
-    public void show(FragmentManager manager, String tag) {
-        Log.e("test1", "show--被调用了");
-        super.show(manager, tag);
     }
 
     @Override

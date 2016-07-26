@@ -3,9 +3,9 @@ package com.hyc.zhihu.ui;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-
 import android.support.v4.view.ViewPager;
 import android.view.View;
+
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.base.BaseActivity;
 import com.hyc.zhihu.base.BasePresenter;
@@ -48,7 +48,7 @@ public class OtherReadingActivity extends BaseActivity<OtherReadingPresenter> im
         mEssay = ListFragment.getInstance(S.ESSAY);
         mQuestion = ListFragment.getInstance(S.QUESTION);
         mSerial = ListFragment.getInstance(S.SERIAL);
-        ListFragment.LoadMoreListener loadMoreListener=new ListFragment.LoadMoreListener() {
+        ListFragment.LoadMoreListener loadMoreListener = new ListFragment.LoadMoreListener() {
             @Override
             public void loadMore(int type) {
                 mPresenter.refresh(type);
@@ -57,25 +57,28 @@ public class OtherReadingActivity extends BaseActivity<OtherReadingPresenter> im
         mEssay.setListener(loadMoreListener);
         mQuestion.setListener(loadMoreListener);
         mSerial.setListener(loadMoreListener);
-        mAdapter=new ListFragmentAdapter(getSupportFragmentManager());
+        mAdapter = new ListFragmentAdapter(getSupportFragmentManager());
         mAdapter.add(mEssay);
         mAdapter.add(mSerial);
         mAdapter.add(mQuestion);
-        final ViewPager pager= (ViewPager) findViewById(R.id.reading_vpg);
+        final ViewPager pager = (ViewPager) findViewById(R.id.reading_vpg);
         pager.setAdapter(mAdapter);
         pager.setOffscreenPageLimit(3);
         findViewById(R.id.essay_tv).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 pager.setCurrentItem(0);
             }
         });
         findViewById(R.id.serial_tv).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 pager.setCurrentItem(1);
             }
         });
         findViewById(R.id.question_tv).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 pager.setCurrentItem(2);
             }
         });
@@ -125,7 +128,7 @@ public class OtherReadingActivity extends BaseActivity<OtherReadingPresenter> im
 
     @Override
     public void noMore(int type) {
-        switch (type){
+        switch (type) {
             case S.ESSAY:
                 mEssay.noMore();
                 break;
@@ -141,7 +144,8 @@ public class OtherReadingActivity extends BaseActivity<OtherReadingPresenter> im
     }
 
 
-    @Override protected String getTitleString() {
+    @Override
+    protected String getTitleString() {
         return AppUtil.getString(R.string.other_essay);
     }
 }

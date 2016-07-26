@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.beans.RealArticle;
-import com.hyc.zhihu.beans.Serial;
 import com.hyc.zhihu.utils.AppUtil;
 
 import java.util.ArrayList;

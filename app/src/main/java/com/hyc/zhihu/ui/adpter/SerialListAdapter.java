@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.hyc.zhihu.R;
@@ -32,8 +31,9 @@ public class SerialListAdapter extends BaseAdapter {
         mItems = new ArrayList<>();
         mContext = c;
     }
-    public void refresh(List<SerialListItem> items){
-     mItems.addAll(items);
+
+    public void refresh(List<SerialListItem> items) {
+        mItems.addAll(items);
     }
 
     @Override
@@ -62,8 +62,8 @@ public class SerialListAdapter extends BaseAdapter {
         } else {
             h = (ViewHolder) convertView.getTag();
         }
-        h.tv.setText(String.format(AppUtil.getString(R.string.serial_count),mItems.get(position).getNumber()));
-        if (mOnItemClickListener!=null) {
+        h.tv.setText(String.format(AppUtil.getString(R.string.serial_count), mItems.get(position).getNumber()));
+        if (mOnItemClickListener != null) {
             h.tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -78,7 +78,8 @@ public class SerialListAdapter extends BaseAdapter {
     static class ViewHolder {
         TextView tv;
     }
-    public interface OnItemClickListener{
+
+    public interface OnItemClickListener {
         void onItemClicked(String id);
     }
 }

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
@@ -22,7 +21,6 @@ import com.hyc.zhihu.beans.HeadScrollItem;
 import com.hyc.zhihu.beans.ReadingListItem;
 import com.hyc.zhihu.presenter.ReadingListPresenter;
 import com.hyc.zhihu.ui.adpter.ReadingListAdapter;
-import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.ReadingListView;
@@ -34,7 +32,7 @@ import java.util.List;
  * Created by Administrator on 2016/5/18.
  */
 public class ReadingListActivity extends BaseActivity<ReadingListPresenter>
-    implements ReadingListView, LoaderManager.LoaderCallbacks<ReadingListPresenter> {
+        implements ReadingListView, LoaderManager.LoaderCallbacks<ReadingListPresenter> {
     public static final String HEAD_ITEM = "head_item";
     private HeadScrollItem mItem;
     private ListView mReadingLV;
@@ -106,7 +104,7 @@ public class ReadingListActivity extends BaseActivity<ReadingListPresenter>
                 break;
             case "2":
                 Intent serial = new Intent(this, SerialActivity.class);
-                serial.putExtra(SerialActivity.ID, item.getItem_id());
+                serial.putExtra(S.ID, item.getItem_id());
                 startActivity(serial);
                 break;
             case "3":
@@ -121,6 +119,7 @@ public class ReadingListActivity extends BaseActivity<ReadingListPresenter>
     protected void initLoader() {
         getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
     }
+
     @Override
     public Loader<ReadingListPresenter> onCreateLoader(int id, Bundle args) {
         return new PresenterLoader<ReadingListPresenter>(this, new PresenterFactory() {

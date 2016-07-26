@@ -1,7 +1,5 @@
 package com.hyc.zhihu.utils;
 
-import android.view.KeyEvent;
-
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +17,7 @@ public class DateUtil {
 
     /**
      * 获取SimpleDateFormat
+     *
      * @param pattern 日期格式
      * @return SimpleDateFormat对象
      * @throws RuntimeException 异常：非法日期格式
@@ -40,7 +39,8 @@ public class DateUtil {
 
     /**
      * 获取日期中的某数值。如获取月份
-     * @param date 日期
+     *
+     * @param date     日期
      * @param dateType 日期格式
      * @return 数值
      */
@@ -56,9 +56,10 @@ public class DateUtil {
 
     /**
      * 增加日期中某类型的某数值。如增加日期
-     * @param date 日期字符串
+     *
+     * @param date     日期字符串
      * @param dateType 类型
-     * @param amount 数值
+     * @param amount   数值
      * @return 计算后日期字符串
      */
     private static String addInteger(String date, int dateType, int amount) {
@@ -74,9 +75,10 @@ public class DateUtil {
 
     /**
      * 增加日期中某类型的某数值。如增加日期
-     * @param date 日期
+     *
+     * @param date     日期
      * @param dateType 类型
-     * @param amount 数值
+     * @param amount   数值
      * @return 计算后日期
      */
     private static Date addInteger(Date date, int dateType, int amount) {
@@ -91,6 +93,7 @@ public class DateUtil {
 
     /**
      * 获取精确的日期
+     *
      * @param timestamps 时间long集合
      * @return 日期
      */
@@ -106,7 +109,7 @@ public class DateUtil {
                     for (int j = i + 1; j < timestamps.size(); j++) {
                         long absoluteValue = Math.abs(timestamps.get(i) - timestamps.get(j));
                         absoluteValues.add(absoluteValue);
-                        long[] timestampTmp = { timestamps.get(i), timestamps.get(j) };
+                        long[] timestampTmp = {timestamps.get(i), timestamps.get(j)};
                         map.put(absoluteValue, timestampTmp);
                     }
                 }
@@ -145,6 +148,7 @@ public class DateUtil {
 
     /**
      * 判断字符串是否为日期字符串
+     *
      * @param date 日期字符串
      * @return true or false
      */
@@ -160,6 +164,7 @@ public class DateUtil {
 
     /**
      * 获取日期字符串的日期风格。失敗返回null。
+     *
      * @param date 日期字符串
      * @return 日期风格
      */
@@ -196,6 +201,7 @@ public class DateUtil {
 
     /**
      * 将日期字符串转化为日期。失败返回null。
+     *
      * @param date 日期字符串
      * @return 日期
      */
@@ -203,13 +209,16 @@ public class DateUtil {
         DateStyle dateStyle = getDateStyle(date);
         return StringToDate(date, dateStyle);
     }
+
     public static Date CurrentDate() {
         DateStyle dateStyle = getDateStyle("yyyy-MM-dd");
-        return StringToDate(DateToString(new Date(),DateStyle.YYYY_MM_DD));
+        return StringToDate(DateToString(new Date(), DateStyle.YYYY_MM_DD));
     }
+
     /**
      * 将日期字符串转化为日期。失败返回null。
-     * @param date 日期字符串
+     *
+     * @param date    日期字符串
      * @param pattern 日期格式
      * @return 日期
      */
@@ -226,7 +235,8 @@ public class DateUtil {
 
     /**
      * 将日期字符串转化为日期。失败返回null。
-     * @param date 日期字符串
+     *
+     * @param date      日期字符串
      * @param dateStyle 日期风格
      * @return 日期
      */
@@ -240,7 +250,8 @@ public class DateUtil {
 
     /**
      * 将日期转化为日期字符串。失败返回null。
-     * @param date 日期
+     *
+     * @param date    日期
      * @param pattern 日期格式
      * @return 日期字符串
      */
@@ -257,7 +268,8 @@ public class DateUtil {
 
     /**
      * 将日期转化为日期字符串。失败返回null。
-     * @param date 日期
+     *
+     * @param date      日期
      * @param dateStyle 日期风格
      * @return 日期字符串
      */
@@ -271,7 +283,8 @@ public class DateUtil {
 
     /**
      * 将日期字符串转化为另一日期字符串。失败返回null。
-     * @param date 旧日期字符串
+     *
+     * @param date       旧日期字符串
      * @param newPattern 新日期格式
      * @return 新日期字符串
      */
@@ -282,7 +295,8 @@ public class DateUtil {
 
     /**
      * 将日期字符串转化为另一日期字符串。失败返回null。
-     * @param date 旧日期字符串
+     *
+     * @param date         旧日期字符串
      * @param newDateStyle 新日期风格
      * @return 新日期字符串
      */
@@ -293,9 +307,10 @@ public class DateUtil {
 
     /**
      * 将日期字符串转化为另一日期字符串。失败返回null。
-     * @param date 旧日期字符串
+     *
+     * @param date        旧日期字符串
      * @param olddPattern 旧日期格式
-     * @param newPattern 新日期格式
+     * @param newPattern  新日期格式
      * @return 新日期字符串
      */
     public static String StringToString(String date, String olddPattern, String newPattern) {
@@ -304,9 +319,10 @@ public class DateUtil {
 
     /**
      * 将日期字符串转化为另一日期字符串。失败返回null。
-     * @param date 旧日期字符串
+     *
+     * @param date         旧日期字符串
      * @param olddDteStyle 旧日期风格
-     * @param newParttern 新日期格式
+     * @param newParttern  新日期格式
      * @return 新日期字符串
      */
     public static String StringToString(String date, DateStyle olddDteStyle, String newParttern) {
@@ -319,8 +335,9 @@ public class DateUtil {
 
     /**
      * 将日期字符串转化为另一日期字符串。失败返回null。
-     * @param date 旧日期字符串
-     * @param olddPattern 旧日期格式
+     *
+     * @param date         旧日期字符串
+     * @param olddPattern  旧日期格式
      * @param newDateStyle 新日期风格
      * @return 新日期字符串
      */
@@ -334,7 +351,8 @@ public class DateUtil {
 
     /**
      * 将日期字符串转化为另一日期字符串。失败返回null。
-     * @param date 旧日期字符串
+     *
+     * @param date         旧日期字符串
      * @param olddDteStyle 旧日期风格
      * @param newDateStyle 新日期风格
      * @return 新日期字符串
@@ -349,7 +367,8 @@ public class DateUtil {
 
     /**
      * 增加日期的年份。失败返回null。
-     * @param date 日期
+     *
+     * @param date       日期
      * @param yearAmount 增加数量。可为负数
      * @return 增加年份后的日期字符串
      */
@@ -359,7 +378,8 @@ public class DateUtil {
 
     /**
      * 增加日期的年份。失败返回null。
-     * @param date 日期
+     *
+     * @param date       日期
      * @param yearAmount 增加数量。可为负数
      * @return 增加年份后的日期
      */
@@ -369,7 +389,8 @@ public class DateUtil {
 
     /**
      * 增加日期的月份。失败返回null。
-     * @param date 日期
+     *
+     * @param date        日期
      * @param monthAmount 增加数量。可为负数
      * @return 增加月份后的日期字符串
      */
@@ -379,7 +400,8 @@ public class DateUtil {
 
     /**
      * 增加日期的月份。失败返回null。
-     * @param date 日期
+     *
+     * @param date        日期
      * @param monthAmount 增加数量。可为负数
      * @return 增加月份后的日期
      */
@@ -389,7 +411,8 @@ public class DateUtil {
 
     /**
      * 增加日期的天数。失败返回null。
-     * @param date 日期字符串
+     *
+     * @param date      日期字符串
      * @param dayAmount 增加数量。可为负数
      * @return 增加天数后的日期字符串
      */
@@ -399,7 +422,8 @@ public class DateUtil {
 
     /**
      * 增加日期的天数。失败返回null。
-     * @param date 日期
+     *
+     * @param date      日期
      * @param dayAmount 增加数量。可为负数
      * @return 增加天数后的日期
      */
@@ -409,7 +433,8 @@ public class DateUtil {
 
     /**
      * 增加日期的小时。失败返回null。
-     * @param date 日期字符串
+     *
+     * @param date       日期字符串
      * @param hourAmount 增加数量。可为负数
      * @return 增加小时后的日期字符串
      */
@@ -419,7 +444,8 @@ public class DateUtil {
 
     /**
      * 增加日期的小时。失败返回null。
-     * @param date 日期
+     *
+     * @param date       日期
      * @param hourAmount 增加数量。可为负数
      * @return 增加小时后的日期
      */
@@ -429,7 +455,8 @@ public class DateUtil {
 
     /**
      * 增加日期的分钟。失败返回null。
-     * @param date 日期字符串
+     *
+     * @param date         日期字符串
      * @param minuteAmount 增加数量。可为负数
      * @return 增加分钟后的日期字符串
      */
@@ -439,7 +466,8 @@ public class DateUtil {
 
     /**
      * 增加日期的分钟。失败返回null。
-     * @param date 日期
+     *
+     * @param date      日期
      * @param dayAmount 增加数量。可为负数
      * @return 增加分钟后的日期
      */
@@ -449,7 +477,8 @@ public class DateUtil {
 
     /**
      * 增加日期的秒钟。失败返回null。
-     * @param date 日期字符串
+     *
+     * @param date      日期字符串
      * @param dayAmount 增加数量。可为负数
      * @return 增加秒钟后的日期字符串
      */
@@ -459,7 +488,8 @@ public class DateUtil {
 
     /**
      * 增加日期的秒钟。失败返回null。
-     * @param date 日期
+     *
+     * @param date      日期
      * @param dayAmount 增加数量。可为负数
      * @return 增加秒钟后的日期
      */
@@ -469,6 +499,7 @@ public class DateUtil {
 
     /**
      * 获取日期的年份。失败返回0。
+     *
      * @param date 日期字符串
      * @return 年份
      */
@@ -478,6 +509,7 @@ public class DateUtil {
 
     /**
      * 获取日期的年份。失败返回0。
+     *
      * @param date 日期
      * @return 年份
      */
@@ -487,6 +519,7 @@ public class DateUtil {
 
     /**
      * 获取日期的月份。失败返回0。
+     *
      * @param date 日期字符串
      * @return 月份
      */
@@ -496,6 +529,7 @@ public class DateUtil {
 
     /**
      * 获取日期的月份。失败返回0。
+     *
      * @param date 日期
      * @return 月份
      */
@@ -505,6 +539,7 @@ public class DateUtil {
 
     /**
      * 获取日期的天数。失败返回0。
+     *
      * @param date 日期字符串
      * @return 天
      */
@@ -514,6 +549,7 @@ public class DateUtil {
 
     /**
      * 获取日期的天数。失败返回0。
+     *
      * @param date 日期
      * @return 天
      */
@@ -523,6 +559,7 @@ public class DateUtil {
 
     /**
      * 获取日期的小时。失败返回0。
+     *
      * @param date 日期字符串
      * @return 小时
      */
@@ -532,6 +569,7 @@ public class DateUtil {
 
     /**
      * 获取日期的小时。失败返回0。
+     *
      * @param date 日期
      * @return 小时
      */
@@ -541,6 +579,7 @@ public class DateUtil {
 
     /**
      * 获取日期的分钟。失败返回0。
+     *
      * @param date 日期字符串
      * @return 分钟
      */
@@ -550,6 +589,7 @@ public class DateUtil {
 
     /**
      * 获取日期的分钟。失败返回0。
+     *
      * @param date 日期
      * @return 分钟
      */
@@ -559,6 +599,7 @@ public class DateUtil {
 
     /**
      * 获取日期的秒钟。失败返回0。
+     *
      * @param date 日期字符串
      * @return 秒钟
      */
@@ -568,6 +609,7 @@ public class DateUtil {
 
     /**
      * 获取日期的秒钟。失败返回0。
+     *
      * @param date 日期
      * @return 秒钟
      */
@@ -577,6 +619,7 @@ public class DateUtil {
 
     /**
      * 获取日期 。默认yyyy-MM-dd格式。失败返回null。
+     *
      * @param date 日期字符串
      * @return 日期
      */
@@ -586,6 +629,7 @@ public class DateUtil {
 
     /**
      * 获取日期。默认yyyy-MM-dd格式。失败返回null。
+     *
      * @param date 日期
      * @return 日期
      */
@@ -595,6 +639,7 @@ public class DateUtil {
 
     /**
      * 获取日期的时间。默认HH:mm:ss格式。失败返回null。
+     *
      * @param date 日期字符串
      * @return 时间
      */
@@ -604,6 +649,7 @@ public class DateUtil {
 
     /**
      * 获取日期的时间。默认HH:mm:ss格式。失败返回null。
+     *
      * @param date 日期
      * @return 时间
      */
@@ -613,6 +659,7 @@ public class DateUtil {
 
     /**
      * 获取日期的星期。失败返回null。
+     *
      * @param date 日期字符串
      * @return 星期
      */
@@ -628,35 +675,39 @@ public class DateUtil {
 
     /**
      * 转换成app中显示的格式
+     *
      * @param date
      * @return
      */
-    public static String getCommentDate(String date){
+    public static String getCommentDate(String date) {
         DateStyle dateStyle = getDateStyle(date);
         if (dateStyle != null) {
             Date myDate = StringToDate(date, dateStyle);
-           return getMonthabbreviation(myDate).name_enShort+" "+getDay(myDate)+"."+getYear(myDate);
+            return getMonthabbreviation(myDate).name_enShort + " " + getDay(myDate) + "." + getYear(myDate);
         }
         return null;
     }
-    public static String getOneDate(String date){
+
+    public static String getOneDate(String date) {
         DateStyle dateStyle = getDateStyle(date);
         if (dateStyle != null) {
             Date myDate = StringToDate(date, dateStyle);
-            return getWeek(myDate).name_enShort+" "+getDay(myDate)+" "+getMonthabbreviation(myDate).name_enShort+"."+getYear(myDate);
+            return getWeek(myDate).name_enShort + " " + getDay(myDate) + " " + getMonthabbreviation(myDate).name_enShort + "." + getYear(myDate);
         }
         return null;
     }
-    public static String getMonthDate(String date){
+
+    public static String getMonthDate(String date) {
         DateStyle dateStyle = getDateStyle(date);
         if (dateStyle != null) {
             Date myDate = StringToDate(date, dateStyle);
-            return getMonthabbreviation(myDate).name_enShort+"."+getYear(myDate);
+            return getMonthabbreviation(myDate).name_enShort + "." + getYear(myDate);
         }
         return null;
     }
+
     public static Month getMonthabbreviation(Date date) {
-        Month month=null;
+        Month month = null;
         int monthNumber = getMonth(date);
         switch (monthNumber) {
             case 1:
@@ -698,8 +749,10 @@ public class DateUtil {
         }
         return month;
     }
+
     /**
      * 获取日期的星期。失败返回null。
+     *
      * @param date 日期
      * @return 星期
      */
@@ -736,7 +789,8 @@ public class DateUtil {
 
     /**
      * 获取两个日期相差的天数
-     * @param date 日期字符串
+     *
+     * @param date      日期字符串
      * @param otherDate 另一个日期字符串
      * @return 相差天数。如果失败则返回-1
      */
@@ -745,7 +799,7 @@ public class DateUtil {
     }
 
     /**
-     * @param date 日期
+     * @param date      日期
      * @param otherDate 另一个日期
      * @return 相差天数。如果失败则返回-1
      */

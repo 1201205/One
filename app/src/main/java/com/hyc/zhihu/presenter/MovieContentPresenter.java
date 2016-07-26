@@ -1,6 +1,8 @@
 package com.hyc.zhihu.presenter;
 
 import com.hyc.zhihu.base.BasePresenter;
+import com.hyc.zhihu.base.DefaultTransformer;
+import com.hyc.zhihu.base.ExceptionAction;
 import com.hyc.zhihu.beans.BaseBean;
 import com.hyc.zhihu.beans.Comment;
 import com.hyc.zhihu.beans.CommentWrapper;
@@ -103,21 +105,22 @@ public class MovieContentPresenter extends BasePresenter<MovieContentView>
         mCompositeSubscription.add(
             Requests.getApi()
                 .getMovieCommentsByIndex(mID, mLastIndex)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<BaseBean<CommentWrapper>>() {
+                .compose(new DefaultTransformer<BaseBean<CommentWrapper>, CommentWrapper>())
+                .subscribe(new Action1<CommentWrapper>() {
                     @Override
-                    public void call(BaseBean<CommentWrapper> comments) {
-                        if (comments == null || comments.getData() == null ||
-                            comments.getData().getData() == null ||
-                            comments.getData().getData().size() == 0) {
+                    public void call(CommentWrapper comments) {
+                        List<Comment> c = comments.getData();
+                        if (c == null || c.size() == 0) {
                             mView.showNoComments();
+                            return;
                         }
-                        List<Comment> c = comments.getData().getData();
-                        if (c != null && c.size() > 0) {
-                            mLastIndex = c.get(c.size() - 1).getId();
-                        }
-                        mView.refreshComment(comments.getData().getData());
+                        mLastIndex = c.get(c.size() - 1).getId();
+                        mView.refreshComment(c);
+                    }
+                }, new ExceptionAction() {
+                    @Override
+                    public void onNothingGet() {
+                        mView.showNoComments();
                     }
                 }));
     }

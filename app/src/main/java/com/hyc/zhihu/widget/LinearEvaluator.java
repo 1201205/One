@@ -1,11 +1,7 @@
 package com.hyc.zhihu.widget;
 
 import android.animation.TypeEvaluator;
-import android.graphics.PointF;
 
-/**
- * 作者： 巴掌 on 16/6/14 13:02
- */
 public class LinearEvaluator implements TypeEvaluator<Float> {
 
     @Override

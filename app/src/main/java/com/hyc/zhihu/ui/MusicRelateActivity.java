@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.base.BaseActivity;
 import com.hyc.zhihu.base.BasePresenter;
@@ -25,15 +24,15 @@ import com.hyc.zhihu.beans.Comment;
 import com.hyc.zhihu.beans.Song;
 import com.hyc.zhihu.beans.music.Music;
 import com.hyc.zhihu.event.PlayEvent;
-import com.hyc.zhihu.helper.FrescoHelper;
+import com.hyc.zhihu.helper.PicassoHelper;
 import com.hyc.zhihu.player.ManagedMediaPlayer;
 import com.hyc.zhihu.player.MyPlayer;
 import com.hyc.zhihu.presenter.MusicRelatePresenter;
 import com.hyc.zhihu.ui.adpter.CommentAdapter;
-import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.MusicRelateView;
+import com.hyc.zhihu.widget.CircleImageView;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
@@ -44,9 +43,9 @@ import java.util.List;
  * Created by ray on 16/5/25.
  */
 public class MusicRelateActivity extends BaseActivity<MusicRelatePresenter> implements
-    MusicRelateView,
-    LoaderManager.LoaderCallbacks<MusicRelatePresenter>,
-    OnLoadMoreListener {
+        MusicRelateView,
+        LoaderManager.LoaderCallbacks<MusicRelatePresenter>,
+        OnLoadMoreListener {
     private String mID;
     private ListView mListView;
     private SwipeToLoadLayout mSwipeToLoadLayout;
@@ -61,7 +60,7 @@ public class MusicRelateActivity extends BaseActivity<MusicRelatePresenter> impl
 
     private ImageView mPlayIV;
     private ImageView mMusicIV;
-    private SimpleDraweeView mHeadIV;
+    private CircleImageView mHeadIV;
     private TextView mAuthorTV;
     private TextView mDesTV;
     private TextView mMusicTitleTV;
@@ -73,7 +72,6 @@ public class MusicRelateActivity extends BaseActivity<MusicRelatePresenter> impl
     private TextView mShareNumTV;
     private ImageView mLyricIV;
     private ImageView mInfoIV;
-    private TextView mFooter;
 
 
     @Override
@@ -89,7 +87,7 @@ public class MusicRelateActivity extends BaseActivity<MusicRelatePresenter> impl
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if (mHasMore && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     if (view.getLastVisiblePosition() == view.getCount() - 1 &&
-                        !ViewCompat.canScrollVertically(view, 1)) {
+                            !ViewCompat.canScrollVertically(view, 1)) {
                         mSwipeToLoadLayout.setLoadingMore(true);
                     }
                 }
@@ -131,7 +129,7 @@ public class MusicRelateActivity extends BaseActivity<MusicRelatePresenter> impl
         mMusicIV = (ImageView) mHeader.findViewById(R.id.music_iv);
         //        FrescoHelper.loadImage(mMusicIV, music.getCover());
         //            Picasso.with(mContext).load(music.getCover()).fit().into(mMusicIV);
-        mHeadIV = (SimpleDraweeView) mHeader.findViewById(R.id.head_iv);
+        mHeadIV = (CircleImageView) mHeader.findViewById(R.id.head_iv);
         //            Picasso.with(mContext).load(music.getAuthor().getWeb_url()).into(mHeadIV);
         //        FrescoHelper.loadImage(mHeadIV, music.getAuthor().getWeb_url());
         mAuthorTV = (TextView) mHeader.findViewById(R.id.name_tv);
@@ -208,10 +206,13 @@ public class MusicRelateActivity extends BaseActivity<MusicRelatePresenter> impl
                 }
             }
         });
-        mFooter = (TextView) LayoutInflater.from(this).inflate(R.layout.footer_text, null);
 
     }
 
+    @Override
+    protected String getTitleString() {
+        return AppUtil.getString(R.string.music);
+    }
 
     @Override
     protected int getLayoutID() {
@@ -228,6 +229,7 @@ public class MusicRelateActivity extends BaseActivity<MusicRelatePresenter> impl
     protected void initLoader() {
         getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
     }
+
     @Override
     public Loader<MusicRelatePresenter> onCreateLoader(int id, Bundle args) {
         return new PresenterLoader(this, new PresenterFactory() {
@@ -259,8 +261,8 @@ public class MusicRelateActivity extends BaseActivity<MusicRelatePresenter> impl
     @Override
     public void showList(List<Comment> comments) {
         if (comments.size() == 0) {
+            AppUtil.showToast(R.string.no_more);
             mHasMore = false;
-            mListView.addFooterView(mFooter);
             mSwipeToLoadLayout.setLoadingMore(false);
             mSwipeToLoadLayout.setLoadMoreEnabled(false);
         } else {
@@ -282,7 +284,7 @@ public class MusicRelateActivity extends BaseActivity<MusicRelatePresenter> impl
             @Override
             public void onClick(View v) {
                 ManagedMediaPlayer.Status s = MyPlayer.getPlayer()
-                    .getSourceStatus(music.getMusic_id());
+                        .getSourceStatus(music.getMusic_id());
                 if (s == ManagedMediaPlayer.Status.IDLE || s == ManagedMediaPlayer.Status.STOPPED) {
                     PlayEvent e = new PlayEvent();
                     e.setSong(new Song(music.getTitle(), music.getMusic_id()));
@@ -303,8 +305,8 @@ public class MusicRelateActivity extends BaseActivity<MusicRelatePresenter> impl
             }
         });
         Picasso.with(this).load(music.getCover()).fit().placeholder(R.drawable.default_music_cover).into(mMusicIV);
-        FrescoHelper.loadImage(mHeadIV, music.getAuthor().getWeb_url());
-        View.OnClickListener listener=AppUtil.getOtherClickListener(music.getAuthor().getUser_id(),this);
+        PicassoHelper.load(this, music.getAuthor().getWeb_url(), mHeadIV, R.drawable.head);
+        View.OnClickListener listener = AppUtil.getOtherClickListener(music.getAuthor().getUser_id(), this);
         mHeadIV.setOnClickListener(listener);
         mAuthorTV.setOnClickListener(listener);
         mAuthorTV.setText(music.getAuthor().getUser_name());

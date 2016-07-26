@@ -7,9 +7,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +28,6 @@ import com.hyc.zhihu.event.NetWorkChangeEvent;
 import com.hyc.zhihu.presenter.ReadingPresenter;
 import com.hyc.zhihu.ui.adpter.LoopViewPagerAdapter;
 import com.hyc.zhihu.ui.adpter.ReadingAdapter;
-import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.DateUtil;
 import com.hyc.zhihu.utils.S;
@@ -48,14 +44,13 @@ import java.util.List;
  * Created by Administrator on 2016/5/16.
  */
 public class ReadingActivity extends BaseActivity<ReadingPresenter>
-    implements ReadingView, LoaderManager.LoaderCallbacks<ReadingPresenter>, OnLoadMoreListener {
+        implements ReadingView, LoaderManager.LoaderCallbacks<ReadingPresenter>, OnLoadMoreListener {
     private SwipeToLoadLayout swipeToLoadLayout;
 
     private ListView listView;
     private TextView titleLayout;
 
     private ViewPager viewPager;
-    private boolean canLoadMore;
     private ViewGroup indicators;
     private LoopViewPagerAdapter mPagerAdapter;
     private ReadingAdapter mReadingAdapter;
@@ -77,25 +72,12 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
         indicators = (ViewGroup) v.findViewById(R.id.indicators);
         viewPager.addOnPageChangeListener(mPagerAdapter);
         titleLayout = (TextView) findViewById(R.id.title);
-//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//            }
-//
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                int firstVisibleItem= manager.findFirstVisibleItemPosition();
-//                int visibleItemCount=manager.findLastVisibleItemPosition()
-//            }
-//        });
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     if (view.getLastVisiblePosition() == view.getCount() - 1 &&
-                        !ViewCompat.canScrollVertically(view, 1)) {
+                            !ViewCompat.canScrollVertically(view, 1)) {
                         swipeToLoadLayout.setLoadingMore(true);
                     }
                 }
@@ -119,8 +101,8 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
                 if (firstVisibleItem != lastFirstVisibleItem) {
 
                     ViewGroup.MarginLayoutParams params =
-                        (ViewGroup.MarginLayoutParams) titleLayout
-                            .getLayoutParams();
+                            (ViewGroup.MarginLayoutParams) titleLayout
+                                    .getLayoutParams();
                     params.topMargin = 0;
                     titleLayout.setLayoutParams(params);
                     String date = mReadingAdapter.getDateBySection(section);
@@ -142,8 +124,8 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
                     }
                     int bottom = childView.getBottom();
                     ViewGroup.MarginLayoutParams params =
-                        (ViewGroup.MarginLayoutParams) titleLayout
-                            .getLayoutParams();
+                            (ViewGroup.MarginLayoutParams) titleLayout
+                                    .getLayoutParams();
                     if (bottom < titleHeight) {
                         float pushedDistance = bottom - titleHeight;
                         params.topMargin = (int) pushedDistance;
@@ -179,7 +161,7 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
                 break;
             case 2:
                 Intent serial = new Intent(this, SerialActivity.class);
-                serial.putExtra(SerialActivity.ID, reading.getContent().getId());
+                serial.putExtra(S.ID, reading.getContent().getId());
                 startActivity(serial);
                 break;
             case 3:
@@ -228,7 +210,7 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
 
 
     @Override
-    public void showList(List<RealReading> realReadings, LinkedHashMap<Integer, String> indexer,boolean needToClear) {
+    public void showList(List<RealReading> realReadings, LinkedHashMap<Integer, String> indexer, boolean needToClear) {
         if (needToClear) {
             mReadingAdapter.clear();
         }
@@ -237,7 +219,8 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
     }
 
 
-    @Override protected String getTitleString() {
+    @Override
+    protected String getTitleString() {
         return AppUtil.getString(R.string.reading);
     }
 
@@ -246,6 +229,7 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
     protected void initLoader() {
         getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
     }
+
     @Override
     public Loader<ReadingPresenter> onCreateLoader(int id, Bundle args) {
         return new PresenterLoader<ReadingPresenter>(this, new PresenterFactory() {
@@ -283,7 +267,7 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
     }
 
     @Subscribe
-    public void onEvent(NetWorkChangeEvent event){
+    public void onEvent(NetWorkChangeEvent event) {
 
         /**
          * 逻辑处理->有网络—>判断时间  时间相同就设置可以更新
@@ -293,7 +277,7 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
          *
          */
         if (NetWorkChangeEvent.hasNetWork) {
-            if (DateUtil.addDay(DateUtil.StringToDate(mReadingAdapter.getItem(0).getTime()),1).before(new Date())) {
+            if (DateUtil.addDay(DateUtil.StringToDate(mReadingAdapter.getItem(0).getTime()), 1).before(new Date())) {
                 mPresenter.showContent(NetWorkChangeEvent.hasNetWork);
             }
         } else {

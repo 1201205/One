@@ -7,6 +7,7 @@ import com.hyc.zhihu.player.ManagedMediaPlayer;
  */
 public class PlayCallBackEvent {
     public ManagedMediaPlayer.Status state;
+
     public PlayCallBackEvent(ManagedMediaPlayer.Status state) {
         this.state = state;
     }

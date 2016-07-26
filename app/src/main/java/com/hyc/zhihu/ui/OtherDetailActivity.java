@@ -29,7 +29,7 @@ import com.squareup.picasso.Picasso;
  * Created by ray on 16/7/10.
  */
 public class OtherDetailActivity extends BaseActivity<OtherDetailPresenter>
-    implements OtherDetailView, LoaderManager.LoaderCallbacks<OtherDetailPresenter> {
+        implements OtherDetailView, LoaderManager.LoaderCallbacks<OtherDetailPresenter> {
 
     private String mID;
     private CircleImageView mHeadCV;
@@ -85,31 +85,35 @@ public class OtherDetailActivity extends BaseActivity<OtherDetailPresenter>
             @Override
             public void onClick(View v) {
                 AppUtil.startActivityWithID(mID, OtherDetailActivity.this,
-                    OtherPictureActivity.class);
+                        OtherPictureActivity.class);
             }
         });
         mMusicLL.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 AppUtil.startActivityWithIDAndType(mID, S.MUSIC, OtherDetailActivity.this,
-                    OtherMusicActivity.class,R.string.music_list);
+                        RecyclerListActivity.class, R.string.music_list);
             }
         });
         mDairyLL.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 AppUtil.startActivityWithIDAndType(mID, S.DAIRY, OtherDetailActivity.this,
-                    OtherMusicActivity.class,R.string.note);
+                        RecyclerListActivity.class, R.string.note);
             }
         });
         mMovie.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 AppUtil.startActivityWithIDAndType(mID, S.MOVIE, OtherDetailActivity.this,
-                    OtherMusicActivity.class,R.string.movie);
+                        RecyclerListActivity.class, R.string.movie);
             }
         });
         mReading.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 AppUtil.startActivityWithID(mID, OtherDetailActivity.this,
-                    OtherReadingActivity.class,R.string.other_essay);
+                        OtherReadingActivity.class, R.string.other_essay);
             }
         });
     }
@@ -153,10 +157,10 @@ public class OtherDetailActivity extends BaseActivity<OtherDetailPresenter>
         }
         if (!TextUtils.isEmpty(other.getBackground())) {
             Picasso.with(this)
-                .load(other.getBackground())
-                .fit()
-                .placeholder(R.drawable.default_indi_bg)
-                .into(mBackgroundIV);
+                    .load(other.getBackground())
+                    .fit()
+                    .placeholder(R.drawable.default_indi_bg)
+                    .into(mBackgroundIV);
         } else {
             Picasso.with(this).load(R.drawable.default_indi_bg).fit().into(mBackgroundIV);
 
@@ -166,9 +170,10 @@ public class OtherDetailActivity extends BaseActivity<OtherDetailPresenter>
         if (other.getIsauthor() == 1) {
             mArticle.setVisibility(View.VISIBLE);
             mArticle.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
+                @Override
+                public void onClick(View v) {
                     AppUtil.startActivityWithIDAndType(mID, S.WORK, OtherDetailActivity.this,
-                        OtherMusicActivity.class,R.string.other_reading);
+                            RecyclerListActivity.class, R.string.other_reading);
                 }
             });
         }
@@ -187,7 +192,7 @@ public class OtherDetailActivity extends BaseActivity<OtherDetailPresenter>
         }
         if (mDairyLL.getVisibility() == View.VISIBLE && mMusicLL.getVisibility() != View.VISIBLE) {
             LinearLayout.LayoutParams params
-                = (LinearLayout.LayoutParams) mDairyLL.getLayoutParams();
+                    = (LinearLayout.LayoutParams) mDairyLL.getLayoutParams();
             params.rightMargin = 0;
             mDairyLL.setLayoutParams(params);
         }
@@ -200,7 +205,8 @@ public class OtherDetailActivity extends BaseActivity<OtherDetailPresenter>
     }
 
 
-    @Override protected String getTitleString() {
+    @Override
+    protected String getTitleString() {
         return AppUtil.getString(R.string.other_detail);
     }
 }

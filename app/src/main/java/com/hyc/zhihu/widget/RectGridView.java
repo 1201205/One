@@ -4,13 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.PointF;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.utils.AppUtil;
@@ -75,13 +70,15 @@ public class RectGridView extends View {
         middle[0] = h + oneThird / 2;
         middle[1] = h + oneThird / 2 + oneThird;
         middle[2] = h + oneThird / 2 + 2 * oneThird;
-        middle[3] = s/4+h;
-        middle[4] = s*3/4+h;
+        middle[3] = s / 4 + h;
+        middle[4] = s * 3 / 4 + h;
     }
-    public void setTags(String[] tags){
-        mTags=tags;
+
+    public void setTags(String[] tags) {
+        mTags = tags;
         invalidate();
     }
+
     private int getSize(int size, int measureSpec) {
         int result = size;
         int specMode = MeasureSpec.getMode(measureSpec);
@@ -117,7 +114,7 @@ public class RectGridView extends View {
         for (Point[] p : mLines) {
             canvas.drawLine(p[0].x, p[0].y, p[1].x, p[1].y, mPaint);
         }
-        if (mTags!=null&&mTags.length>0) {
+        if (mTags != null && mTags.length > 0) {
             drawText(canvas);
         }
     }

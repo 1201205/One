@@ -25,7 +25,7 @@ public class MyLoadingView extends View {
     private static final float SPACE_RATIO = 0.3f;
     private ArrayList<Point> mCenters;
     private int mRadius;
-    private float mFrag=0.3f;
+    private float mFrag = 0.3f;
     private float mArgument;
     private Matrix mMatrix;
     private Camera mCamera;
@@ -68,21 +68,21 @@ public class MyLoadingView extends View {
         mHeight = h;
         initCircles();
 
-        mArgument = w/2-mRadius;
+        mArgument = w / 2 - mRadius;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 //        canvas.save();
-        mMatrix.setRotate(2700*mFrag,mWidth/2,mWidth/2);
+        mMatrix.setRotate(2700 * mFrag, mWidth / 2, mWidth / 2);
         canvas.concat(mMatrix);
         float f = mArgument * mFrag;
         setPaintAlpha();
-        canvas.drawCircle(mCenters.get(0).x , mCenters.get(0).y+f , mRadius, mBlue);
-        canvas.drawCircle(mCenters.get(1).x-f, mCenters.get(1).y , mRadius, mGreen);
-        canvas.drawCircle(mCenters.get(2).x , mCenters.get(2).y-f , mRadius, mRed);
-        canvas.drawCircle(mCenters.get(3).x+f , mCenters.get(3).y , mRadius, mYellow);
+        canvas.drawCircle(mCenters.get(0).x, mCenters.get(0).y + f, mRadius, mBlue);
+        canvas.drawCircle(mCenters.get(1).x - f, mCenters.get(1).y, mRadius, mGreen);
+        canvas.drawCircle(mCenters.get(2).x, mCenters.get(2).y - f, mRadius, mRed);
+        canvas.drawCircle(mCenters.get(3).x + f, mCenters.get(3).y, mRadius, mYellow);
 
 //        canvas.restore();
 
@@ -91,16 +91,18 @@ public class MyLoadingView extends View {
     private void rotate(Canvas canvas) {
 //        canvas.rotate((float) (mFrag*2),mWidth/2,mWidth/2);
         canvas.setMatrix(mMatrix);
-        mMatrix.setTranslate(-mWidth/2,-mWidth/2);
+        mMatrix.setTranslate(-mWidth / 2, -mWidth / 2);
 //        mMatrix.setRotate((float) (mFrag*Math.PI),mWidth/2,mWidth/2);
     }
+
     private ValueAnimator mAnimator;
-    public void startAnim(){
-        mAnimator= ObjectAnimator.ofFloat(0,1);
+
+    public void startAnim() {
+        mAnimator = ObjectAnimator.ofFloat(0, 1);
         mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-               mFrag= animation.getAnimatedFraction();
+                mFrag = animation.getAnimatedFraction();
                 invalidate();
             }
         });
@@ -110,12 +112,14 @@ public class MyLoadingView extends View {
         mAnimator.setRepeatCount(ValueAnimator.INFINITE);
         mAnimator.start();
     }
-    public void stopAnim(){
+
+    public void stopAnim() {
         mAnimator.end();
         mAnimator.removeAllListeners();
     }
+
     private void setPaintAlpha() {
-        int a=(int) (255*0.1+255*0.9*(1-mFrag));
+        int a = (int) (255 * 0.1 + 255 * 0.9 * (1 - mFrag));
         mGreen.setAlpha(a);
         mBlue.setAlpha(a);
         mRed.setAlpha(a);
@@ -131,15 +135,17 @@ public class MyLoadingView extends View {
         mRed.setColor(Color.RED);
         mGreen = new Paint(Paint.ANTI_ALIAS_FLAG);
         mGreen.setColor(Color.GREEN);
-        mMatrix=new Matrix();
-        mCamera=new Camera();
+        mMatrix = new Matrix();
+        mCamera = new Camera();
 
 
     }
-    public void setFrag(float f){
-        mFrag=f;
+
+    public void setFrag(float f) {
+        mFrag = f;
         invalidate();
     }
+
     private void initCircles() {
         if (mCenters != null) {
             mCenters.clear();
@@ -147,10 +153,10 @@ public class MyLoadingView extends View {
             mCenters = new ArrayList<>();
         }
         mRadius = (int) ((mWidth * (1 - SPACE_RATIO) / 4));
-        mCenters.add(new Point(mWidth/2, mRadius));
-        mCenters.add(new Point(mWidth - mRadius, mWidth/2));
-        mCenters.add(new Point(mWidth/2, mWidth - mRadius));
-        mCenters.add(new Point(mRadius, mWidth/2));
+        mCenters.add(new Point(mWidth / 2, mRadius));
+        mCenters.add(new Point(mWidth - mRadius, mWidth / 2));
+        mCenters.add(new Point(mWidth / 2, mWidth - mRadius));
+        mCenters.add(new Point(mRadius, mWidth / 2));
     }
 
     private int getPx(int dp) {

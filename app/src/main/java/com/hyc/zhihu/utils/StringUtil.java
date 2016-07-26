@@ -37,16 +37,17 @@ public class StringUtil {
 
     /**
      * 将字符串中非数字的字符去掉
+     *
      * @param str 需要处理的字符串
      */
-    public static String replaceNon_num(String str){
-    	if(str != null){
-    		Pattern p = Pattern.compile("[^0-9]");
+    public static String replaceNon_num(String str) {
+        if (str != null) {
+            Pattern p = Pattern.compile("[^0-9]");
             Matcher m = p.matcher(str);
             str = m.replaceAll("");
-    	}else{
-    		str = "";
-    	}
+        } else {
+            str = "";
+        }
         return str;
     }
 
@@ -64,10 +65,8 @@ public class StringUtil {
     /**
      * 按字节截取字符串
      *
-     * @param str
-     *            要截取的字符串
-     * @param byteLength
-     *            长度
+     * @param str        要截取的字符串
+     * @param byteLength 长度
      * @return 结果字符串
      */
     public static String subString(String str, int byteLength) {
@@ -93,12 +92,9 @@ public class StringUtil {
     /**
      * check length (minLength<=str.length<=maxLength)
      *
-     * @param str
-     *            input String
-     * @param minLength
-     *            minute length
-     * @param maxLength
-     *            maximum length
+     * @param str       input String
+     * @param minLength minute length
+     * @param maxLength maximum length
      * @return boolean true: minLength<=str.length<=maxLength false: other
      */
     public static boolean checkLength(String str, int minLength, int maxLength) {
@@ -116,8 +112,7 @@ public class StringUtil {
     /**
      * decode string by UTF-8
      *
-     * @param str
-     *            input string
+     * @param str input string
      * @return String decode string
      */
     public static String decodeString(String str) {
@@ -160,8 +155,7 @@ public class StringUtil {
     /**
      * encode String by UTF-8
      *
-     * @param str
-     *            input string
+     * @param str input string
      * @return String
      */
     public static String encodeString(String str) {
@@ -171,8 +165,7 @@ public class StringUtil {
     /**
      * encode String by the input encoding
      *
-     * @param str
-     *            input string
+     * @param str input string
      * @return String encode string
      */
     public static String encodeString(String str, String encoding) {
@@ -197,6 +190,7 @@ public class StringUtil {
     /**
      * get the current time with yyyyMMddHHmm format
      * such as 201109281324
+     *
      * @return
      */
     public static String getCurrentTime() {
@@ -209,7 +203,7 @@ public class StringUtil {
      * <p>
      * Checks if a CharSequence is whitespace, empty ("") or null.
      * </p>
-     *
+     * <p>
      * <pre>
      * StringUtils.isBlank(null)      = true
      * StringUtils.isBlank("")        = true
@@ -218,8 +212,7 @@ public class StringUtil {
      * StringUtils.isBlank("  bob  ") = false
      * </pre>
      *
-     * @param cs
-     *            the CharSequence to check, may be null
+     * @param cs the CharSequence to check, may be null
      * @return {@code true} if the CharSequence is null, empty or whitespace
      */
     public static boolean isBlank(CharSequence cs) {
@@ -240,7 +233,7 @@ public class StringUtil {
      * Checks if a CharSequence is not empty (""), not null and not whitespace
      * only.
      * </p>
-     *
+     * <p>
      * <pre>
      * StringUtils.isNotBlank(null)      = false
      * StringUtils.isNotBlank("")        = false
@@ -249,10 +242,9 @@ public class StringUtil {
      * StringUtils.isNotBlank("  bob  ") = true
      * </pre>
      *
-     * @param cs
-     *            the CharSequence to check, may be null
+     * @param cs the CharSequence to check, may be null
      * @return {@code true} if the CharSequence is not empty and not null and
-     *         not whitespace
+     * not whitespace
      */
     public static boolean isNotBlank(CharSequence cs) {
         return !StringUtil.isBlank(cs);
@@ -261,8 +253,7 @@ public class StringUtil {
     /**
      * parses the specified string as a signed decimal integer value
      *
-     * @param str
-     *            input string representation of an integer value.
+     * @param str input string representation of an integer value.
      * @return boolean true: each character is integer false: other
      */
     public static boolean isInteger(String str) {
@@ -279,8 +270,7 @@ public class StringUtil {
     /**
      * parses the specified string as a signed decimal long value
      *
-     * @param str
-     *            input string representation of an integer value.
+     * @param str input string representation of an integer value.
      * @return boolean true: each character is long integer false: other
      */
     public static boolean isLong(String str) {
@@ -297,10 +287,9 @@ public class StringUtil {
     /**
      * parses the specified string as a signed boolean value
      *
-     * @param str
-     *            input string
+     * @param str input string
      * @return boolean true: str = true / TRUE (Ignore upper case or low case)
-     *         false: other
+     * false: other
      */
     public static boolean isBoolean(String str) {
         if (isBlank(str))
@@ -333,8 +322,7 @@ public class StringUtil {
     /**
      * checks the specified string as a Date value
      *
-     * @param str
-     *            the input string
+     * @param str the input string
      * @return boolean str为时间型返回true，否则返回false
      */
     public static boolean isDate(String str) {
@@ -351,8 +339,7 @@ public class StringUtil {
     /**
      * checks the string arrays is all long values
      *
-     * @param str
-     *            the input string array
+     * @param str the input string array
      * @return boolean str为长整型数组返回true，否则返回false
      */
     public static boolean isLongs(String str[]) {
@@ -366,8 +353,7 @@ public class StringUtil {
     /**
      * 检查字符串数组str是否为整型数组
      *
-     * @param str
-     *            要检查的字符串
+     * @param str 要检查的字符串
      * @return boolean str为整型数组返回true，否则返回false
      */
     public static boolean isIntegers(String str[]) {
@@ -380,8 +366,7 @@ public class StringUtil {
     /**
      * 检查字符串数组str是否为布尔型数组
      *
-     * @param str
-     *            要检查的字符串
+     * @param str 要检查的字符串
      * @return boolean str为布尔型数组返回true，否则返回false
      */
     public static boolean isBooleans(String str[]) {
@@ -394,8 +379,7 @@ public class StringUtil {
     /**
      * 检查字符串str是否为时间
      *
-     * @param str
-     *            要检查的字符串
+     * @param str 要检查的字符串
      * @return str为时间型返回true，否则返回false
      */
     public static boolean isTimestamp(String str) {
@@ -412,8 +396,7 @@ public class StringUtil {
     /**
      * 检查字符串str是否为(yyyy-MM-dd HH:mm:ss)模式的时间
      *
-     * @param str
-     *            要检查的字符串
+     * @param str 要检查的字符串
      * @return str为时间型返回true，否则返回false
      */
     public static boolean isFullTimestamp(String str) {
@@ -432,8 +415,7 @@ public class StringUtil {
     /**
      * 将字符数组转换为长整型数组
      *
-     * @param str
-     *            字符数组
+     * @param str 字符数组
      * @return Long[] 长整型数组
      */
     public static Long[] stringsToLongs(String str[]) {
@@ -446,8 +428,7 @@ public class StringUtil {
     /**
      * 将字符数组转换为整型数组
      *
-     * @param str
-     *            字符数组
+     * @param str 字符数组
      * @return Integer[] 整型数组
      */
     public static Integer[] stringsToIntegers(String str[]) {
@@ -460,8 +441,7 @@ public class StringUtil {
     /**
      * 将字符数组转换为布尔型数组
      *
-     * @param str
-     *            字符数组
+     * @param str 字符数组
      * @return Boolean[] 布尔型数组
      */
     public static Boolean[] stringsToBooleans(String str[]) {
@@ -474,8 +454,7 @@ public class StringUtil {
     /**
      * 将字符数组转换为浮点型数组
      *
-     * @param str
-     *            字符数组
+     * @param str 字符数组
      * @return double[] 浮点型数组
      */
     public static double[] stringsToDoubles(String str[]) {
@@ -488,12 +467,9 @@ public class StringUtil {
     /**
      * 得到数字格式化后的字符串
      *
-     * @param number
-     *            Number类型
-     * @param minFractionDigits
-     *            小数最小位数
-     * @param maxFractionDigits
-     *            小数最大位数
+     * @param number            Number类型
+     * @param minFractionDigits 小数最小位数
+     * @param maxFractionDigits 小数最大位数
      * @return String 格式化后的字符串
      */
     public static String formatNumber(Number number, int minFractionDigits,
@@ -508,14 +484,10 @@ public class StringUtil {
      * 字符串高亮<br>
      * 解决了高亮前缀或高亮后缀在要高亮显示的字符串数组在存在时的问题，根据本算法可解决JS高亮显示时相同的问题
      *
-     * @param text
-     *            内容
-     * @param replaceStrs
-     *            要高亮显示的字符串数组
-     * @param beginStr
-     *            高亮前缀，如<font color=red>
-     * @param endStr
-     *            高亮后缀，如</font>
+     * @param text        内容
+     * @param replaceStrs 要高亮显示的字符串数组
+     * @param beginStr    高亮前缀，如<font color=red>
+     * @param endStr      高亮后缀，如</font>
      * @return
      */
     public static String heightLight(String text, String[] replaceStrs,
@@ -727,8 +699,7 @@ public class StringUtil {
     /**
      * MD5加密
      *
-     * @param plainText
-     *            要加密的字符串
+     * @param plainText 要加密的字符串
      * @return 加密后的字符串
      */
     public static String Md5(String plainText) {
@@ -755,8 +726,7 @@ public class StringUtil {
     /**
      * MD5加密(32)
      *
-     * @param plainText
-     *            要加密的字符串
+     * @param plainText 要加密的字符串
      * @return
      */
     public final static String MD5(String plainText) {
@@ -785,7 +755,7 @@ public class StringUtil {
      * <p>
      * Checks if a CharSequence is empty ("") or null.
      * </p>
-     *
+     * <p>
      * <pre>
      * StringUtils.isEmpty(null)      = true
      * StringUtils.isEmpty("")        = true
@@ -793,14 +763,13 @@ public class StringUtil {
      * StringUtils.isEmpty("bob")     = false
      * StringUtils.isEmpty("  bob  ") = false
      * </pre>
-     *
+     * <p>
      * <p>
      * NOTE: This method changed in Lang version 2.0. It no longer trims the
      * CharSequence. That functionality is available in isBlank().
      * </p>
      *
-     * @param cs
-     *            the CharSequence to check, may be null
+     * @param cs the CharSequence to check, may be null
      * @return {@code true} if the CharSequence is empty or null
      */
     public static boolean isEmpty(CharSequence cs) {
@@ -814,7 +783,7 @@ public class StringUtil {
      * <p>
      * Checks if a CharSequence is not empty ("") and not null.
      * </p>
-     *
+     * <p>
      * <pre>
      * StringUtils.isNotEmpty(null)      = false
      * StringUtils.isNotEmpty("")        = false
@@ -823,11 +792,10 @@ public class StringUtil {
      * StringUtils.isNotEmpty("  bob  ") = true
      * </pre>
      *
-     * @param cs
-     *            the CharSequence to check, may be null
+     * @param cs the CharSequence to check, may be null
      * @return {@code true} if the CharSequence is not empty and not null
      * @since 3.0 Changed signature from isNotEmpty(String) to
-     *        isNotEmpty(CharSequence)
+     * isNotEmpty(CharSequence)
      */
     public static boolean isNotEmpty(CharSequence cs) {
         return !isEmpty(cs);
@@ -838,17 +806,17 @@ public class StringUtil {
      * Removes control characters (char &lt;= 32) from both ends of this String,
      * handling {@code null} by returning {@code null}.
      * </p>
-     *
+     * <p>
      * <p>
      * The String is trimmed using {@link String#trim()}. Trim removes start and
      * end characters &lt;= 32. To strip whitespace use {@link #strip(String)}.
      * </p>
-     *
+     * <p>
      * <p>
      * To trim your choice of characters, use the {@link #strip(String, String)}
      * methods.
      * </p>
-     *
+     * <p>
      * <pre>
      * StringUtils.trim(null)          = null
      * StringUtils.trim("")            = ""
@@ -857,8 +825,7 @@ public class StringUtil {
      * StringUtils.trim("    abc    ") = "abc"
      * </pre>
      *
-     * @param str
-     *            the String to be trimmed, may be null
+     * @param str the String to be trimmed, may be null
      * @return the trimmed string, {@code null} if null String input
      */
     public static String trim(String str) {
@@ -873,13 +840,13 @@ public class StringUtil {
      * Removes control characters (char &lt;= 32) from both ends of this String
      * returning {@code null} if the String is empty ("") after the trim or if
      * it is {@code null}.
-     *
+     * <p>
      * <p>
      * The String is trimmed using {@link String#trim()}. Trim removes start and
      * end characters &lt;= 32. To strip whitespace use
      * {@link #stripToNull(String)}.
      * </p>
-     *
+     * <p>
      * <pre>
      * StringUtils.trimToNull(null)          = null
      * StringUtils.trimToNull("")            = null
@@ -888,10 +855,9 @@ public class StringUtil {
      * StringUtils.trimToNull("    abc    ") = "abc"
      * </pre>
      *
-     * @param str
-     *            the String to be trimmed, may be null
+     * @param str the String to be trimmed, may be null
      * @return the trimmed String, {@code null} if only chars &lt;= 32, empty or
-     *         null String input
+     * null String input
      */
     public static String trimToNull(String str) {
         String ts = trim(str);
@@ -903,13 +869,13 @@ public class StringUtil {
      * Removes control characters (char &lt;= 32) from both ends of this String
      * returning an empty String ("") if the String is empty ("") after the trim
      * or if it is {@code null}.
-     *
+     * <p>
      * <p>
      * The String is trimmed using {@link String#trim()}. Trim removes start and
      * end characters &lt;= 32. To strip whitespace use
      * {@link #stripToEmpty(String)}.
      * </p>
-     *
+     * <p>
      * <pre>
      * StringUtils.trimToEmpty(null)          = ""
      * StringUtils.trimToEmpty("")            = ""
@@ -918,8 +884,7 @@ public class StringUtil {
      * StringUtils.trimToEmpty("    abc    ") = "abc"
      * </pre>
      *
-     * @param str
-     *            the String to be trimmed, may be null
+     * @param str the String to be trimmed, may be null
      * @return the trimmed String, or an empty String if {@code null} input
      */
     public static String trimToEmpty(String str) {
@@ -930,12 +895,12 @@ public class StringUtil {
      * <p>
      * Compares two CharSequences, returning {@code true} if they are equal.
      * </p>
-     *
+     * <p>
      * <p>
      * {@code null}s are handled without exceptions. Two {@code null} references
      * are considered to be equal. The comparison is case sensitive.
      * </p>
-     *
+     * <p>
      * <pre>
      * StringUtils.equals(null, null)   = true
      * StringUtils.equals(null, "abc")  = false
@@ -944,13 +909,11 @@ public class StringUtil {
      * StringUtils.equals("abc", "ABC") = false
      * </pre>
      *
-     * @see java.lang.String#equals(Object)
-     * @param cs1
-     *            the first CharSequence, may be null
-     * @param cs2
-     *            the second CharSequence, may be null
+     * @param cs1 the first CharSequence, may be null
+     * @param cs2 the second CharSequence, may be null
      * @return {@code true} if the CharSequences are equal, case sensitive, or
-     *         both {@code null}
+     * both {@code null}
+     * @see java.lang.String#equals(Object)
      */
     public static boolean equals(CharSequence cs1, CharSequence cs2) {
         return cs1 == null ? cs2 == null : cs1.equals(cs2);
@@ -964,12 +927,12 @@ public class StringUtil {
      * Compares two CharSequences, returning {@code true} if they are equal
      * ignoring the case.
      * </p>
-     *
+     * <p>
      * <p>
      * {@code null}s are handled without exceptions. Two {@code null} references
      * are considered equal. Comparison is case insensitive.
      * </p>
-     *
+     * <p>
      * <pre>
      * StringUtils.equalsIgnoreCase(null, null)   = true
      * StringUtils.equalsIgnoreCase(null, "abc")  = false
@@ -978,16 +941,14 @@ public class StringUtil {
      * StringUtils.equalsIgnoreCase("abc", "ABC") = true
      * </pre>
      *
-     * @param str1
-     *            the first CharSequence, may be null
-     * @param str2
-     *            the second CharSequence, may be null
+     * @param str1 the first CharSequence, may be null
+     * @param str2 the second CharSequence, may be null
      * @return {@code true} if the CharSequence are equal, case insensitive, or
-     *         both {@code null}
+     * both {@code null}
      */
     public static boolean equalsIgnoreCase(CharSequence str1, CharSequence str2) {
 //        if (str1 == null || str2 == null) {
-            return str1 == str2;
+        return str1 == str2;
 //        } else {
 //            return CharSequenceUtils.regionMatches(str1, true, 0, str2, 0,
 //                    Math.max(str1.length(), str2.length()));
@@ -998,17 +959,17 @@ public class StringUtil {
      * <p>
      * Converts a String to upper case as per {@link String#toUpperCase()}.
      * </p>
-     *
+     * <p>
      * <p>
      * A {@code null} input String returns {@code null}.
      * </p>
-     *
+     * <p>
      * <pre>
      * StringUtils.upperCase(null)  = null
      * StringUtils.upperCase("")    = ""
      * StringUtils.upperCase("aBc") = "ABC"
      * </pre>
-     *
+     * <p>
      * <p>
      * <strong>Note:</strong> As described in the documentation for
      * {@link String#toUpperCase()}, the result of this method is affected by
@@ -1017,8 +978,7 @@ public class StringUtil {
      * locale (e.g. {@link Locale#ENGLISH}).
      * </p>
      *
-     * @param str
-     *            the String to upper case, may be null
+     * @param str the String to upper case, may be null
      * @return the upper cased String, {@code null} if null String input
      */
     public static String upperCase(String str) {
@@ -1036,22 +996,20 @@ public class StringUtil {
      * Converts a String to upper case as per {@link String#toUpperCase(Locale)}
      * .
      * </p>
-     *
+     * <p>
      * <p>
      * A {@code null} input String returns {@code null}.
      * </p>
-     *
+     * <p>
      * <pre>
      * StringUtils.upperCase(null, Locale.ENGLISH)  = null
      * StringUtils.upperCase("", Locale.ENGLISH)    = ""
      * StringUtils.upperCase("aBc", Locale.ENGLISH) = "ABC"
      * </pre>
      *
-     * @param str
-     *            the String to upper case, may be null
-     * @param locale
-     *            the locale that defines the case transformation rules, must
-     *            not be null
+     * @param str    the String to upper case, may be null
+     * @param locale the locale that defines the case transformation rules, must
+     *               not be null
      * @return the upper cased String, {@code null} if null String input
      */
     public static String upperCase(String str, Locale locale) {
@@ -1065,17 +1023,17 @@ public class StringUtil {
      * <p>
      * Converts a String to lower case as per {@link String#toLowerCase()}.
      * </p>
-     *
+     * <p>
      * <p>
      * A {@code null} input String returns {@code null}.
      * </p>
-     *
+     * <p>
      * <pre>
      * StringUtils.lowerCase(null)  = null
      * StringUtils.lowerCase("")    = ""
      * StringUtils.lowerCase("aBc") = "abc"
      * </pre>
-     *
+     * <p>
      * <p>
      * <strong>Note:</strong> As described in the documentation for
      * {@link String#toLowerCase()}, the result of this method is affected by
@@ -1084,8 +1042,7 @@ public class StringUtil {
      * locale (e.g. {@link Locale#ENGLISH}).
      * </p>
      *
-     * @param str
-     *            the String to lower case, may be null
+     * @param str the String to lower case, may be null
      * @return the lower cased String, {@code null} if null String input
      */
     public static String lowerCase(String str) {
@@ -1100,22 +1057,20 @@ public class StringUtil {
      * Converts a String to lower case as per {@link String#toLowerCase(Locale)}
      * .
      * </p>
-     *
+     * <p>
      * <p>
      * A {@code null} input String returns {@code null}.
      * </p>
-     *
+     * <p>
      * <pre>
      * StringUtils.lowerCase(null, Locale.ENGLISH)  = null
      * StringUtils.lowerCase("", Locale.ENGLISH)    = ""
      * StringUtils.lowerCase("aBc", Locale.ENGLISH) = "abc"
      * </pre>
      *
-     * @param str
-     *            the String to lower case, may be null
-     * @param locale
-     *            the locale that defines the case transformation rules, must
-     *            not be null
+     * @param str    the String to lower case, may be null
+     * @param locale the locale that defines the case transformation rules, must
+     *               not be null
      * @return the lower cased String, {@code null} if null String input
      */
     public static String lowerCase(String str, Locale locale) {
@@ -1129,12 +1084,12 @@ public class StringUtil {
      * <p>
      * Checks if the CharSequence contains only lowercase characters.
      * </p>
-     *
+     * <p>
      * <p>
      * {@code null} will return {@code false}. An empty CharSequence
      * (length()=0) will return {@code false}.
      * </p>
-     *
+     * <p>
      * <pre>
      * StringUtils.isAllLowerCase(null)   = false
      * StringUtils.isAllLowerCase("")     = false
@@ -1143,10 +1098,9 @@ public class StringUtil {
      * StringUtils.isAllLowerCase("abC") = false
      * </pre>
      *
-     * @param cs
-     *            the CharSequence to check, may be null
+     * @param cs the CharSequence to check, may be null
      * @return {@code true} if only contains lowercase characters, and is
-     *         non-null
+     * non-null
      */
     public static boolean isAllLowerCase(CharSequence cs) {
         if (cs == null || isEmpty(cs)) {
@@ -1165,12 +1119,12 @@ public class StringUtil {
      * <p>
      * Checks if the CharSequence contains only uppercase characters.
      * </p>
-     *
+     * <p>
      * <p>
      * {@code null} will return {@code false}. An empty String (length()=0) will
      * return {@code false}.
      * </p>
-     *
+     * <p>
      * <pre>
      * StringUtils.isAllUpperCase(null)   = false
      * StringUtils.isAllUpperCase("")     = false
@@ -1179,10 +1133,9 @@ public class StringUtil {
      * StringUtils.isAllUpperCase("aBC") = false
      * </pre>
      *
-     * @param cs
-     *            the CharSequence to check, may be null
+     * @param cs the CharSequence to check, may be null
      * @return {@code true} if only contains uppercase characters, and is
-     *         non-null
+     * non-null
      */
     public static boolean isAllUpperCase(CharSequence cs) {
         if (cs == null || isEmpty(cs)) {
@@ -1202,18 +1155,17 @@ public class StringUtil {
      * Returns either the passed in String, or if the String is {@code null}, an
      * empty String ("").
      * </p>
-     *
+     * <p>
      * <pre>
      * StringUtils.defaultString(null)  = ""
      * StringUtils.defaultString("")    = ""
      * StringUtils.defaultString("bat") = "bat"
      * </pre>
      *
+     * @param str the String to check, may be null
+     * @return the passed in String, or the empty String if it was {@code null}
      * @see ObjectUtils#toString(Object)
      * @see String#valueOf(Object)
-     * @param str
-     *            the String to check, may be null
-     * @return the passed in String, or the empty String if it was {@code null}
      */
     public static String defaultString(String str) {
         return str == null ? EMPTY : str;
@@ -1227,21 +1179,19 @@ public class StringUtil {
      * Returns either the passed in String, or if the String is {@code null},
      * the value of {@code defaultStr}.
      * </p>
-     *
+     * <p>
      * <pre>
      * StringUtils.defaultString(null, "NULL")  = "NULL"
      * StringUtils.defaultString("", "NULL")    = ""
      * StringUtils.defaultString("bat", "NULL") = "bat"
      * </pre>
      *
+     * @param str        the String to check, may be null
+     * @param defaultStr the default String to return if the input is {@code null}, may
+     *                   be null
+     * @return the passed in String, or the default if it was {@code null}
      * @see ObjectUtils#toString(Object, String)
      * @see String#valueOf(Object)
-     * @param str
-     *            the String to check, may be null
-     * @param defaultStr
-     *            the default String to return if the input is {@code null}, may
-     *            be null
-     * @return the passed in String, or the default if it was {@code null}
      */
     public static String defaultString(String str, String defaultStr) {
         return str == null ? defaultStr : str;
@@ -1252,7 +1202,7 @@ public class StringUtil {
      * Returns either the passed in CharSequence, or if the CharSequence is
      * whitespace, empty ("") or {@code null}, the value of {@code defaultStr}.
      * </p>
-     *
+     * <p>
      * <pre>
      * StringUtils.defaultIfBlank(null, "NULL")  = "NULL"
      * StringUtils.defaultIfBlank("", "NULL")    = "NULL"
@@ -1261,13 +1211,10 @@ public class StringUtil {
      * StringUtils.defaultIfBlank("", null)      = null
      * </pre>
      *
-     * @param <T>
-     *            the specific kind of CharSequence
-     * @param str
-     *            the CharSequence to check, may be null
-     * @param defaultStr
-     *            the default CharSequence to return if the input is whitespace,
-     *            empty ("") or {@code null}, may be null
+     * @param <T>        the specific kind of CharSequence
+     * @param str        the CharSequence to check, may be null
+     * @param defaultStr the default CharSequence to return if the input is whitespace,
+     *                   empty ("") or {@code null}, may be null
      * @return the passed in CharSequence, or the default
      * @see StringUtils#defaultString(String, String)
      */
@@ -1280,7 +1227,7 @@ public class StringUtil {
      * Returns either the passed in CharSequence, or if the CharSequence is
      * empty or {@code null}, the value of {@code defaultStr}.
      * </p>
-     *
+     * <p>
      * <pre>
      * StringUtils.defaultIfEmpty(null, "NULL")  = "NULL"
      * StringUtils.defaultIfEmpty("", "NULL")    = "NULL"
@@ -1288,13 +1235,10 @@ public class StringUtil {
      * StringUtils.defaultIfEmpty("", null)      = null
      * </pre>
      *
-     * @param <T>
-     *            the specific kind of CharSequence
-     * @param str
-     *            the CharSequence to check, may be null
-     * @param defaultStr
-     *            the default CharSequence to return if the input is empty ("")
-     *            or {@code null}, may be null
+     * @param <T>        the specific kind of CharSequence
+     * @param str        the CharSequence to check, may be null
+     * @param defaultStr the default CharSequence to return if the input is empty ("")
+     *                   or {@code null}, may be null
      * @return the passed in CharSequence, or the default
      * @see StringUtils#defaultString(String, String)
      */
@@ -1306,12 +1250,12 @@ public class StringUtil {
      * <p>
      * Checks if the CharSequence contains only Unicode letters.
      * </p>
-     *
+     * <p>
      * <p>
      * {@code null} will return {@code false}. An empty CharSequence
      * (length()=0) will return {@code false}.
      * </p>
-     *
+     * <p>
      * <pre>
      * StringUtils.isAlpha(null)   = false
      * StringUtils.isAlpha("")     = false
@@ -1321,8 +1265,7 @@ public class StringUtil {
      * StringUtils.isAlpha("ab-c") = false
      * </pre>
      *
-     * @param cs
-     *            the CharSequence to check, may be null
+     * @param cs the CharSequence to check, may be null
      * @return {@code true} if only contains letters, and is non-null
      */
     public static boolean isAlpha(CharSequence cs) {
@@ -1342,12 +1285,12 @@ public class StringUtil {
      * <p>
      * Checks if the CharSequence contains only Unicode letters and space (' ').
      * </p>
-     *
+     * <p>
      * <p>
      * {@code null} will return {@code false} An empty CharSequence (length()=0)
      * will return {@code true}.
      * </p>
-     *
+     * <p>
      * <pre>
      * StringUtils.isAlphaSpace(null)   = false
      * StringUtils.isAlphaSpace("")     = true
@@ -1358,8 +1301,7 @@ public class StringUtil {
      * StringUtils.isAlphaSpace("ab-c") = false
      * </pre>
      *
-     * @param cs
-     *            the CharSequence to check, may be null
+     * @param cs the CharSequence to check, may be null
      * @return {@code true} if only contains letters and space, and is non-null
      */
     public static boolean isAlphaSpace(CharSequence cs) {
@@ -1380,12 +1322,12 @@ public class StringUtil {
      * <p>
      * Checks if the CharSequence contains only Unicode letters or digits.
      * </p>
-     *
+     * <p>
      * <p>
      * {@code null} will return {@code false}. An empty CharSequence
      * (length()=0) will return {@code false}.
      * </p>
-     *
+     * <p>
      * <pre>
      * StringUtils.isAlphanumeric(null)   = false
      * StringUtils.isAlphanumeric("")     = false
@@ -1396,8 +1338,7 @@ public class StringUtil {
      * StringUtils.isAlphanumeric("ab-c") = false
      * </pre>
      *
-     * @param cs
-     *            the CharSequence to check, may be null
+     * @param cs the CharSequence to check, may be null
      * @return {@code true} if only contains letters or digits, and is non-null
      */
     public static boolean isAlphanumeric(CharSequence cs) {
@@ -1418,12 +1359,12 @@ public class StringUtil {
      * Checks if the CharSequence contains only Unicode letters, digits or space
      * ({@code ' '}).
      * </p>
-     *
+     * <p>
      * <p>
      * {@code null} will return {@code false}. An empty CharSequence
      * (length()=0) will return {@code true}.
      * </p>
-     *
+     * <p>
      * <pre>
      * StringUtils.isAlphanumericSpace(null)   = false
      * StringUtils.isAlphanumericSpace("")     = true
@@ -1434,10 +1375,9 @@ public class StringUtil {
      * StringUtils.isAlphanumericSpace("ab-c") = false
      * </pre>
      *
-     * @param cs
-     *            the CharSequence to check, may be null
+     * @param cs the CharSequence to check, may be null
      * @return {@code true} if only contains letters, digits or space, and is
-     *         non-null
+     * non-null
      */
     public static boolean isAlphanumericSpace(CharSequence cs) {
         if (cs == null) {
@@ -1475,7 +1415,7 @@ public class StringUtil {
             return this.value;
         }
     }
-    
+
     public static String bytesToHexString(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
         for (byte aByte : bytes) {
@@ -1487,7 +1427,7 @@ public class StringUtil {
         }
         return sb.toString();
     }
-    
+
     public static boolean contains(String str1, String str2) {
         if (str1 == null) {
             return str2 == null;

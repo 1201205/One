@@ -2,7 +2,6 @@ package com.hyc.zhihu.ui.adpter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,9 +44,11 @@ public class ReadingAdapter extends BaseAdapter implements SectionIndexer {
         this.mContext = context;
         mRealReadings = new ArrayList<>();
     }
-    public void clear(){
+
+    public void clear() {
         mRealReadings.clear();
     }
+
     public void refreshList(List<RealReading> realReadings, LinkedHashMap<Integer, String> indexer) {
         mIndexer = indexer;
         mRealReadings.addAll(realReadings);
@@ -75,7 +76,7 @@ public class ReadingAdapter extends BaseAdapter implements SectionIndexer {
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.reading_item, null);
             holder = new ViewHolder();
-            holder.item= (LinearLayout) convertView.findViewById(R.id.item);
+            holder.item = (LinearLayout) convertView.findViewById(R.id.item);
             holder.authorTV = (TextView) convertView.findViewById(R.id.author_tv);
             holder.contentTV = (TextView) convertView.findViewById(R.id.content_tv);
             holder.dateTV = (TextView) convertView.findViewById(R.id.date_tv);
@@ -88,8 +89,8 @@ public class ReadingAdapter extends BaseAdapter implements SectionIndexer {
         final ReadingContent realReading = mRealReadings.get(position).getContent();
         String title = mRealReadings.get(position).getContent().getTitle();
         int section = getSectionForPosition(position);
-        int p=getPositionForSection(section);
-        if (p==position) {
+        int p = getPositionForSection(section);
+        if (p == position) {
             holder.dateTV.setVisibility(View.VISIBLE);
             holder.dateTV.setText(mIndexer.get(position));
         } else {
@@ -118,7 +119,7 @@ public class ReadingAdapter extends BaseAdapter implements SectionIndexer {
             holder.titleTV.setCompoundDrawables(null, null, null, null);
 
         }
-        if (mClickListener!=null) {
+        if (mClickListener != null) {
             holder.item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -155,7 +156,7 @@ public class ReadingAdapter extends BaseAdapter implements SectionIndexer {
 
     public String getDateBySection(int section) {
 
-        if (mIndexer==null) {
+        if (mIndexer == null) {
             return "";
         }
         int count = 0;
@@ -167,6 +168,7 @@ public class ReadingAdapter extends BaseAdapter implements SectionIndexer {
         }
         return "";
     }
+
     @Override
     public int getSectionForPosition(int position) {
         if (mIndexer == null || position < 0) {
@@ -174,10 +176,10 @@ public class ReadingAdapter extends BaseAdapter implements SectionIndexer {
         }
         int count = 0;
         for (Integer d : mIndexer.keySet()) {
-            if (d==position) {
+            if (d == position) {
                 return count;
-            } else if (d>position) {
-                return count-1;
+            } else if (d > position) {
+                return count - 1;
             }
             count++;
         }
@@ -193,7 +195,8 @@ public class ReadingAdapter extends BaseAdapter implements SectionIndexer {
         private ImageView tag;
         private LinearLayout item;
     }
-    public interface OnReadingItemClickListener{
+
+    public interface OnReadingItemClickListener {
         void onItemClicked(RealReading reading);
     }
 }

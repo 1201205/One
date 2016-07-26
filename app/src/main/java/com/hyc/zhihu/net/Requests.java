@@ -3,17 +3,13 @@ package com.hyc.zhihu.net;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.hyc.zhihu.MainApplication;
-import com.hyc.zhihu.utils.NetUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
 import okhttp3.Cache;
-import okhttp3.CacheControl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -21,13 +17,15 @@ import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+
 /**
  * Created by ray on 16/5/5.
  */
 public class Requests {
     private static Api sApi = null;
     private static Object sObject = new Object();
-    private static String TAG="request";
+    private static String TAG = "request";
+
     public static Api getApi() {
         synchronized (sObject) {
             if (sApi == null) {

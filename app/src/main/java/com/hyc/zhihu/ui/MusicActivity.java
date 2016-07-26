@@ -1,7 +1,6 @@
 package com.hyc.zhihu.ui;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
@@ -18,12 +17,9 @@ import com.hyc.zhihu.beans.music.Music;
 import com.hyc.zhihu.beans.music.MusicRelate;
 import com.hyc.zhihu.beans.music.MusicRelateListBean;
 import com.hyc.zhihu.event.PlayEvent;
-import com.hyc.zhihu.helper.DelayHandle;
 import com.hyc.zhihu.presenter.MusicPresenter;
 import com.hyc.zhihu.ui.adpter.MusicAdapter;
-import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 import com.hyc.zhihu.utils.AppUtil;
-import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.MusicView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -34,10 +30,9 @@ import java.util.List;
  * Created by Administrator on 2016/5/24.
  */
 public class MusicActivity extends BaseActivity<MusicPresenter>
-    implements MusicView, LoaderManager.LoaderCallbacks<MusicPresenter> {
+        implements MusicView, LoaderManager.LoaderCallbacks<MusicPresenter> {
     private ViewPager mPager;
     private MusicAdapter mAdapter;
-
 
 
     @Override
@@ -84,6 +79,7 @@ public class MusicActivity extends BaseActivity<MusicPresenter>
     protected void initLoader() {
         getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
     }
+
     @Override
     public Loader<MusicPresenter> onCreateLoader(int id, Bundle args) {
         return new PresenterLoader<MusicPresenter>(this, new PresenterFactory() {
@@ -142,21 +138,25 @@ public class MusicActivity extends BaseActivity<MusicPresenter>
 
     @Override
     public void setRelate(int position, List<MusicRelate> musicRelates) {
+        if (isFinishing()) {
+            return;
+        }
         mAdapter.setRelate(position, musicRelates);
     }
 
 
-    @Override protected String getTitleString() {
+    @Override
+    protected String getTitleString() {
         return AppUtil.getString(R.string.music);
     }
 
 
     @Override
     protected void onDestroy() {
-        if (mAdapter!=null) {
+        if (mAdapter != null) {
             mAdapter.clear();
         }
-         mPager.setAdapter(null);
+        mPager.setAdapter(null);
         Log.e("test1", "ondestory");
         super.onDestroy();
     }
@@ -170,6 +170,9 @@ public class MusicActivity extends BaseActivity<MusicPresenter>
 
     @Override
     public void refreshCommentList(int page, List<Comment> comments) {
+        if (isFinishing()) {
+            return;
+        }
         mAdapter.refreshComment(page, comments);
     }
 

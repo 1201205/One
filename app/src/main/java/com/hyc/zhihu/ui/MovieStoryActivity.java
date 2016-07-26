@@ -1,7 +1,6 @@
 package com.hyc.zhihu.ui;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewCompat;
@@ -18,7 +17,6 @@ import com.hyc.zhihu.base.PresenterLoader;
 import com.hyc.zhihu.beans.movie.MovieStory;
 import com.hyc.zhihu.presenter.MovieStoryPresenter;
 import com.hyc.zhihu.ui.adpter.MovieStoryAdapter;
-import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.MovieStoryView;
@@ -29,8 +27,8 @@ import java.util.List;
  * Created by ray on 16/6/6.
  */
 public class MovieStoryActivity extends BaseActivity<MovieStoryPresenter> implements MovieStoryView,
-    LoaderManager.LoaderCallbacks<MovieStoryPresenter>,
-    OnLoadMoreListener {
+        LoaderManager.LoaderCallbacks<MovieStoryPresenter>,
+        OnLoadMoreListener {
     private String mID;
     private SwipeToLoadLayout swipeToLoadLayout;
     private ListView listView;
@@ -53,9 +51,9 @@ public class MovieStoryActivity extends BaseActivity<MovieStoryPresenter> implem
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if (mHasMoreComments &&
-                    scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                        scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     if (view.getLastVisiblePosition() == view.getCount() - 1 &&
-                        !ViewCompat.canScrollVertically(view, 1)) {
+                            !ViewCompat.canScrollVertically(view, 1)) {
                         swipeToLoadLayout.setLoadingMore(true);
                     }
                 }
@@ -103,7 +101,8 @@ public class MovieStoryActivity extends BaseActivity<MovieStoryPresenter> implem
     }
 
 
-    @Override protected String getTitleString() {
+    @Override
+    protected String getTitleString() {
         return AppUtil.getString(R.string.all_movie_story);
     }
 
@@ -123,6 +122,7 @@ public class MovieStoryActivity extends BaseActivity<MovieStoryPresenter> implem
     @Override
     public void refreshList(List<MovieStory> stories) {
         if (stories == null || stories.size() == 0) {
+            AppUtil.showToast(R.string.no_more);
             mHasMoreComments = false;
             swipeToLoadLayout.setLoadingMore(false);
             swipeToLoadLayout.setLoadMoreEnabled(false);
@@ -132,6 +132,7 @@ public class MovieStoryActivity extends BaseActivity<MovieStoryPresenter> implem
         }
 
     }
+
     @Override
     protected void initLoader() {
         getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);

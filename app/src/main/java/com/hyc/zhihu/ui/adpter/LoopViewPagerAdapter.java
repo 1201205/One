@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.beans.HeadScrollItem;
-import com.hyc.zhihu.beans.OnePictureData;
+import com.hyc.zhihu.utils.AppUtil;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -55,9 +55,9 @@ public class LoopViewPagerAdapter extends BaseLoopPagerAdapter {
             int margin = res.getDimensionPixelOffset(R.dimen.indicator_margin);
             for (int i = 0; i < getPagerCount(); i++) {
                 ImageView indicator = new ImageView(mIndicators.getContext());
-                indicator.setAlpha(180);
+                indicator.setAlpha(240);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(size, size);
-                lp.setMargins(margin, 0, 0, 0);
+                lp.setMargins(margin, margin, 0,margin);
                 lp.gravity = Gravity.CENTER;
                 indicator.setLayoutParams(lp);
                 Drawable drawable = res.getDrawable(R.drawable.selector_indicator);
@@ -95,7 +95,7 @@ public class LoopViewPagerAdapter extends BaseLoopPagerAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         final HeadScrollItem data = mDatas.get(position);
-        if (mItemClickListener!=null) {
+        if (mItemClickListener != null) {
             holder.ivBanner.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -120,7 +120,8 @@ public class LoopViewPagerAdapter extends BaseLoopPagerAdapter {
     public static class ViewHolder {
         ImageView ivBanner;
     }
-    public interface  ItemClickListener{
+
+    public interface ItemClickListener {
         void itemClicked(HeadScrollItem data);
     }
 }

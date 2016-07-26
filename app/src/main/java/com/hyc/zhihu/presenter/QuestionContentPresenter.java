@@ -1,6 +1,8 @@
 package com.hyc.zhihu.presenter;
 
 import com.hyc.zhihu.base.BasePresenter;
+import com.hyc.zhihu.base.DefaultTransformer;
+import com.hyc.zhihu.base.ExceptionAction;
 import com.hyc.zhihu.beans.BaseBean;
 import com.hyc.zhihu.beans.Comment;
 import com.hyc.zhihu.beans.CommentWrapper;
@@ -94,14 +96,21 @@ public class QuestionContentPresenter extends BasePresenter<ReadingContentView<Q
     public void getAndShowCommentList() {
         mCompositeSubscription.add(
 
-                Requests.getApi().getQuestionCommentsByIndex(mId, mLastIndex).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<BaseBean<CommentWrapper>>() {
+                Requests.getApi().getQuestionCommentsByIndex(mId, mLastIndex).compose(new DefaultTransformer<BaseBean<CommentWrapper>, CommentWrapper>()).subscribe(new Action1<CommentWrapper>() {
                     @Override
-                    public void call(BaseBean<CommentWrapper> comments) {
-                        List<Comment> c = comments.getData().getData();
-                        if (c != null && c.size() > 0) {
-                            mLastIndex = c.get(c.size() - 1).getId();
+                    public void call(CommentWrapper comments) {
+                        List<Comment> c = comments.getData();
+                        if (c == null || c.size() == 0) {
+                            mView.showNoComments();
+                            return;
                         }
-                        mView.refreshCommentList(comments.getData().getData());
+                        mLastIndex = c.get(c.size() - 1).getId();
+                        mView.refreshCommentList(c);
+                    }
+                }, new ExceptionAction() {
+                    @Override
+                    public void onNothingGet() {
+                        mView.showNoComments();
                     }
                 }));
     }

@@ -40,6 +40,7 @@ public class MusicPresenter extends BasePresenter<MusicView> implements IMusicPr
     public void getAndShowContent() {
         mView.showLoading();
         final List<Song> songs = new ArrayList<>();
+        //// FIXME: 2016/7/26 用法略low
         mCompositeSubscription.add(
                 Requests.getApi().getMusicIds("0").map(new Func1<IDList, Observable<BaseBean<Music>>>() {
                     @Override
@@ -71,8 +72,8 @@ public class MusicPresenter extends BasePresenter<MusicView> implements IMusicPr
                                     showCurrentRelate(0);
                                     showCurrentComment(0);
                                     mView.setSongList(songs);
+                                    mView.dismissLoading();
                                 }
-                                mView.dismissLoading();
                             }
                         });
                     }

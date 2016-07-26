@@ -4,12 +4,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyc.zhihu.R;
-import com.hyc.zhihu.beans.movie.Movie;
-import com.hyc.zhihu.helper.FrescoHelper;
+import com.hyc.zhihu.helper.PicassoHelper;
 
 import java.util.List;
 
@@ -23,6 +21,7 @@ public class MovieStoryPictureAdapter extends RecyclerView.Adapter<MovieStoryPic
     public MovieStoryPictureAdapter(List<String> urls) {
         mUrls = urls;
     }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_story_picture, parent, false);
@@ -31,7 +30,7 @@ public class MovieStoryPictureAdapter extends RecyclerView.Adapter<MovieStoryPic
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        FrescoHelper.loadImage(holder.image, mUrls.get(position));
+        PicassoHelper.load(holder.image.getContext(), mUrls.get(position), holder.image);
     }
 
     @Override
@@ -40,11 +39,11 @@ public class MovieStoryPictureAdapter extends RecyclerView.Adapter<MovieStoryPic
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        private SimpleDraweeView image;
+        private ImageView image;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            image = (SimpleDraweeView) itemView.findViewById(R.id.image);
+            image = (ImageView) itemView.findViewById(R.id.image);
         }
     }
 

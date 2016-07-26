@@ -14,8 +14,6 @@ import com.hyc.zhihu.R;
 import com.hyc.zhihu.helper.DelayHandle;
 import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 import com.hyc.zhihu.utils.AppUtil;
-import com.hyc.zhihu.utils.S;
-import com.hyc.zhihu.utils.SPUtil;
 
 /**
  * Created by Administrator on 2016/5/13.
@@ -87,7 +85,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     @Override
     public void dismissLoading() {
         LoadingDialogFragment.getInstance().dismissAllowingStateLoss();
-
     }
 
 //    public void changeColor() {
@@ -99,7 +96,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mPresenter!=null) {
+        if (mPresenter != null) {
             mPresenter.detachView();
         }
     }

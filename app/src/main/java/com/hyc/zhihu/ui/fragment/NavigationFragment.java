@@ -1,29 +1,20 @@
 package com.hyc.zhihu.ui.fragment;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.hyc.zhihu.R;
-import com.hyc.zhihu.base.BaseActivity;
-import com.hyc.zhihu.ui.MovieListActivity;
 import com.hyc.zhihu.ui.MusicActivity;
-import com.hyc.zhihu.ui.OtherMusicActivity;
 import com.hyc.zhihu.ui.ReadingActivity;
-import com.hyc.zhihu.ui.adpter.ColorAdapter;
+import com.hyc.zhihu.ui.RecyclerListActivity;
 import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
-import com.hyc.zhihu.utils.SPUtil;
-
-import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2016/6/29.
@@ -76,7 +67,7 @@ public class NavigationFragment extends Fragment {
         mMoveTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppUtil.startActivityWithType(S.MOVIE_LIST,getContext(), OtherMusicActivity.class,R.string.movie);
+                AppUtil.startActivityWithType(S.MOVIE_LIST, getContext(), RecyclerListActivity.class, R.string.movie);
             }
         });
         mReadTV.setOnClickListener(new View.OnClickListener() {

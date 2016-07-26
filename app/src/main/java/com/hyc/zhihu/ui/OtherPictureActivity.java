@@ -1,13 +1,10 @@
 package com.hyc.zhihu.ui;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -39,7 +36,7 @@ public class OtherPictureActivity extends BaseActivity<OtherPicturePresenter>
     private MonthPictureAdapter mMonthPictureAdapter;
     private boolean mCanLoad = true;
     private GridLayoutManager mLayoutManager;
-    private static final int PAGE_COUNT=20;
+    private static final int PAGE_COUNT = 20;
 
     @Override
     protected void handleIntent() {
@@ -59,7 +56,7 @@ public class OtherPictureActivity extends BaseActivity<OtherPicturePresenter>
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (mCanLoad && mLayoutManager.findLastCompletelyVisibleItemPosition() == mMonthPictureAdapter.getItemCount() - 1 ) {
+                    if (mCanLoad && mLayoutManager.findLastCompletelyVisibleItemPosition() == mMonthPictureAdapter.getItemCount() - 1) {
                         mSwipeToLoadLayout.setLoadingMore(true);
                     }
                 }
@@ -109,7 +106,7 @@ public class OtherPictureActivity extends BaseActivity<OtherPicturePresenter>
     public void showList(List<OnePictureData> datas) {
         mMonthPictureAdapter = new MonthPictureAdapter(datas, this);
         mRecyclerView.setAdapter(mMonthPictureAdapter);
-        if (datas.size()<PAGE_COUNT) {
+        if (datas.size() < PAGE_COUNT) {
             mCanLoad = false;
             mSwipeToLoadLayout.setLoadMoreEnabled(false);
         }
@@ -135,7 +132,8 @@ public class OtherPictureActivity extends BaseActivity<OtherPicturePresenter>
     }
 
 
-    @Override protected String getTitleString() {
+    @Override
+    protected String getTitleString() {
         return AppUtil.getString(R.string.other_picture);
     }
 

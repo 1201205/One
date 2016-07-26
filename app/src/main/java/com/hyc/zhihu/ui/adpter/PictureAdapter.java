@@ -2,15 +2,10 @@ package com.hyc.zhihu.ui.adpter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.util.Pair;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.transition.ChangeImageTransform;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +20,6 @@ import com.hyc.zhihu.beans.PictureViewBean;
 import com.hyc.zhihu.helper.DelayHandle;
 import com.hyc.zhihu.ui.MainActivity;
 import com.hyc.zhihu.ui.MonthPictureActivity;
-import com.hyc.zhihu.ui.MusicActivity;
 import com.hyc.zhihu.ui.PictureActivity;
 import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.DateUtil;
@@ -94,7 +88,7 @@ public class PictureAdapter extends PagerAdapter {
             final PictureViewBean viewBean = viewBeans.get(position);
             if (viewBean.state == PictureViewBean.NORMAL) {
                 final OnePictureData bean = viewBeans.get(position).data;
-                picture.setOnClickListener(getOnclickListener(bean.getHp_title(),bean.getHp_img_original_url(),vol));
+                picture.setOnClickListener(getOnclickListener(bean.getHp_title(), bean.getHp_img_original_url(), vol));
                 name.setText(bean.getHp_author());
                 vol.setText(bean.getHp_title());
                 content.setText(bean.getHp_content());
@@ -109,13 +103,13 @@ public class PictureAdapter extends PagerAdapter {
 
     }
 
-    private View.OnClickListener getOnclickListener(final String title,final String url, final View vol) {
+    private View.OnClickListener getOnclickListener(final String title, final String url, final View vol) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                ActivityOptionsCompat compat=  ActivityOptionsCompat.makeSceneTransitionAnimation((MainActivity) mContext,new Pair<View, String>(v,PictureActivity.SHARE_TITLE),new Pair<View, String>(vol,PictureActivity.SHARE_PICTURE));
                 ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation((MainActivity) mContext, v, PictureActivity.SHARE_PICTURE);
-                Intent intent = PictureActivity.newIntent(mContext, url,title);
+                Intent intent = PictureActivity.newIntent(mContext, url, title);
 //                ((MainActivity) mContext).getWindow().setSharedElementEnterTransition(new ChangeImageTransform(mContext, null));
                 ActivityCompat.startActivity((MainActivity) mContext, intent, compat.toBundle());
 //                mContext.startActivity(intent, compat.toBundle());
@@ -133,7 +127,7 @@ public class PictureAdapter extends PagerAdapter {
                 DelayHandle.delay(150, new Runnable() {
                     @Override
                     public void run() {
-                       notifyDataSetChanged();
+                        notifyDataSetChanged();
                     }
                 });
                 break;
@@ -156,7 +150,7 @@ public class PictureAdapter extends PagerAdapter {
 
         while (temp.before(calendar)) {
             String s = format.format(temp.getTime());
-            String month=DateUtil.getMonthDate(s);
+            String month = DateUtil.getMonthDate(s);
             dateBeans.add(new DateBean(month, s + "%2000:00:00"));
             temp.add(GregorianCalendar.MONTH, 1);
         }

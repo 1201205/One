@@ -1,47 +1,32 @@
 package com.hyc.zhihu.ui;
 
 import android.graphics.Color;
-import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseArray;
 import android.view.View;
 import android.widget.ImageView;
+
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.base.BaseActivity;
-import com.hyc.zhihu.base.BasePresenter;
 import com.hyc.zhihu.base.BaseRecyclerAdapter;
 import com.hyc.zhihu.base.ListPresenter;
-import com.hyc.zhihu.base.PresenterFactory;
-import com.hyc.zhihu.base.PresenterLoader;
-import com.hyc.zhihu.beans.music.MusicMonthItem;
-import com.hyc.zhihu.presenter.MusicMonthPresenter;
-import com.hyc.zhihu.presenter.OtherMusicPresenter;
 import com.hyc.zhihu.ui.adpter.AdapterFactory;
 import com.hyc.zhihu.ui.adpter.ListPresenterFactory;
-import com.hyc.zhihu.ui.adpter.MonthMusicAdapter;
-import com.hyc.zhihu.ui.adpter.MonthMusicAdapter2;
-import com.hyc.zhihu.ui.adpter.MonthPictureAdapter;
 import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
-import com.hyc.zhihu.view.MusicMonthView;
 import com.hyc.zhihu.view.OtherPictureView;
 import com.hyc.zhihu.widget.DividerItemDecoration;
-import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.List;
 
 /**
  * Created by ray on 16/5/26.
  */
-public class OtherMusicActivity extends BaseActivity
-    implements OtherPictureView,
-    OnLoadMoreListener {
+public class RecyclerListActivity extends BaseActivity
+        implements OtherPictureView,
+        OnLoadMoreListener {
     private RecyclerView mRecyclerView;
     private SwipeToLoadLayout mSwipeToLoadLayout;
     private String mID;
@@ -57,12 +42,13 @@ public class OtherMusicActivity extends BaseActivity
     @Override
     protected void handleIntent() {
         mID = getIntent().getStringExtra(S.ID);
-        mType = getIntent().getIntExtra(S.TYPE,1);
-        mTitle=getIntent().getStringExtra(S.TITLE);
+        mType = getIntent().getIntExtra(S.TYPE, 1);
+        mTitle = getIntent().getStringExtra(S.TITLE);
     }
 
 
-    @Override protected String getTitleString() {
+    @Override
+    protected String getTitleString() {
         return mTitle;
     }
 
@@ -81,7 +67,7 @@ public class OtherMusicActivity extends BaseActivity
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (mCanLoad && mLayoutManager.findLastCompletelyVisibleItemPosition() ==
-                        mAdapter.getItemCount() - 1) {
+                            mAdapter.getItemCount() - 1) {
                         mSwipeToLoadLayout.setLoadingMore(true);
                     }
                 }
@@ -93,11 +79,11 @@ public class OtherMusicActivity extends BaseActivity
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
-        mPresenter= ListPresenterFactory.getPresenter(this,mType);
+        mPresenter = ListPresenterFactory.getPresenter(this, mType);
         mPresenter.attachView();
-        ((ListPresenter)mPresenter).showList(mID);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,RecyclerView.VERTICAL,
-            Color.GRAY));
+        ((ListPresenter) mPresenter).showList(mID);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, RecyclerView.VERTICAL,
+                Color.GRAY));
     }
 
 
@@ -118,7 +104,7 @@ public class OtherMusicActivity extends BaseActivity
 //        return new PresenterLoader<OtherMusicPresenter>(this, new PresenterFactory() {
 //            @Override
 //            public BasePresenter create() {
-//                return new OtherMusicPresenter(OtherMusicActivity.this);
+//                return new OtherMusicPresenter(RecyclerListActivity.this);
 //            }
 //        });
 //    }
@@ -154,10 +140,9 @@ public class OtherMusicActivity extends BaseActivity
 //    }
 
 
-
     @Override
     public void showList(List datas) {
-        mAdapter = AdapterFactory.getAdapter(this, datas,mType);
+        mAdapter = AdapterFactory.getAdapter(this, datas, mType);
         mRecyclerView.setAdapter(mAdapter);
         if (datas.size() < PAGE_COUNT) {
             mCanLoad = false;
@@ -171,7 +156,8 @@ public class OtherMusicActivity extends BaseActivity
         mAdapter.addItems(datas);
     }
 
-    @Override public void nothingGet() {
+    @Override
+    public void nothingGet() {
         mCanLoad = false;
         if (mAdapter == null) {
             mNoItemIV.setVisibility(View.VISIBLE);
@@ -184,7 +170,8 @@ public class OtherMusicActivity extends BaseActivity
     }
 
 
-    @Override public void onLoadMore() {
-        ((ListPresenter)mPresenter).refresh();
+    @Override
+    public void onLoadMore() {
+        ((ListPresenter) mPresenter).refresh();
     }
 }

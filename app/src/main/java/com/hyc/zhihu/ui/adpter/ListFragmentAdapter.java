@@ -14,16 +14,18 @@ import java.util.List;
  */
 public class ListFragmentAdapter extends FragmentStatePagerAdapter {
     private List<Fragment> mFragments;
+
     public ListFragmentAdapter(FragmentManager fm) {
         super(fm);
-        mFragments=new ArrayList<>();
+        mFragments = new ArrayList<>();
     }
 
     @Override
     public Fragment getItem(int position) {
         return mFragments.get(position);
     }
-    public void add(Fragment fragment){
+
+    public void add(Fragment fragment) {
         mFragments.add(fragment);
     }
 

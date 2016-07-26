@@ -1,6 +1,8 @@
 package com.hyc.zhihu.presenter;
 
 import com.hyc.zhihu.base.BasePresenter;
+import com.hyc.zhihu.base.DefaultTransformer;
+import com.hyc.zhihu.base.ExceptionAction;
 import com.hyc.zhihu.beans.BaseBean;
 import com.hyc.zhihu.beans.Comment;
 import com.hyc.zhihu.beans.CommentWrapper;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -35,10 +38,15 @@ public class EssayContentPresenter extends BasePresenter<ReadingContentView<Essa
         mView.showLoading();
         mId = id;
         mCompositeSubscription.add(
-                Observable.just(Requests.getApi().getEssayContentByID(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<BaseBean<Essay>>() {
+                Observable.just(Requests.getApi().getEssayContentByID(id).compose(new DefaultTransformer<BaseBean<Essay>, Essay>()).subscribe(new Action1<Essay>() {
                     @Override
-                    public void call(BaseBean<Essay> serialWrapper) {
-                        mView.showContent(serialWrapper.getData());
+                    public void call(Essay essay) {
+                        mView.showContent(essay);
+                        mView.dismissLoading();
+                    }
+                }, new ExceptionAction() {
+                    @Override
+                    public void onNothingGet() {
                     }
                 }), Requests.getApi().getEssayRelateByID(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<BaseBean<List<RealArticle>>>() {
                     @Override
@@ -73,7 +81,6 @@ public class EssayContentPresenter extends BasePresenter<ReadingContentView<Essa
                     public void call(List<Comment>[] comments) {
                         mView.showHotComments(comments[0]);
                         mView.refreshCommentList(comments[1]);
-                        mView.dismissLoading();
                     }
                 })).subscribeOn(Schedulers.io()).subscribe());
     }
@@ -81,17 +88,21 @@ public class EssayContentPresenter extends BasePresenter<ReadingContentView<Essa
     @Override
     public void getAndShowCommentList() {
 
-        mCompositeSubscription.add(Requests.getApi().getEssayCommentsByIndex(mId, mLastIndex).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<BaseBean<CommentWrapper>>() {
+        mCompositeSubscription.add(Requests.getApi().getEssayCommentsByIndex(mId, mLastIndex).compose(new DefaultTransformer<BaseBean<CommentWrapper>, CommentWrapper>()).subscribe(new Action1<CommentWrapper>() {
             @Override
-            public void call(BaseBean<CommentWrapper> comments) {
-                if (comments == null || comments.getData() == null || comments.getData().getData() == null || comments.getData().getData().size() == 0) {
+            public void call(CommentWrapper comments) {
+                List<Comment> c = comments.getData();
+                if (c == null || c.size() == 0) {
                     mView.showNoComments();
+                    return;
                 }
-                List<Comment> c = comments.getData().getData();
-                if (c != null && c.size() > 0) {
-                    mLastIndex = c.get(c.size() - 1).getId();
-                }
-                mView.refreshCommentList(comments.getData().getData());
+                mLastIndex = c.get(c.size() - 1).getId();
+                mView.refreshCommentList(comments.getData());
+            }
+        }, new ExceptionAction() {
+            @Override
+            public void onNothingGet() {
+                mView.showNoComments();
             }
         }));
     }

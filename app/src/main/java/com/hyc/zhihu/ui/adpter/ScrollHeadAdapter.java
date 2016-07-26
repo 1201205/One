@@ -19,10 +19,11 @@ import java.util.List;
 public class ScrollHeadAdapter extends PagerAdapter {
     private List<HeadScrollItem> mItems;
     private Context mContext;
+
     public ScrollHeadAdapter(Context context, List<HeadScrollItem> items) {
         super();
-        mContext=context;
-        mItems=items;
+        mContext = context;
+        mItems = items;
     }
 
     @Override
@@ -37,7 +38,7 @@ public class ScrollHeadAdapter extends PagerAdapter {
 
     @Override
     public View instantiateItem(ViewGroup container, int position) {
-       ImageView v= (ImageView) LayoutInflater.from(mContext).inflate(R.layout.item_picture,container,false);
+        ImageView v = (ImageView) LayoutInflater.from(mContext).inflate(R.layout.item_picture, container, false);
         Picasso.with(mContext).load(mItems.get(position).getPv_url()).into(v);
         container.addView(v);
         return v;
@@ -45,7 +46,7 @@ public class ScrollHeadAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return mItems==null?0:mItems.size();
+        return mItems == null ? 0 : mItems.size();
     }
 
     @Override

@@ -1,10 +1,9 @@
 package com.hyc.zhihu.ui;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -26,14 +25,10 @@ import com.hyc.zhihu.base.PresenterLoader;
 import com.hyc.zhihu.beans.Comment;
 import com.hyc.zhihu.beans.Question;
 import com.hyc.zhihu.beans.QuestionContent;
-import com.hyc.zhihu.beans.Serial;
 import com.hyc.zhihu.presenter.QuestionContentPresenter;
 import com.hyc.zhihu.ui.adpter.CommentAdapter;
 import com.hyc.zhihu.ui.adpter.QuestionAdapter;
-import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 import com.hyc.zhihu.utils.AppUtil;
-import com.hyc.zhihu.utils.S;
-import com.hyc.zhihu.view.QuestionContentView;
 import com.hyc.zhihu.view.ReadingContentView;
 import com.hyc.zhihu.widget.ListViewForScrollView;
 
@@ -43,9 +38,9 @@ import java.util.List;
  * Created by ray on 16/5/18.
  */
 public class QuestionActivity extends BaseActivity<QuestionContentPresenter> implements
-    ReadingContentView<QuestionContent, Question>,
-    OnLoadMoreListener,
-    LoaderManager.LoaderCallbacks<QuestionContentPresenter> {
+        ReadingContentView<QuestionContent, Question>,
+        OnLoadMoreListener,
+        LoaderManager.LoaderCallbacks<QuestionContentPresenter> {
     private SwipeToLoadLayout swipeToLoadLayout;
     private View mHeader;
     private TextView mTitleTV;
@@ -79,9 +74,9 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if (mHasMoreComments &&
-                    scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                        scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     if (view.getLastVisiblePosition() == view.getCount() - 1 &&
-                        !ViewCompat.canScrollVertically(view, 1)) {
+                            !ViewCompat.canScrollVertically(view, 1)) {
                         swipeToLoadLayout.setLoadingMore(true);
                     }
                 }
@@ -181,7 +176,10 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
     public void showNoComments() {
         AppUtil.showToast(R.string.no_more);
         mHasMoreComments = false;
+        swipeToLoadLayout.setLoadingMore(false);
+        swipeToLoadLayout.setLoadMoreEnabled(false);
     }
+
     @Override
     protected void initLoader() {
         getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
@@ -252,7 +250,7 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
             ViewHolder h = null;
             if (convertView == null) {
                 convertView = LayoutInflater.from(QuestionActivity.this)
-                    .inflate(R.layout.layout_title, null);
+                        .inflate(R.layout.layout_title, null);
                 h = new ViewHolder();
                 h.tv = (TextView) convertView.findViewById(R.id.title);
                 convertView.setTag(h);

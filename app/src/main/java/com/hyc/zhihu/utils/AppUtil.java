@@ -9,8 +9,8 @@ import android.widget.Toast;
 
 import com.hyc.zhihu.MainApplication;
 import com.hyc.zhihu.R;
-
 import com.hyc.zhihu.ui.OtherDetailActivity;
+
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -21,12 +21,14 @@ public class AppUtil {
     public static void showToast(String s) {
         Toast.makeText(MainApplication.getApplication(), s, Toast.LENGTH_LONG).show();
     }
+
     public static void showToast(int id) {
         Toast.makeText(MainApplication.getApplication(), id, Toast.LENGTH_LONG).show();
     }
 
     /**
      * 用过id获取Drawable
+     *
      * @param id
      * @return
      */
@@ -36,6 +38,7 @@ public class AppUtil {
 
     /**
      * dp转px
+     *
      * @param dipValue
      * @return
      */
@@ -46,6 +49,7 @@ public class AppUtil {
 
     /**
      * sp转px
+     *
      * @param spValue
      * @return
      */
@@ -54,12 +58,13 @@ public class AppUtil {
         return (int) (spValue * fontScale + 0.5f);
     }
 
-    public static String getString(int id){
+    public static String getString(int id) {
         return MainApplication.getApplication().getString(id);
     }
 
     /**
      * 获取颜色
+     *
      * @param id
      * @return
      */
@@ -98,36 +103,42 @@ public class AppUtil {
         intent.putExtra(S.ID, id);
         context.startActivity(intent);
     }
-    public static void startActivityWithID(String id, Context context, Class clazz,int title) {
+
+    public static void startActivityWithID(String id, Context context, Class clazz, int title) {
         Intent intent = new Intent(context, clazz);
         intent.putExtra(S.ID, id);
-        intent.putExtra(S.TITLE,AppUtil.getString(title));
+        intent.putExtra(S.TITLE, AppUtil.getString(title));
         context.startActivity(intent);
     }
+
     public static void startActivityWithUrl(String url, Context context, Class clazz) {
         Intent intent = new Intent(context, clazz);
         intent.putExtra(S.URL, url);
         context.startActivity(intent);
     }
-    public static void startActivityWithType(int type, Context context, Class clazz,int title) {
+
+    public static void startActivityWithType(int type, Context context, Class clazz, int title) {
         Intent intent = new Intent(context, clazz);
         intent.putExtra(S.TYPE, type);
-        intent.putExtra(S.TITLE,AppUtil.getString(title));
+        intent.putExtra(S.TITLE, AppUtil.getString(title));
         context.startActivity(intent);
     }
-    public static void startActivityWithIDAndType(String id,int type, Context context, Class clazz) {
-        Intent intent = new Intent(context, clazz);
-        intent.putExtra(S.ID, id);
-        intent.putExtra(S.TYPE, type);
-        context.startActivity(intent);
-    }
-    public static void startActivityWithIDAndType(String id,int type, Context context, Class clazz,int title) {
+
+    public static void startActivityWithIDAndType(String id, int type, Context context, Class clazz) {
         Intent intent = new Intent(context, clazz);
         intent.putExtra(S.ID, id);
         intent.putExtra(S.TYPE, type);
-        intent.putExtra(S.TITLE,AppUtil.getString(title));
         context.startActivity(intent);
     }
+
+    public static void startActivityWithIDAndType(String id, int type, Context context, Class clazz, int title) {
+        Intent intent = new Intent(context, clazz);
+        intent.putExtra(S.ID, id);
+        intent.putExtra(S.TYPE, type);
+        intent.putExtra(S.TITLE, AppUtil.getString(title));
+        context.startActivity(intent);
+    }
+
     public static View.OnClickListener getOtherClickListener(final String id, final Context context) {
         return new View.OnClickListener() {
             @Override

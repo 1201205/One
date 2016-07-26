@@ -1,6 +1,7 @@
 package com.hyc.zhihu.base;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -107,7 +108,11 @@ public class CommonViewHolder {
      */
     public CommonViewHolder loadImageUrlByPicasso(int viewId, String url, int holder) {
         ImageView iv = getView(viewId);
-        Picasso.with(iv.getContext()).load(url).placeholder(holder).into(iv);
+        if (TextUtils.isEmpty(url)) {
+            Picasso.with(iv.getContext()).load(holder).into(iv);
+        } else {
+            Picasso.with(iv.getContext()).load(url).placeholder(holder).into(iv);
+        }
         return this;
     }
 

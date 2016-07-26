@@ -7,8 +7,6 @@ import com.hyc.zhihu.R;
 import com.hyc.zhihu.base.BaseRecyclerAdapter;
 import com.hyc.zhihu.base.RecyclerViewHolder;
 import com.hyc.zhihu.beans.OtherDiary;
-import com.hyc.zhihu.beans.music.MusicMonthItem;
-import com.hyc.zhihu.ui.MusicItemActivity;
 import com.hyc.zhihu.ui.PictureActivity;
 import com.hyc.zhihu.utils.AppUtil;
 
@@ -19,27 +17,29 @@ import java.util.List;
  * Created by Administrator on 2016/7/12.
  */
 public class OtherDairyAdapter extends BaseRecyclerAdapter<OtherDiary> {
-    private static HashMap<String,Integer> mBackground=new HashMap<>();
-    static  {
-        mBackground=new HashMap<>();
-        mBackground.put("多云",R.drawable.weather_cloudy);
-        mBackground.put("沙尘暴",R.drawable.weather_duststorm);
-        mBackground.put("雾",R.drawable.weather_foggy);
-        mBackground.put("小雨",R.drawable.weather_light_rain);
-        mBackground.put("阴",R.drawable.weather_overcast);
-        mBackground.put("晴",R.drawable.weather_sunny);
-        mBackground.put("阵雨",R.drawable.weather_shower);
-        mBackground.put("雾霾",R.drawable.weather_haze);
-        mBackground.put("大雨",R.drawable.weather_heavy_rain);
-        mBackground.put("大雪",R.drawable.weather_heavy_snow);
-        mBackground.put("雨冰",R.drawable.weather_ice_rain);
-        mBackground.put("小雪",R.drawable.weather_light_snow);
-        mBackground.put("中雨",R.drawable.weather_moderate_rain);
-        mBackground.put("雨夹雪",R.drawable.weather_sleet);
-        mBackground.put("阵雪",R.drawable.weather_snow_flurry);
-        mBackground.put("暴风雨",R.drawable.weather_storm);
-        mBackground.put("雷阵雨",R.drawable.weather_thundershower);
+    private static HashMap<String, Integer> mBackground = new HashMap<>();
+
+    static {
+        mBackground = new HashMap<>();
+        mBackground.put("多云", R.drawable.weather_cloudy);
+        mBackground.put("沙尘暴", R.drawable.weather_duststorm);
+        mBackground.put("雾", R.drawable.weather_foggy);
+        mBackground.put("小雨", R.drawable.weather_light_rain);
+        mBackground.put("阴", R.drawable.weather_overcast);
+        mBackground.put("晴", R.drawable.weather_sunny);
+        mBackground.put("阵雨", R.drawable.weather_shower);
+        mBackground.put("雾霾", R.drawable.weather_haze);
+        mBackground.put("大雨", R.drawable.weather_heavy_rain);
+        mBackground.put("大雪", R.drawable.weather_heavy_snow);
+        mBackground.put("雨冰", R.drawable.weather_ice_rain);
+        mBackground.put("小雪", R.drawable.weather_light_snow);
+        mBackground.put("中雨", R.drawable.weather_moderate_rain);
+        mBackground.put("雨夹雪", R.drawable.weather_sleet);
+        mBackground.put("阵雪", R.drawable.weather_snow_flurry);
+        mBackground.put("暴风雨", R.drawable.weather_storm);
+        mBackground.put("雷阵雨", R.drawable.weather_thundershower);
     }
+
     public OtherDairyAdapter(Context ctx, List<OtherDiary> list) {
         super(ctx, list);
     }
@@ -54,14 +54,14 @@ public class OtherDairyAdapter extends BaseRecyclerAdapter<OtherDiary> {
         holder.setText(R.id.name_tv, item.getContent()).setText(R.id.date_tv, item.getInput_date()).setImageResource(R.id.weather_iv, getID(item.getWeather())).withItemClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppUtil.startActivityWithUrl(item.getPicture(),v.getContext(),PictureActivity.class);
+                AppUtil.startActivityWithUrl(item.getPicture(), v.getContext(), PictureActivity.class);
             }
         });
     }
 
     private int getID(String weather) {
-        Integer i=mBackground.get(weather);
-        if (i!=null) {
+        Integer i = mBackground.get(weather);
+        if (i != null) {
             return i;
         }
         return R.drawable.weather_unknown;

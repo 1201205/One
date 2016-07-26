@@ -21,11 +21,11 @@ public class CircleImageView extends ImageView {
 
     @Override
     public void setImageDrawable(Drawable aDrawable) {
-        if (aDrawable==null) {
+        if (aDrawable == null) {
             return;
         }
-        Bitmap bitmap=getCircleCroppedBitmap(((BitmapDrawable) aDrawable).getBitmap());
-        super.setImageDrawable(new BitmapDrawable(getResources(),bitmap));
+        Bitmap bitmap = getCircleCroppedBitmap(((BitmapDrawable) aDrawable).getBitmap());
+        super.setImageDrawable(new BitmapDrawable(getResources(), bitmap));
     }
 
     private static Bitmap getCircleCroppedBitmap(Bitmap bitmap) {

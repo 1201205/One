@@ -1,7 +1,6 @@
 package com.hyc.zhihu.ui.fragment;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,8 +20,8 @@ import com.hyc.zhihu.base.BaseRecyclerAdapter;
 import com.hyc.zhihu.ui.adpter.AdapterFactory;
 import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.S;
-
 import com.hyc.zhihu.widget.DividerItemDecoration;
+
 import java.util.List;
 
 /**
@@ -42,19 +41,21 @@ public class ListFragment extends Fragment implements OnLoadMoreListener {
     public void setListener(LoadMoreListener mListener) {
         this.mListener = mListener;
     }
-    public static ListFragment getInstance(int type){
-        ListFragment fragment=new ListFragment();
-        Bundle bundle=new Bundle();
-        bundle.putInt(S.TYPE,type);
+
+    public static ListFragment getInstance(int type) {
+        ListFragment fragment = new ListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(S.TYPE, type);
         fragment.setArguments(bundle);
         return fragment;
     }
+
     private LoadMoreListener mListener;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Bundle bundle=getArguments();
+        Bundle bundle = getArguments();
         if (bundle != null) {
             mType = bundle.getInt(S.TYPE);
         }
@@ -85,7 +86,7 @@ public class ListFragment extends Fragment implements OnLoadMoreListener {
         });
         if (mNoItems) {
             mNoItemIV.setVisibility(View.VISIBLE);
-        } else if (mList!=null) {
+        } else if (mList != null) {
             mAdapter = AdapterFactory.getAdapter(getContext(), mList, mType);
             mRecyclerView.setAdapter(mAdapter);
         }
@@ -94,8 +95,8 @@ public class ListFragment extends Fragment implements OnLoadMoreListener {
         //        super.onDraw(c, parent, state);
         //    }
         //});
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),RecyclerView.VERTICAL,
-            Color.GRAY));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), RecyclerView.VERTICAL,
+                Color.GRAY));
         return view;
     }
 
@@ -104,11 +105,13 @@ public class ListFragment extends Fragment implements OnLoadMoreListener {
         super.onViewCreated(view, savedInstanceState);
 
     }
+
     private List mList;
+
     public void showList(List list) {
         if (mAdapter == null) {
-            if (mSwipeToLoadLayout==null) {
-                mList=list;
+            if (mSwipeToLoadLayout == null) {
+                mList = list;
                 return;
             }
             mAdapter = AdapterFactory.getAdapter(getContext(), list, mType);
@@ -126,8 +129,8 @@ public class ListFragment extends Fragment implements OnLoadMoreListener {
 
     public void noMore() {
         mCanLoad = false;
-        if (mSwipeToLoadLayout==null) {
-            mNoItems=true;
+        if (mSwipeToLoadLayout == null) {
+            mNoItems = true;
             return;
         }
         if (mAdapter == null) {
@@ -148,28 +151,32 @@ public class ListFragment extends Fragment implements OnLoadMoreListener {
     }
 
 
-    @Override public void onDetach() {
+    @Override
+    public void onDetach() {
         super.onDetach();
-        Log.e("test1","onDetach");
+        Log.e("test1", "onDetach");
     }
 
 
-    @Override public void onAttach(Context context) {
+    @Override
+    public void onAttach(Context context) {
         super.onAttach(context);
-        Log.e("test1","onAttach");
+        Log.e("test1", "onAttach");
 
     }
 
 
-    @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e("test1","onCreate");
+        Log.e("test1", "onCreate");
     }
 
 
-    @Override public void onDestroy() {
+    @Override
+    public void onDestroy() {
         super.onDestroy();
-        Log.e("test1","onDestroy");
+        Log.e("test1", "onDestroy");
     }
 
 

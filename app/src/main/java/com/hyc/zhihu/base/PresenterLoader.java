@@ -23,7 +23,7 @@ public class PresenterLoader<T extends BasePresenter> extends Loader<T> {
     @Override
     protected void onStartLoading() {
         super.onStartLoading();
-        Log.d("loader-hyc","onStartLoading");
+        Log.d("loader-hyc", "onStartLoading");
         if (mPresenter != null) {
             deliverResult(mPresenter);
         } else {
@@ -36,13 +36,13 @@ public class PresenterLoader<T extends BasePresenter> extends Loader<T> {
         super.onForceLoad();
         mPresenter = mFactory.create();
         deliverResult(mPresenter);
-        Log.d("loader-hyc","onForceLoad");
+        Log.d("loader-hyc", "onForceLoad");
     }
 
     @Override
     protected void onReset() {
         super.onReset();
-        mPresenter=null;
-        Log.d("loader-hyc","onReset");
+        mPresenter = null;
+        Log.d("loader-hyc", "onReset");
     }
 }

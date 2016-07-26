@@ -2,13 +2,11 @@ package com.hyc.zhihu.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
@@ -18,7 +16,6 @@ import android.widget.TextView;
 
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
-import com.facebook.common.memory.MemoryTrimmable;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyc.zhihu.R;
 import com.hyc.zhihu.base.BaseActivity;
@@ -33,7 +30,6 @@ import com.hyc.zhihu.helper.FrescoHelper;
 import com.hyc.zhihu.presenter.MovieContentPresenter;
 import com.hyc.zhihu.ui.adpter.CommentAdapter;
 import com.hyc.zhihu.ui.adpter.MovieStoryPictureAdapter;
-import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.DateUtil;
 import com.hyc.zhihu.utils.S;
@@ -41,16 +37,15 @@ import com.hyc.zhihu.view.MovieContentView;
 import com.hyc.zhihu.widget.ListViewForScrollView;
 import com.hyc.zhihu.widget.RectGridView;
 
-import java.util.Date;
 import java.util.List;
 
 /**
  * Created by ray on 16/5/30.
  */
 public class MovieContentActivity extends BaseActivity<MovieContentPresenter> implements
-    MovieContentView,
-    LoaderManager.LoaderCallbacks<MovieContentPresenter>,
-    OnLoadMoreListener {
+        MovieContentView,
+        LoaderManager.LoaderCallbacks<MovieContentPresenter>,
+        OnLoadMoreListener {
     private String mID;
     private SwipeToLoadLayout swipeToLoadLayout;
     private View mHeader;
@@ -91,7 +86,7 @@ public class MovieContentActivity extends BaseActivity<MovieContentPresenter> im
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     if (mHasMoreComments && view.getLastVisiblePosition() == view.getCount() - 1 &&
-                        !ViewCompat.canScrollVertically(view, 1)) {
+                            !ViewCompat.canScrollVertically(view, 1)) {
                         swipeToLoadLayout.setLoadingMore(true);
                     }
                 }
@@ -195,6 +190,7 @@ public class MovieContentActivity extends BaseActivity<MovieContentPresenter> im
     protected void initLoader() {
         getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
     }
+
     @Override
     public void onLoaderReset(Loader<MovieContentPresenter> loader) {
         mPresenter = null;
@@ -233,6 +229,7 @@ public class MovieContentActivity extends BaseActivity<MovieContentPresenter> im
 
     @Override
     public void showNoComments() {
+        AppUtil.showToast(R.string.no_more);
         mHasMoreComments = false;
         swipeToLoadLayout.setLoadMoreEnabled(false);
         swipeToLoadLayout.setLoadingMore(false);
@@ -248,10 +245,11 @@ public class MovieContentActivity extends BaseActivity<MovieContentPresenter> im
         mNumTV.setText(String.valueOf(story.getPraisenum()));
         mTitleTV.setText(story.getTitle());
         mContentTV.setText(story.getContent());
-        mCountTV.setText(String.format(AppUtil.getString(R.string.movie_count),wrapper.getCount()));
+        mCountTV.setText(String.format(AppUtil.getString(R.string.movie_count), wrapper.getCount()));
         mNameTV.setOnClickListener(getOnclickListener());
         mHeadIV.setOnClickListener(getOnclickListener());
     }
+
     private View.OnClickListener mListener;
 
     private View.OnClickListener getOnclickListener() {

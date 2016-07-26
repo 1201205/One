@@ -37,14 +37,13 @@ import com.hyc.zhihu.player.MyPlayer;
 import com.hyc.zhihu.presenter.MusicItemPresenter;
 import com.hyc.zhihu.ui.adpter.CommentAdapter;
 import com.hyc.zhihu.ui.adpter.MusicRelateAdapter;
-import com.hyc.zhihu.ui.fragment.LoadingDialogFragment;
 import com.hyc.zhihu.utils.AppUtil;
 import com.hyc.zhihu.utils.DateUtil;
 import com.hyc.zhihu.utils.S;
 import com.hyc.zhihu.view.MusicItemView;
 import com.hyc.zhihu.widget.ListViewForScrollView;
-
 import com.squareup.picasso.Picasso;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -54,8 +53,8 @@ import java.util.List;
  * Created by ray on 16/5/26.
  */
 public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implements MusicItemView,
-    LoaderManager.LoaderCallbacks<MusicItemPresenter>,
-    OnLoadMoreListener {
+        LoaderManager.LoaderCallbacks<MusicItemPresenter>,
+        OnLoadMoreListener {
     private String mID;
 
 
@@ -92,7 +91,6 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
     ImageView storyIV;
     ImageView lyricIV;
     ImageView infoIV;
-    private TextView mFooter;
     private ImageView playIV;
 
 
@@ -119,9 +117,9 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if (mHasMoreComments &&
-                    scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                        scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     if (view.getLastVisiblePosition() == view.getCount() - 1 &&
-                        !ViewCompat.canScrollVertically(view, 1)) {
+                            !ViewCompat.canScrollVertically(view, 1)) {
                         swipeToLoadLayout.setLoadingMore(true);
                     }
                 }
@@ -191,7 +189,6 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
                 }
             }
         });
-        mFooter = (TextView) LayoutInflater.from(this).inflate(R.layout.footer_text, null);
 
     }
 
@@ -230,8 +227,8 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
     @Override
     public void refreshComment(List<Comment> comments) {
         if (comments == null || comments.size() == 0) {
+            AppUtil.showToast(R.string.no_more);
             mHasMoreComments = false;
-            listView.addFooterView(mFooter);
             swipeToLoadLayout.setLoadingMore(false);
             swipeToLoadLayout.setLoadMoreEnabled(false);
         } else {
@@ -271,7 +268,7 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
         } else {
             playIV.setImageResource(R.drawable.music_play_selector);
         }
-        View.OnClickListener listener=AppUtil.getOtherClickListener(music.getAuthor().getUser_id(),this);
+        View.OnClickListener listener = AppUtil.getOtherClickListener(music.getAuthor().getUser_id(), this);
         headIV.setOnClickListener(listener);
         mAuthorTV.setOnClickListener(listener);
         Picasso.with(mHeader.getContext()).load(music.getCover()).placeholder(R.drawable.default_music_cover).into(musicIV);
@@ -294,7 +291,7 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
             @Override
             public void onClick(View v) {
                 ManagedMediaPlayer.Status s = MyPlayer.getPlayer()
-                    .getSourceStatus(music.getMusic_id());
+                        .getSourceStatus(music.getMusic_id());
                 if (s == ManagedMediaPlayer.Status.IDLE || s == ManagedMediaPlayer.Status.STOPPED) {
                     PlayEvent e = new PlayEvent();
                     e.setSong(new Song(music.getTitle(), music.getMusic_id()));
@@ -337,13 +334,15 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
     public void onLoadMore() {
         mPresenter.refreshComments();
     }
+
     @Override
     protected void initLoader() {
         getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
     }
 
 
-    @Override protected String getTitleString() {
+    @Override
+    protected String getTitleString() {
         return AppUtil.getString(R.string.solo);
     }
 }

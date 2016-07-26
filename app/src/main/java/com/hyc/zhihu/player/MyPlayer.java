@@ -50,28 +50,32 @@ public class MyPlayer implements MediaPlayer.OnCompletionListener {
 
         mPlayMode = PlayMode.LOOP;
     }
-    public boolean isPlaying(){
-        return mMediaPlayer.getState()== ManagedMediaPlayer.Status.STARTED;
-    }
-    public boolean isPaused(){
-        return mMediaPlayer.getState()==ManagedMediaPlayer.Status.PAUSED;
-    }
-    public boolean isStoped(){
-        return mMediaPlayer.getState()==ManagedMediaPlayer.Status.STOPPED;
+
+    public boolean isPlaying() {
+        return mMediaPlayer.getState() == ManagedMediaPlayer.Status.STARTED;
     }
 
-    public ManagedMediaPlayer.Status getSourceStatus(String path){
-        if (mQueue != null && mQueue.size() > 0&&mQueueIndex>=0) {
+    public boolean isPaused() {
+        return mMediaPlayer.getState() == ManagedMediaPlayer.Status.PAUSED;
+    }
+
+    public boolean isStoped() {
+        return mMediaPlayer.getState() == ManagedMediaPlayer.Status.STOPPED;
+    }
+
+    public ManagedMediaPlayer.Status getSourceStatus(String path) {
+        if (mQueue != null && mQueue.size() > 0 && mQueueIndex >= 0) {
             if (path.equals(mQueue.get(mQueueIndex).getPath())) {
                 return mMediaPlayer.getState();
             }
         }
         return ManagedMediaPlayer.Status.IDLE;
     }
+
     public void setQueue(List<Song> queue, int index) {
         mQueue = queue;
         mQueueIndex = index;
-        if (index!=-1) {
+        if (index != -1) {
             play(getNowPlaying());
         }
     }
@@ -93,11 +97,11 @@ public class MyPlayer implements MediaPlayer.OnCompletionListener {
                     mQueueIndex = count;
                 }
             } else {
-                if (mQueue==null) {
-                    mQueue=new ArrayList<>();
+                if (mQueue == null) {
+                    mQueue = new ArrayList<>();
                 }
                 mQueue.add(song);
-                mQueueIndex=0;
+                mQueueIndex = 0;
             }
             mMediaPlayer.reset();
             mMediaPlayer.setDataSource(MainApplication.getApplication(), Uri.parse(song.getPath()));
@@ -112,9 +116,10 @@ public class MyPlayer implements MediaPlayer.OnCompletionListener {
             e.printStackTrace();
         }
     }
+
     public void play(String song) {
         try {
-            Log.e("test1--",song+"---播放歌曲");
+            Log.e("test1--", song + "---播放歌曲");
             mMediaPlayer.reset();
             mMediaPlayer.setDataSource(MainApplication.getApplication(), Uri.parse(song));
             mMediaPlayer.prepareAsync();
@@ -128,6 +133,7 @@ public class MyPlayer implements MediaPlayer.OnCompletionListener {
             e.printStackTrace();
         }
     }
+
     public void pause() {
         mMediaPlayer.pause();
     }
@@ -137,8 +143,8 @@ public class MyPlayer implements MediaPlayer.OnCompletionListener {
     }
 
     public void next() {
-        Song song=getNextSong();
-        if (song!=null) {
+        Song song = getNextSong();
+        if (song != null) {
             play(song);
         }
     }
@@ -171,8 +177,8 @@ public class MyPlayer implements MediaPlayer.OnCompletionListener {
             case REPEAT:
                 return mQueue.get(mQueueIndex);
             case ORDER:
-                int index=getNextIndexInOrder();
-                if (index==-1) {
+                int index = getNextIndexInOrder();
+                if (index == -1) {
                     return null;
                 }
                 return mQueue.get(index);
@@ -222,13 +228,15 @@ public class MyPlayer implements MediaPlayer.OnCompletionListener {
         mQueueIndex = (mQueueIndex + 1) % mQueue.size();
         return mQueueIndex;
     }
+
     private int getNextIndexInOrder() {
         if (mQueueIndex + 1 >= mQueue.size()) {
             return -1;
         } else {
-            return mQueueIndex+1;
+            return mQueueIndex + 1;
         }
     }
+
     private int getPreviousIndex() {
         mQueueIndex = (mQueueIndex - 1) % mQueue.size();
         return mQueueIndex;

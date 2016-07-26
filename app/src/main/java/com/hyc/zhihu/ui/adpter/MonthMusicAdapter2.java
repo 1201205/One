@@ -30,7 +30,7 @@ public class MonthMusicAdapter2 extends BaseRecyclerAdapter<MusicMonthItem> {
         holder.setText(R.id.title_tv, item.getTitle()).setText(R.id.name_tv, item.getAuthor().getUser_name()).loadImageByFresco(R.id.cover_iv, item.getCover()).withItemClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppUtil.startActivityWithID(item.getId(),v.getContext(),MusicItemActivity.class);
+                AppUtil.startActivityWithID(item.getId(), v.getContext(), MusicItemActivity.class);
             }
         });
     }

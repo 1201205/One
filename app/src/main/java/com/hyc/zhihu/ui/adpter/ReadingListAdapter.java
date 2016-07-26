@@ -19,6 +19,7 @@ import java.util.List;
 public class ReadingListAdapter extends BaseAdapter {
     private List<ReadingListItem> mReadingListItems;
     private Context mContext;
+
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
     }
@@ -55,17 +56,17 @@ public class ReadingListAdapter extends BaseAdapter {
             holder.author = (TextView) convertView.findViewById(R.id.author_tv);
             holder.content = (TextView) convertView.findViewById(R.id.content_tv);
             holder.title = (TextView) convertView.findViewById(R.id.title_tv);
-            holder.item= (RelativeLayout) convertView.findViewById(R.id.item_rl);
+            holder.item = (RelativeLayout) convertView.findViewById(R.id.item_rl);
             convertView.setTag(holder);
         } else {
-            holder= (ViewHolder) convertView.getTag();
+            holder = (ViewHolder) convertView.getTag();
         }
-        final ReadingListItem item=mReadingListItems.get(position);
-        holder.index.setText((position+1)+"");
+        final ReadingListItem item = mReadingListItems.get(position);
+        holder.index.setText((position + 1) + "");
         holder.title.setText(item.getTitle());
         holder.content.setText(item.getIntroduction());
         holder.author.setText(item.getAuthor());
-        if (mOnItemClickListener!=null) {
+        if (mOnItemClickListener != null) {
             holder.item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -83,7 +84,8 @@ public class ReadingListAdapter extends BaseAdapter {
         private TextView author;
         private TextView content;
     }
-    public interface OnItemClickListener{
-        void onItemClicked( ReadingListItem item);
+
+    public interface OnItemClickListener {
+        void onItemClicked(ReadingListItem item);
     }
 }
