@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,8 @@ public class LoadingDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.e("test1","dialog--onViewCreated");
+        Log.e("test1",Log.getStackTraceString(new Throwable()));
         mLoadingView.startAnim();
     }
 
@@ -41,6 +44,22 @@ public class LoadingDialogFragment extends DialogFragment {
         View v = LayoutInflater.from(getContext()).inflate(R.layout.loading, null);
         mLoadingView = (MyLoadingView) v.findViewById(R.id.loading_lv);
         return v;
+    }
+
+    @Override
+    public void dismissAllowingStateLoss() {
+        if (mLoadingView != null) {
+            mLoadingView.stopAnim();
+            Log.e("test1","结束动画");
+        }
+        Log.e("test1","调用消失");
+        if (getFragmentManager()==null||getFragmentManager().beginTransaction() == null) {
+//            dismiss();
+        } else {
+            super.dismissAllowingStateLoss();
+        }
+        sFragment = null;
+
     }
 
     @NonNull

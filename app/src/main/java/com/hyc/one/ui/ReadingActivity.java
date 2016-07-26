@@ -209,6 +209,7 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
     }
 
 
+
     @Override
     public void showList(List<RealReading> realReadings, LinkedHashMap<Integer, String> indexer, boolean needToClear) {
         if (needToClear) {
@@ -263,6 +264,8 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
+        mPagerAdapter.stop();
+        mPagerAdapter.setItemClickListener(null);
         super.onDestroy();
     }
 

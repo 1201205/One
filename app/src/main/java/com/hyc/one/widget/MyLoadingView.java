@@ -141,6 +141,12 @@ public class MyLoadingView extends View {
 
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        stopAnim();
+        super.onDetachedFromWindow();
+    }
+
     public void setFrag(float f) {
         mFrag = f;
         invalidate();

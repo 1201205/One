@@ -32,7 +32,7 @@ public class MainApplication extends Application {
         super.onCreate();
         sContext = this;
         initRealm();
-        FrescoHelper.initialize(this);
+//        FrescoHelper.initialize(this);
         startService(new Intent(this, PlayerService.class));
         getNetWorkState();
         //LeakCanary.install(this);

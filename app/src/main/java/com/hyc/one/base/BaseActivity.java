@@ -84,7 +84,12 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     @Override
     public void dismissLoading() {
-        LoadingDialogFragment.getInstance().dismissAllowingStateLoss();
+        DelayHandle.delay(0, new Runnable() {
+            @Override
+            public void run() {
+                LoadingDialogFragment.getInstance().dismissAllowingStateLoss();
+            }
+        });
     }
 
 //    public void changeColor() {
