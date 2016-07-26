@@ -6,7 +6,7 @@ apply plugin: 'android-apt'
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "com.hyc.zhihu"
+        applicationId "com.hyc.one"
         minSdkVersion 19
         targetSdkVersion 23
         versionCode 1

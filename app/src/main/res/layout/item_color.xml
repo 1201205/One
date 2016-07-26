@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.hyc.zhihu.widget.PureColorCircleView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.hyc.one.widget.PureColorCircleView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/color_ci"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:radius="30dp"

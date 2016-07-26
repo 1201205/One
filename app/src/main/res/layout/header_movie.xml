@@ -243,7 +243,7 @@
                 android:src="@drawable/plot_selector"/>
         </LinearLayout>
 
-        <com.hyc.zhihu.widget.RectGridView
+        <com.hyc.one.widget.RectGridView
             android:id="@+id/tag_gv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -285,7 +285,7 @@
                 android:textColor="@color/gray_tv"
                 android:textSize="13sp"/>
 
-            <com.hyc.zhihu.widget.ListViewForScrollView
+            <com.hyc.one.widget.ListViewForScrollView
                 android:id="@+id/hot_lv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>

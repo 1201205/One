@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
-    <com.hyc.zhihu.widget.MyLoadingView
+    <com.hyc.one.widget.MyLoadingView
         android:layout_centerInParent="true"
         android:id="@+id/loading_lv"
         android:layout_marginTop="100dp"

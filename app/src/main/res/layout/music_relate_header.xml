@@ -39,7 +39,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <com.hyc.zhihu.widget.CircleImageView
+                    <com.hyc.one.widget.CircleImageView
                         app:roundAsCircle="true"
                         android:id="@+id/head_iv"
                         android:layout_width="40dp"

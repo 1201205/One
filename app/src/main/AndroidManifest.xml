@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.hyc.zhihu">
+          package="com.hyc.one">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -11,40 +11,40 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
     <application
         android:largeHeap="true"
-        android:name=".MainApplication"
+        android:name="com.hyc.one.MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Main">
-        <activity android:name=".ui.MainActivity">
+        <activity android:name="com.hyc.one.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity  android:name=".ui.PictureActivity"></activity>
-        <activity android:name=".ui.MonthPictureActivity"></activity>
-        <activity android:theme="@style/AppTheme.Details" android:name=".ui.PictureDetailActivity"></activity>
-        <activity android:name=".ui.ReadingListActivity"></activity>
-        <activity  android:name=".ui.QuestionActivity"></activity>
-        <activity  android:name=".ui.SerialActivity"></activity>
-        <activity  android:name=".ui.EssayActivity"></activity>
-        <activity  android:name=".ui.SerialListActivity"></activity>
-        <activity android:name=".ui.ReadingActivity"></activity>
-        <activity android:name=".ui.MusicRelateActivity"></activity>
-        <activity android:name=".ui.MusicMonthListActivity"></activity>
-        <activity android:name=".ui.MusicItemActivity"></activity>
-        <activity android:name=".ui.MusicActivity"></activity>
-        <activity android:name=".ui.MovieContentActivity"></activity>
-        <activity android:name=".ui.MovieStoryActivity"></activity>
-        <activity android:name=".ui.OtherDetailActivity"></activity>
-        <activity android:name=".ui.OtherPictureActivity"></activity>
-        <activity android:name=".ui.RecyclerListActivity"></activity>
-        <activity android:name=".ui.OtherReadingActivity"></activity>
-        <service android:name=".player.PlayerService"></service>
-        <receiver android:name=".base.NetWorkReceiver">
+        <activity  android:name="com.hyc.one.ui.PictureActivity"></activity>
+        <activity android:name="com.hyc.one.ui.MonthPictureActivity"></activity>
+        <activity android:theme="@style/AppTheme.Details" android:name="com.hyc.one.ui.PictureDetailActivity"></activity>
+        <activity android:name="com.hyc.one.ui.ReadingListActivity"></activity>
+        <activity  android:name="com.hyc.one.ui.QuestionActivity"></activity>
+        <activity  android:name="com.hyc.one.ui.SerialActivity"></activity>
+        <activity  android:name="com.hyc.one.ui.EssayActivity"></activity>
+        <activity  android:name="com.hyc.one.ui.SerialListActivity"></activity>
+        <activity android:name="com.hyc.one.ui.ReadingActivity"></activity>
+        <activity android:name="com.hyc.one.ui.MusicRelateActivity"></activity>
+        <activity android:name="com.hyc.one.ui.MusicMonthListActivity"></activity>
+        <activity android:name="com.hyc.one.ui.MusicItemActivity"></activity>
+        <activity android:name="com.hyc.one.ui.MusicActivity"></activity>
+        <activity android:name="com.hyc.one.ui.MovieContentActivity"></activity>
+        <activity android:name="com.hyc.one.ui.MovieStoryActivity"></activity>
+        <activity android:name="com.hyc.one.ui.OtherDetailActivity"></activity>
+        <activity android:name="com.hyc.one.ui.OtherPictureActivity"></activity>
+        <activity android:name="com.hyc.one.ui.RecyclerListActivity"></activity>
+        <activity android:name="com.hyc.one.ui.OtherReadingActivity"></activity>
+        <service android:name="com.hyc.one.player.PlayerService"></service>
+        <receiver android:name="com.hyc.one.base.NetWorkReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>

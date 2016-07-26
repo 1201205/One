@@ -15,7 +15,7 @@
             android:layout_height="40dp"
             android:layout_margin="10dp">
 
-            <com.hyc.zhihu.widget.CircleImageView
+            <com.hyc.one.widget.CircleImageView
                 android:id="@+id/head_iv"
                 android:layout_width="40dp"
                 android:layout_height="40dp" />
@@ -92,7 +92,7 @@
             android:layout_marginBottom="20dp"
             android:layout_marginTop="30dp">
 
-            <com.hyc.zhihu.widget.CircleImageView
+            <com.hyc.one.widget.CircleImageView
                 android:layout_centerVertical="true"
                 android:id="@+id/author_head_iv"
                 android:layout_width="40dp"
@@ -140,7 +140,7 @@
                 android:textColor="@color/gray_tv"
                 android:textSize="13sp" />
 
-            <com.hyc.zhihu.widget.ListViewForScrollView
+            <com.hyc.one.widget.ListViewForScrollView
                 android:id="@+id/relate_lv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -167,7 +167,7 @@
                 android:textColor="@color/gray_tv"
                 android:textSize="13sp" />
 
-            <com.hyc.zhihu.widget.ListViewForScrollView
+            <com.hyc.one.widget.ListViewForScrollView
                 android:id="@+id/hot_lv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
