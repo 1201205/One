@@ -934,7 +934,7 @@ public class SwipeToLoadLayout extends ViewGroup {
      * @param loadingMore
      */
     public void setLoadingMore(boolean loadingMore) {
-        if (!isLoadMoreEnabled() || mFooterView == null) {
+        if (loadingMore && !isLoadMoreEnabled() || mFooterView == null) {
             return;
         }
         this.mAutoLoading = loadingMore;

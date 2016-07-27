@@ -1,6 +1,8 @@
 package com.hyc.one.presenter;
 
 import com.hyc.one.base.BasePresenter;
+import com.hyc.one.base.DefaultTransformer;
+import com.hyc.one.base.ExceptionAction;
 import com.hyc.one.beans.BaseBean;
 import com.hyc.one.beans.music.MusicMonthItem;
 import com.hyc.one.net.Requests;
@@ -9,9 +11,7 @@ import com.hyc.one.view.MusicMonthView;
 
 import java.util.List;
 
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by ray on 16/5/25.
@@ -25,10 +25,15 @@ public class MusicMonthPresenter extends BasePresenter<MusicMonthView> implement
     public void showList(String date) {
         mView.showLoading();
         mCompositeSubscription.add(
-                Requests.getApi().getMusicByMonth(date).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<BaseBean<List<MusicMonthItem>>>() {
+                Requests.getApi().getMusicByMonth(date).compose(new DefaultTransformer<BaseBean<List<MusicMonthItem>>, List<MusicMonthItem>>()).subscribe(new Action1<List<MusicMonthItem>>() {
                     @Override
-                    public void call(BaseBean<List<MusicMonthItem>> musicMonthWrapper) {
-                        mView.showList(musicMonthWrapper.getData());
+                    public void call(List<MusicMonthItem> musicMonthWrapper) {
+                        mView.showList(musicMonthWrapper);
+                        mView.dismissLoading();
+                    }
+                }, new ExceptionAction() {
+                    @Override
+                    public void onNothingGet() {
                         mView.dismissLoading();
                     }
                 }));

@@ -49,12 +49,7 @@ public class LoadingDialogFragment extends DialogFragment {
         if (mLoadingView != null) {
             mLoadingView.stopAnim();
         }
-        if (getFragmentManager()==null||getFragmentManager().beginTransaction() == null) {
-//            dismiss();
-            Log.e("test1", "跳过dismiss?????");
-            Log.e("test1", Log.getStackTraceString(new Throwable()));
-
-        } else {
+        if (isAdded()) {
             super.dismissAllowingStateLoss();
         }
         sFragment = null;

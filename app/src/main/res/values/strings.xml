@@ -39,4 +39,5 @@
     <string name="current_month">本月</string>
     <string name="other_detail">ta的主页</string>
     <string name="solo">单曲</string>
+    <string name="time_out">网络超时。。。</string>
 </resources>

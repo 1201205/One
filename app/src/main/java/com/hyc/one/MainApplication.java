@@ -7,7 +7,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.hyc.one.event.NetWorkChangeEvent;
-import com.hyc.one.helper.FrescoHelper;
 import com.hyc.one.player.PlayerService;
 import com.hyc.one.utils.S;
 import com.hyc.one.utils.SPUtil;

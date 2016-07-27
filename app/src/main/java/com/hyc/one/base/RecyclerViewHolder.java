@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
-import com.hyc.one.helper.FrescoHelper;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -41,12 +39,6 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
     public RecyclerViewHolder setText(int viewId, String value) {
         TextView view = findViewById(viewId);
         view.setText(value);
-        return this;
-    }
-
-    public RecyclerViewHolder loadImageByFresco(int viewId, String url) {
-        SimpleDraweeView view = findViewById(viewId);
-        FrescoHelper.loadImage(view, url);
         return this;
     }
 

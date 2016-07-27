@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.hyc.one.R;
 import com.hyc.one.base.BaseActivity;
 import com.hyc.one.base.BasePresenter;
@@ -31,7 +30,7 @@ import com.hyc.one.beans.music.Music;
 import com.hyc.one.beans.music.MusicRelate;
 import com.hyc.one.event.PlayCallBackEvent;
 import com.hyc.one.event.PlayEvent;
-import com.hyc.one.helper.FrescoHelper;
+import com.hyc.one.helper.PicassoHelper;
 import com.hyc.one.player.ManagedMediaPlayer;
 import com.hyc.one.player.MyPlayer;
 import com.hyc.one.presenter.MusicItemPresenter;
@@ -41,6 +40,7 @@ import com.hyc.one.utils.AppUtil;
 import com.hyc.one.utils.DateUtil;
 import com.hyc.one.utils.S;
 import com.hyc.one.view.MusicItemView;
+import com.hyc.one.widget.CircleImageView;
 import com.hyc.one.widget.ListViewForScrollView;
 import com.squareup.picasso.Picasso;
 
@@ -69,7 +69,7 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
     private boolean mHasMoreComments = true;
     private View mHeader;
     ImageView musicIV;
-    SimpleDraweeView headIV;
+    CircleImageView headIV;
     TextView mAuthorTV;
     TextView desTV;
     TextView musicTitleTV;
@@ -135,7 +135,7 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
         musicIV = (ImageView) mHeader.findViewById(R.id.music_iv);
         playIV = (ImageView) mHeader.findViewById(R.id.play_iv);
 
-        headIV = (SimpleDraweeView) mHeader.findViewById(R.id.head_iv);
+        headIV = (CircleImageView) mHeader.findViewById(R.id.head_iv);
         mAuthorTV = (TextView) mHeader.findViewById(R.id.name_tv);
         desTV = (TextView) mHeader.findViewById(R.id.des_tv);
         musicTitleTV = (TextView) mHeader.findViewById(R.id.music_title_tv);
@@ -201,7 +201,7 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
 
     @Override
     public Loader<MusicItemPresenter> onCreateLoader(int id, Bundle args) {
-        return new PresenterLoader<MusicItemPresenter>(this, new PresenterFactory() {
+        return new PresenterLoader<>(this, new PresenterFactory() {
             @Override
             public BasePresenter create() {
                 return new MusicItemPresenter(MusicItemActivity.this);
@@ -273,7 +273,7 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
         mAuthorTV.setOnClickListener(listener);
         Picasso.with(mHeader.getContext()).load(music.getCover()).placeholder(R.drawable.default_music_cover).into(musicIV);
 
-        FrescoHelper.loadImage(headIV, music.getAuthor().getWeb_url());
+        PicassoHelper.load(this, music.getAuthor().getWeb_url(), headIV);
         mAuthorTV.setText(music.getAuthor().getUser_name());
         desTV.setText(music.getAuthor().getDesc());
         musicTitleTV.setText(music.getTitle());
@@ -284,9 +284,9 @@ public class MusicItemActivity extends BaseActivity<MusicItemPresenter> implemen
         lyricTV.setText(music.getLyric());
         infoTV.setText(music.getInfo());
         editorTV.setText(music.getCharge_edt());
-        likeNumTV.setText(music.getPraisenum() + "");
-        commentNumTV.setText(music.getCommentnum() + "");
-        shareNumTV.setText(music.getSharenum() + "");
+        likeNumTV.setText(String.valueOf(music.getPraisenum()));
+        commentNumTV.setText(String.valueOf(music.getCommentnum()));
+        shareNumTV.setText(String.valueOf(music.getSharenum()));
         playIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

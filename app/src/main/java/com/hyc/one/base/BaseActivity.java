@@ -73,7 +73,8 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     @Override
     public void showLoading() {
-        DelayHandle.delay(0, new Runnable() {
+        //必须放在UI线程
+        DelayHandle.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 LoadingDialogFragment.getInstance().show(getSupportFragmentManager(), BaseActivity.this.getClass().getSimpleName());
@@ -84,7 +85,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     @Override
     public void dismissLoading() {
-        DelayHandle.delay(0, new Runnable() {
+        DelayHandle.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 LoadingDialogFragment.getInstance().dismissAllowingStateLoss();

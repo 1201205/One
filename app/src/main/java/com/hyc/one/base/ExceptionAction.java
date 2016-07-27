@@ -5,6 +5,7 @@ import com.hyc.one.R;
 import com.hyc.one.utils.AppUtil;
 
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 import rx.exceptions.Exceptions;
@@ -35,6 +36,8 @@ public abstract class ExceptionAction implements Action1<Throwable> {
         } else if (throwable instanceof UnknownHostException) {
             AppUtil.showToast(R.string.net_error);
             onNoNetWork();
+        } else if (throwable instanceof SocketTimeoutException) {
+            AppUtil.showToast(R.string.time_out);
         } else {
             AppUtil.showToast(R.string.net_error);
         }

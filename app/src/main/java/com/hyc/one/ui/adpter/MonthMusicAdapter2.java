@@ -27,7 +27,7 @@ public class MonthMusicAdapter2 extends BaseRecyclerAdapter<MusicMonthItem> {
 
     @Override
     public void bindData(RecyclerViewHolder holder, int position, final MusicMonthItem item) {
-        holder.setText(R.id.title_tv, item.getTitle()).setText(R.id.name_tv, item.getAuthor().getUser_name()).loadImageByFresco(R.id.cover_iv, item.getCover()).withItemClickListener(new View.OnClickListener() {
+        holder.setText(R.id.title_tv, item.getTitle()).setText(R.id.name_tv, item.getAuthor().getUser_name()).loadImageByPicasso(R.id.cover_iv, item.getCover()).withItemClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppUtil.startActivityWithID(item.getId(), v.getContext(), MusicItemActivity.class);
