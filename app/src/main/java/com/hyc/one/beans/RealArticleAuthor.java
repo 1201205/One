@@ -1,9 +1,13 @@
 package com.hyc.one.beans;
 
-public class RealArticleAuthor implements java.io.Serializable {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class RealArticleAuthor extends RealmObject implements java.io.Serializable {
     private static final long serialVersionUID = 8455401811597261094L;
     private String wb_name;
     private String web_url;
+    @PrimaryKey
     private String user_id;
     private String user_name;
     private String desc;

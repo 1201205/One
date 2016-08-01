@@ -1,5 +1,8 @@
 package com.hyc.one.presenter;
 
+import android.util.Log;
+
+import com.hyc.one.R;
 import com.hyc.one.base.BasePresenter;
 import com.hyc.one.base.DefaultTransformer;
 import com.hyc.one.base.ExceptionAction;
@@ -10,12 +13,15 @@ import com.hyc.one.beans.Serial;
 import com.hyc.one.beans.SerialContent;
 import com.hyc.one.net.Requests;
 import com.hyc.one.presenter.base.IReadingContentPresenter;
+import com.hyc.one.utils.AppUtil;
+import com.hyc.one.utils.RealmUtil;
 import com.hyc.one.view.ReadingContentView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -33,27 +39,38 @@ public class SerialContentPresenter extends BasePresenter<ReadingContentView<Ser
     }
 
     @Override
-    public void getAndShowContent(String id) {
+    public void getAndShowContent(final String id) {
         mView.showLoading();
         mId = id;
         mCompositeSubscription.add(
-                Observable.just(Requests.getApi().getSerialContentByID(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<BaseBean<SerialContent>>() {
+                Observable.just(Requests.getApi().getSerialContentByID(id).compose(new DefaultTransformer<BaseBean<SerialContent>, SerialContent>()).subscribe(new Action1<SerialContent>() {
                     @Override
-                    public void call(BaseBean<SerialContent> serialWrapper) {
-                        mView.showContent(serialWrapper.getData());
+                    public void call(SerialContent serial) {
+                        RealmUtil.saveOrUpdate(serial);
+                        mView.showContent(serial);
                         mView.dismissLoading();
                     }
-                }), Requests.getApi().getSerialRelateByID(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<BaseBean<List<Serial>>>() {
+                }, new ExceptionAction() {
                     @Override
-                    public void call(BaseBean<List<Serial>> serials) {
-                        mView.showRelate(serials.getData());
+                    protected void dismissLoading() {
+                        mView.dismissLoading();
                     }
-                }), Requests.getApi().getSerialCommentsByIndex(id, "0").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map(new Func1<BaseBean<CommentWrapper>, List<Comment>[]>() {
+
                     @Override
-                    public List<Comment>[] call(BaseBean<CommentWrapper> comments) {
+                    protected void onNoNetWork() {
+                        getCachedData(id);
+                    }
+                }), Requests.getApi().getSerialRelateByID(id).compose(new DefaultTransformer<BaseBean<List<Serial>>, List<Serial>>()).subscribe(new Action1<List<Serial>>() {
+                    @Override
+                    public void call(List<Serial> serials) {
+                        mView.showRelate(serials);
+                    }
+                }, new ExceptionAction()), Requests.getApi().getSerialCommentsByIndex(id, "0").compose(new DefaultTransformer<BaseBean<CommentWrapper>, CommentWrapper>()).map(new Func1<CommentWrapper, List<Comment>[]>() {
+                    @Override
+                    public List<Comment>[] call(CommentWrapper comments) {
                         List<Comment> hot = new ArrayList<Comment>();
                         List<Comment> normal = new ArrayList<Comment>();
-                        List<Comment> all = comments.getData().getData();
+                        List<Comment> all = comments.getData();
                         int count = all.size();
                         for (int i = 0; i < count; i++) {
                             Comment c = all.get(i);
@@ -77,7 +94,30 @@ public class SerialContentPresenter extends BasePresenter<ReadingContentView<Ser
                         mView.showHotComments(comments[0]);
                         mView.refreshCommentList(comments[1]);
                     }
-                })).subscribeOn(Schedulers.io()).subscribe());
+                }, new ExceptionAction())).subscribeOn(Schedulers.io()).subscribe());
+    }
+
+    private void getCachedData(String id) {
+        Observable.just(RealmUtil.findByKeyOne(SerialContent.class, "id", id)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<SerialContent>() {
+            @Override
+            public void call(SerialContent serialContent) {
+                mView.dismissLoading();
+                if (serialContent != null) {
+                    mView.showContent(serialContent);
+                } else {
+                    AppUtil.showToast(R.string.no_cache);
+                }
+            }
+        }, new ExceptionAction() {
+            @Override
+            public void onNothingGet() {
+            }
+
+            @Override
+            protected void dismissLoading() {
+                mView.dismissLoading();
+            }
+        });
     }
 
     @Override

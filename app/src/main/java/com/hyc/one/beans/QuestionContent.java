@@ -1,14 +1,18 @@
 package com.hyc.one.beans;
 
-public class QuestionContent implements java.io.Serializable {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class QuestionContent extends RealmObject implements java.io.Serializable {
     private static final long serialVersionUID = -7593818362713836099L;
     private String charge_edt;
     private String recommend_flag;
-    private Object push_id;
+    private String push_id;
     private int praisenum;
     private String question_makettime;
     private String question_title;
     private int sharenum;
+    @PrimaryKey
     private String question_id;
     private String read_num;
     private String answer_content;
@@ -38,7 +42,7 @@ public class QuestionContent implements java.io.Serializable {
         return this.push_id;
     }
 
-    public void setPush_id(Object push_id) {
+    public void setPush_id(String push_id) {
         this.push_id = push_id;
     }
 

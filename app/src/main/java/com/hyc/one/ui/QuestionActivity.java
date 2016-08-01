@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,12 +26,16 @@ import com.hyc.one.base.PresenterLoader;
 import com.hyc.one.beans.Comment;
 import com.hyc.one.beans.Question;
 import com.hyc.one.beans.QuestionContent;
+import com.hyc.one.event.NetWorkChangeEvent;
 import com.hyc.one.presenter.QuestionContentPresenter;
 import com.hyc.one.ui.adpter.CommentAdapter;
 import com.hyc.one.ui.adpter.QuestionAdapter;
 import com.hyc.one.utils.AppUtil;
 import com.hyc.one.view.ReadingContentView;
 import com.hyc.one.widget.ListViewForScrollView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
@@ -52,9 +57,10 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
     private ListView listView;
     private ListViewForScrollView mRelateLV;
     private ListViewForScrollView mHotCommentsLV;
-    private LinearLayout mRelateLL;
     private CommentAdapter mCommentAdapter;
+    private LinearLayout mRelateLL;
     private LinearLayout mHotLL;
+    private LinearLayout mCommentLL;
     private String mID;
     public static final String ID = "id";
     private boolean mHasMoreComments = true;
@@ -68,6 +74,7 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
 
     @Override
     protected void initView() {
+        EventBus.getDefault().register(this);
         listView = (ListView) findViewById(R.id.swipe_target);
         swipeToLoadLayout = (SwipeToLoadLayout) findViewById(R.id.swipeToLoadLayout);
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -97,12 +104,15 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
         mRelateLV = (ListViewForScrollView) mHeader.findViewById(R.id.relate_lv);
         mRelateLL = (LinearLayout) mHeader.findViewById(R.id.relate_ll);
         mHotLL = (LinearLayout) mHeader.findViewById(R.id.hot_ll);
-
+        mCommentLL = (LinearLayout) mHeader.findViewById(R.id.comment_ll);
         mHotCommentsLV = (ListViewForScrollView) mHeader.findViewById(R.id.hot_lv);
         listView.addHeaderView(mHeader);
         mCommentAdapter = new CommentAdapter();
         listView.setAdapter(mCommentAdapter);
         swipeToLoadLayout.setOnLoadMoreListener(this);
+        if (!NetWorkChangeEvent.hasNetWork) {
+            changeVisibility(false);
+        }
     }
 
 
@@ -215,50 +225,40 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
         mPresenter.getAndShowCommentList();
     }
 
-
-    static class ViewHolder {
-        TextView tv;
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
-
-    class TestAdapter extends BaseAdapter {
-        TestAdapter() {
-
-        }
-
-
-        @Override
-        public int getCount() {
-            return 100;
-        }
-
-
-        @Override
-        public Integer getItem(int position) {
-            return position;
-        }
-
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder h = null;
-            if (convertView == null) {
-                convertView = LayoutInflater.from(QuestionActivity.this)
-                        .inflate(R.layout.layout_title, null);
-                h = new ViewHolder();
-                h.tv = (TextView) convertView.findViewById(R.id.title);
-                convertView.setTag(h);
-            } else {
-                h = (ViewHolder) convertView.getTag();
+    @Subscribe
+    public void onEvent(NetWorkChangeEvent event) {
+        if (NetWorkChangeEvent.hasNetWork) {
+            ListAdapter adapter=listView.getAdapter();
+            if (adapter==null||adapter.getCount()==0) {
+                mPresenter.getAndShowContent(mID);
+            }            if (mHasMoreComments) {
+                swipeToLoadLayout.setLoadMoreEnabled(true);
             }
-            h.tv.setText(String.valueOf(position));
-            return convertView;
+            swipeToLoadLayout.setLoadingMore(false);
+            if (mCommentLL.getVisibility()!=View.VISIBLE) {
+                changeVisibility(true);
+            }
+        } else {
+            swipeToLoadLayout.setLoadMoreEnabled(false);
+        }
+    }
+
+    private void changeVisibility(boolean visible) {
+        if (visible) {
+            mCommentLL.setVisibility(View.VISIBLE);
+            mRelateLL.setVisibility(View.VISIBLE);
+            mHotLL.setVisibility(View.VISIBLE);
+        } else {
+            mCommentLL.setVisibility(View.GONE);
+            mRelateLL.setVisibility(View.GONE);
+            mHotLL.setVisibility(View.GONE);
+            swipeToLoadLayout.setLoadMoreEnabled(false);
         }
     }
 }

@@ -1,11 +1,14 @@
 package com.hyc.one.beans;
 
-public class SerialContent implements java.io.Serializable {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class SerialContent extends RealmObject implements java.io.Serializable {
     private static final long serialVersionUID = 5933259838190927725L;
     private String charge_edt;
     private String maketime;
     private String input_name;
-    private Object push_id;
+    private String push_id;
     private int praisenum;
     private String title;
     private int sharenum;
@@ -15,6 +18,7 @@ public class SerialContent implements java.io.Serializable {
     private String read_num;
     private String web_url;
     private String serial_id;
+    @PrimaryKey
     private String id;
     private String audio;
     private String excerpt;
@@ -49,7 +53,7 @@ public class SerialContent implements java.io.Serializable {
         return this.push_id;
     }
 
-    public void setPush_id(Object push_id) {
+    public void setPush_id(String push_id) {
         this.push_id = push_id;
     }
 

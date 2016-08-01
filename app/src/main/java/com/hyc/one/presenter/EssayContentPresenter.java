@@ -1,5 +1,6 @@
 package com.hyc.one.presenter;
 
+import com.hyc.one.R;
 import com.hyc.one.base.BasePresenter;
 import com.hyc.one.base.DefaultTransformer;
 import com.hyc.one.base.ExceptionAction;
@@ -10,6 +11,8 @@ import com.hyc.one.beans.Essay;
 import com.hyc.one.beans.RealArticle;
 import com.hyc.one.net.Requests;
 import com.hyc.one.presenter.base.IReadingContentPresenter;
+import com.hyc.one.utils.AppUtil;
+import com.hyc.one.utils.RealmUtil;
 import com.hyc.one.view.ReadingContentView;
 
 import java.util.ArrayList;
@@ -40,24 +43,26 @@ public class EssayContentPresenter extends BasePresenter<ReadingContentView<Essa
                 Observable.just(Requests.getApi().getEssayContentByID(id).compose(new DefaultTransformer<BaseBean<Essay>, Essay>()).subscribe(new Action1<Essay>() {
                     @Override
                     public void call(Essay essay) {
+                        RealmUtil.saveOrUpdate(essay);
                         mView.showContent(essay);
                         mView.dismissLoading();
                     }
                 }, new ExceptionAction() {
                     @Override
-                    public void onNothingGet() {
+                    protected void onNoNetWork() {
+                        showCachedData();
                     }
-                }), Requests.getApi().getEssayRelateByID(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<BaseBean<List<RealArticle>>>() {
+                }), Requests.getApi().getEssayRelateByID(id).compose(new DefaultTransformer<BaseBean<List<RealArticle>>, List<RealArticle>>()).subscribe(new Action1<List<RealArticle>>() {
                     @Override
-                    public void call(BaseBean<List<RealArticle>> realArticles) {
-                        mView.showRelate(realArticles.getData());
+                    public void call(List<RealArticle> realArticles) {
+                        mView.showRelate(realArticles);
                     }
-                }), Requests.getApi().getEssayCommentsByIndex(id, "0").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map(new Func1<BaseBean<CommentWrapper>, List<Comment>[]>() {
+                },new ExceptionAction()), Requests.getApi().getEssayCommentsByIndex(id, "0").compose(new DefaultTransformer<BaseBean<CommentWrapper>, CommentWrapper>()).map(new Func1<CommentWrapper, List<Comment>[]>() {
                     @Override
-                    public List<Comment>[] call(BaseBean<CommentWrapper> comments) {
+                    public List<Comment>[] call(CommentWrapper comments) {
                         List<Comment> hot = new ArrayList<Comment>();
                         List<Comment> normal = new ArrayList<Comment>();
-                        List<Comment> all = comments.getData().getData();
+                        List<Comment> all = comments.getData();
                         int count = all.size();
                         for (int i = 0; i < count; i++) {
                             Comment c = all.get(i);
@@ -81,7 +86,30 @@ public class EssayContentPresenter extends BasePresenter<ReadingContentView<Essa
                         mView.showHotComments(comments[0]);
                         mView.refreshCommentList(comments[1]);
                     }
-                })).subscribeOn(Schedulers.io()).subscribe());
+                },new ExceptionAction())).subscribeOn(Schedulers.io()).subscribe());
+    }
+
+    private void showCachedData() {
+        Observable.just(RealmUtil.findByKeyOne(Essay.class, "content_id", mId)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Essay>() {
+            @Override
+            public void call(Essay essay) {
+                mView.dismissLoading();
+                if (essay != null) {
+                    mView.showContent(essay);
+                } else {
+                    AppUtil.showToast(R.string.no_cache);
+                }
+            }
+        }, new ExceptionAction() {
+            @Override
+            public void onNothingGet() {
+            }
+
+            @Override
+            protected void dismissLoading() {
+                mView.dismissLoading();
+            }
+        });
     }
 
     @Override

@@ -1,15 +1,19 @@
 package com.hyc.one.presenter;
 
+import com.hyc.one.R;
 import com.hyc.one.base.BasePresenter;
 import com.hyc.one.base.DefaultTransformer;
 import com.hyc.one.base.ExceptionAction;
 import com.hyc.one.beans.BaseBean;
 import com.hyc.one.beans.Comment;
 import com.hyc.one.beans.CommentWrapper;
+import com.hyc.one.beans.Essay;
 import com.hyc.one.beans.Question;
 import com.hyc.one.beans.QuestionContent;
 import com.hyc.one.net.Requests;
 import com.hyc.one.presenter.base.IReadingContentPresenter;
+import com.hyc.one.utils.AppUtil;
+import com.hyc.one.utils.RealmUtil;
 import com.hyc.one.view.ReadingContentView;
 
 import java.util.ArrayList;
@@ -49,23 +53,34 @@ public class QuestionContentPresenter extends BasePresenter<ReadingContentView<Q
         mId = id;
         mCompositeSubscription.add(
 
-                Observable.just(Requests.getApi().getQuestionContentByID(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<BaseBean<QuestionContent>>() {
+                Observable.just(Requests.getApi().getQuestionContentByID(id).compose(new DefaultTransformer<BaseBean<QuestionContent>, QuestionContent>()).subscribe(new Action1<QuestionContent>() {
                     @Override
-                    public void call(BaseBean<QuestionContent> questionWrapper) {
-                        mView.showContent(questionWrapper.getData());
+                    public void call(QuestionContent question) {
+                        RealmUtil.saveOrUpdate(question);
+                        mView.showContent(question);
                         mView.dismissLoading();
                     }
-                }), Requests.getApi().getQuestionRelateByID(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<BaseBean<List<Question>>>() {
+                },new ExceptionAction(){
                     @Override
-                    public void call(BaseBean<List<Question>> questions) {
-                        mView.showRelate(questions.getData());
+                    protected void onNoNetWork() {
+                        showCachedData();
                     }
-                }), Requests.getApi().getQuestionCommentsByIndex(id, "0").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map(new Func1<BaseBean<CommentWrapper>, List<Comment>[]>() {
+
                     @Override
-                    public List<Comment>[] call(BaseBean<CommentWrapper> comments) {
+                    protected void onNothingGet() {
+                        dismissLoading();
+                    }
+                }), Requests.getApi().getQuestionRelateByID(id).compose(new DefaultTransformer<BaseBean<List<Question>>, List<Question>>()).subscribe(new Action1<List<Question>>() {
+                    @Override
+                    public void call(List<Question> questions) {
+                        mView.showRelate(questions);
+                    }
+                },new ExceptionAction()), Requests.getApi().getQuestionCommentsByIndex(id, "0").compose(new DefaultTransformer<BaseBean<CommentWrapper>, CommentWrapper>()).map(new Func1<CommentWrapper, List<Comment>[]>() {
+                    @Override
+                    public List<Comment>[] call(CommentWrapper comments) {
                         List<Comment> hot = new ArrayList<Comment>();
                         List<Comment> normal = new ArrayList<Comment>();
-                        List<Comment> all = comments.getData().getData();
+                        List<Comment> all = comments.getData();
                         int count = all.size();
                         for (int i = 0; i < count; i++) {
                             Comment c = all.get(i);
@@ -89,9 +104,30 @@ public class QuestionContentPresenter extends BasePresenter<ReadingContentView<Q
                         mView.showHotComments(comments[0]);
                         mView.refreshCommentList(comments[1]);
                     }
-                })).subscribeOn(Schedulers.io()).subscribe());
+                },new ExceptionAction())).subscribeOn(Schedulers.io()).subscribe());
     }
+    private void showCachedData() {
+        Observable.just(RealmUtil.findByKeyOne(QuestionContent.class, "question_id", mId)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<QuestionContent>() {
+            @Override
+            public void call(QuestionContent questionContent) {
+                mView.dismissLoading();
+                if (questionContent != null) {
+                    mView.showContent(questionContent);
+                } else {
+                    AppUtil.showToast(R.string.no_cache);
+                }
+            }
+        }, new ExceptionAction() {
+            @Override
+            public void onNothingGet() {
+            }
 
+            @Override
+            protected void dismissLoading() {
+                mView.dismissLoading();
+            }
+        });
+    }
     @Override
     public void getAndShowCommentList() {
         mCompositeSubscription.add(

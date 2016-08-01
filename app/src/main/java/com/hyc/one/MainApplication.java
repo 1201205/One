@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.hyc.one.base.AppException;
 import com.hyc.one.event.NetWorkChangeEvent;
 import com.hyc.one.player.PlayerService;
 import com.hyc.one.utils.S;
@@ -34,6 +35,7 @@ public class MainApplication extends Application {
 //        FrescoHelper.initialize(this);
         startService(new Intent(this, PlayerService.class));
         getNetWorkState();
+        Thread.setDefaultUncaughtExceptionHandler(AppException.getInstance(this));
         //LeakCanary.install(this);
     }
 
@@ -47,7 +49,7 @@ public class MainApplication extends Application {
                 .migration(new RealmMigration() {
                     @Override
                     public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
-
+                        realm.deleteAll();
                     }
                 })
                 .schemaVersion(1)

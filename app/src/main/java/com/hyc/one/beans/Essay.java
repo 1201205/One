@@ -2,14 +2,19 @@ package com.hyc.one.beans;
 
 import java.util.List;
 
-public class Essay implements java.io.Serializable {
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class Essay extends RealmObject implements java.io.Serializable {
     private static final long serialVersionUID = -3839665997985805420L;
     private String hp_makettime;
     private String sub_title;
     private String guide_word;
+    @PrimaryKey
     private String content_id;
     private String hp_title;
-    private Object push_id;
+    private String push_id;
     private int praisenum;
     private int sharenum;
     private String hp_author;
@@ -22,7 +27,7 @@ public class Essay implements java.io.Serializable {
     private String audio;
     private String last_update_date;
     private int commentnum;
-    private List<RealArticleAuthor> author;
+    private RealmList<RealArticleAuthor> author;
 
 
     public String getHp_makettime() {
@@ -69,7 +74,7 @@ public class Essay implements java.io.Serializable {
         return this.push_id;
     }
 
-    public void setPush_id(Object push_id) {
+    public void setPush_id(String push_id) {
         this.push_id = push_id;
     }
 
@@ -172,7 +177,7 @@ public class Essay implements java.io.Serializable {
         return this.author;
     }
 
-    public void setAuthor(List<RealArticleAuthor> author) {
+    public void setAuthor(RealmList<RealArticleAuthor> author) {
         this.author = author;
     }
 }

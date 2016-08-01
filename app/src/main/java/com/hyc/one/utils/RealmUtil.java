@@ -40,7 +40,17 @@ public class RealmUtil {
             }
         });
     }
-
+    public static <E extends RealmModel> void saveOrUpdate(final E o) {
+        mExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+//                sRealm=Realm.getDefaultInstance();
+                sRealm.beginTransaction();
+                sRealm.copyToRealmOrUpdate(o);
+                sRealm.commitTransaction();
+            }
+        });
+    }
     public static <E extends RealmModel> List<E> getListByCount(final Class<E> clazz, Date date) {
         Realm temp = Realm.getDefaultInstance();
         temp.beginTransaction();

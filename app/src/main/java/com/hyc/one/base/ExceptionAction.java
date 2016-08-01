@@ -14,16 +14,18 @@ import rx.functions.Action1;
 /**
  * Created by Administrator on 2016/7/7.
  */
-public abstract class ExceptionAction implements Action1<Throwable> {
+public class ExceptionAction implements Action1<Throwable> {
 
-    public abstract void onNothingGet();
-
+    protected void onNothingGet(){
+    }
     protected void onNoNetWork() {
     }
-
+    protected void dismissLoading() {
+    }
     @Override
     public void call(Throwable throwable) {
         throwable.printStackTrace();
+        dismissLoading();
         if (throwable instanceof NoThingGetException) {
             onNothingGet();
         } else if (throwable instanceof JsonParseException) {

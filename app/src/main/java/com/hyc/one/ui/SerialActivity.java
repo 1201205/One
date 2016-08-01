@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ import com.hyc.one.beans.Comment;
 import com.hyc.one.beans.RealArticleAuthor;
 import com.hyc.one.beans.Serial;
 import com.hyc.one.beans.SerialContent;
+import com.hyc.one.event.NetWorkChangeEvent;
 import com.hyc.one.presenter.SerialContentPresenter;
 import com.hyc.one.ui.adpter.CommentAdapter;
 import com.hyc.one.ui.adpter.SerialAdapter;
@@ -36,6 +38,9 @@ import com.hyc.one.view.ReadingContentView;
 import com.hyc.one.widget.CircleImageView;
 import com.hyc.one.widget.ListViewForScrollView;
 import com.squareup.picasso.Picasso;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
@@ -66,6 +71,7 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
     private String mID;
     private boolean mHasMoreComments = true;
     private LinearLayout mHotLL;
+    private LinearLayout mCommentLL;
 
 
     @Override
@@ -76,6 +82,7 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
 
     @Override
     protected void initView() {
+        EventBus.getDefault().register(this);
         listView = (ListView) findViewById(R.id.swipe_target);
         swipeToLoadLayout = (SwipeToLoadLayout) findViewById(R.id.swipeToLoadLayout);
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -107,12 +114,30 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
         mAuthorNameTV = (TextView) mHeader.findViewById(R.id.author_name_tv);
         mRelateLV = (ListViewForScrollView) mHeader.findViewById(R.id.relate_lv);
         mRelateLL = (LinearLayout) mHeader.findViewById(R.id.relate_ll);
+        mCommentLL = (LinearLayout) mHeader.findViewById(R.id.comment_ll);
+        mHotLL = (LinearLayout) mHeader.findViewById(R.id.hot_ll);
+
         mHotCommentsLV = (ListViewForScrollView) mHeader.findViewById(R.id.hot_lv);
         listView.addHeaderView(mHeader);
         mCommentAdapter = new CommentAdapter();
         listView.setAdapter(mCommentAdapter);
         swipeToLoadLayout.setOnLoadMoreListener(this);
+        if (!NetWorkChangeEvent.hasNetWork) {
+            changeVisibility(false);
+        }
+    }
 
+    private void changeVisibility(boolean visible) {
+        if (visible) {
+            mCommentLL.setVisibility(View.VISIBLE);
+            mRelateLL.setVisibility(View.VISIBLE);
+            mHotLL.setVisibility(View.VISIBLE);
+        } else {
+            mCommentLL.setVisibility(View.GONE);
+            mRelateLL.setVisibility(View.GONE);
+            mHotLL.setVisibility(View.GONE);
+            swipeToLoadLayout.setLoadMoreEnabled(false);
+        }
     }
 
 
@@ -151,7 +176,6 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
         mEditorTV.setText(content.getCharge_edt());
         mAuthorTV.setText(author.getUser_name());
         mAuthorNameTV.setText(author.getUser_name());
-        mHotLL = (LinearLayout) mHeader.findViewById(R.id.hot_ll);
 
         mSerialIV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -259,5 +283,29 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
         mPresenter.getAndShowCommentList();
     }
 
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
+    @Subscribe
+    public void onEvent(NetWorkChangeEvent event) {
+        if (NetWorkChangeEvent.hasNetWork) {
+            ListAdapter adapter=listView.getAdapter();
+            if (adapter==null||adapter.getCount()==0) {
+                mPresenter.getAndShowContent(mID);
+            }
+            if (mHasMoreComments) {
+                swipeToLoadLayout.setLoadMoreEnabled(true);
+            }
+            swipeToLoadLayout.setLoadingMore(false);
+            if (mCommentLL.getVisibility()!=View.VISIBLE) {
+                changeVisibility(true);
+            }
+        } else {
+            swipeToLoadLayout.setLoadMoreEnabled(false);
+        }
+    }
 
 }
