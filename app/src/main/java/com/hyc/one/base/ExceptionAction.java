@@ -16,12 +16,25 @@ import rx.functions.Action1;
  */
 public class ExceptionAction implements Action1<Throwable> {
 
-    protected void onNothingGet(){
+    private boolean toast = true;
+
+    protected void onNothingGet() {
     }
+
     protected void onNoNetWork() {
     }
+
     protected void dismissLoading() {
     }
+
+    public ExceptionAction(boolean toast) {
+        this.toast = toast;
+    }
+
+    public ExceptionAction() {
+        toast = true;
+    }
+
     @Override
     public void call(Throwable throwable) {
         throwable.printStackTrace();
@@ -36,7 +49,9 @@ public class ExceptionAction implements Action1<Throwable> {
         } else if (throwable instanceof SocketException) {
             AppUtil.showToast(R.string.net_error);
         } else if (throwable instanceof UnknownHostException) {
-            AppUtil.showToast(R.string.net_error);
+            if (toast) {
+                AppUtil.showToast(R.string.net_error);
+            }
             onNoNetWork();
         } else if (throwable instanceof SocketTimeoutException) {
             AppUtil.showToast(R.string.time_out);

@@ -40,6 +40,7 @@ public class RealmUtil {
             }
         });
     }
+
     public static <E extends RealmModel> void saveOrUpdate(final E o) {
         mExecutor.execute(new Runnable() {
             @Override
@@ -51,11 +52,19 @@ public class RealmUtil {
             }
         });
     }
+
     public static <E extends RealmModel> List<E> getListByCount(final Class<E> clazz, Date date) {
         Realm temp = Realm.getDefaultInstance();
         temp.beginTransaction();
         List<E> realmResults = temp.where(clazz).greaterThan("date", date).findAllSorted("date", Sort.DESCENDING);
         temp.commitTransaction();
+        return realmResults;
+    }
+
+    public static <E extends RealmModel> List<E> getListByLower(final Class<E> clazz, String filedName, String value) {
+        sRealm.beginTransaction();
+        List<E> realmResults = sRealm.where(clazz).beginsWith(filedName, value).findAll();
+        sRealm.commitTransaction();
         return realmResults;
     }
 

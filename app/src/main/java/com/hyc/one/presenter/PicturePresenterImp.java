@@ -2,6 +2,7 @@ package com.hyc.one.presenter;
 
 import android.text.TextUtils;
 import android.util.Log;
+
 import com.hyc.one.R;
 import com.hyc.one.base.BasePresenter;
 import com.hyc.one.base.DefaultTransformer;
@@ -16,10 +17,12 @@ import com.hyc.one.utils.RealmUtil;
 import com.hyc.one.utils.S;
 import com.hyc.one.utils.SPUtil;
 import com.hyc.one.view.PictureView;
-import io.realm.Realm;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import io.realm.Realm;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -60,18 +63,18 @@ public class PicturePresenterImp extends BasePresenter<PictureView> implements I
 //                        if (d.size() > 0) {
 //                            Log.e("test1", "获取到保存的数据");
 //                        }
-                        StringBuilder builder=new StringBuilder();
-                        for (String s:mIds) {
+                        StringBuilder builder = new StringBuilder();
+                        for (String s : mIds) {
                             builder.append(s).append("-");
                         }
-                        builder.substring(0,builder.length()-1);
-                        SPUtil.put(S.PICTURE_ID,builder.toString());
+                        builder.substring(0, builder.length() - 1);
+                        SPUtil.put(S.PICTURE_ID, builder.toString());
                         return mIds.get(0);
                     }
                 }).map(new Func1<String, Observable<OnePictureData>>() {
                     @Override
                     public Observable<OnePictureData> call(final String s) {
-                       return getOnePictureData(s);
+                        return getOnePictureData(s);
                     }
                 }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Observable<OnePictureData>>() {
                     @Override
@@ -83,8 +86,9 @@ public class PicturePresenterImp extends BasePresenter<PictureView> implements I
                     public void onNothingGet() {
                         AppUtil.showToast(R.string.do_not_get_id);
                     }
+
                     @Override
-                    public void onNoNetWork(){
+                    public void onNoNetWork() {
                         AppUtil.showToast(R.string.show_cache);
                         showCachedInfo();
                     }
@@ -92,29 +96,30 @@ public class PicturePresenterImp extends BasePresenter<PictureView> implements I
     }
 
     private void showCachedInfo() {
-        String s=SPUtil.get(S.PICTURE_ID,"");
+        String s = SPUtil.get(S.PICTURE_ID, "");
         if (TextUtils.isEmpty(s)) {
             return;
         }
-       String[] ids= s.split("-");
-        mIds=Arrays.asList(ids);
-        if (mIds.size()==0) {
+        String[] ids = s.split("-");
+        mIds = Arrays.asList(ids);
+        if (mIds.size() == 0) {
             return;
         }
         Observable.just(Observable.just(getOnePictureDataByRealm(mIds.get(0)))).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
-            new Action1<Observable<OnePictureData>>() {
-                @Override
-                public void call(Observable<OnePictureData> onePictureDataObservable) {
-                    showFirstPicture(onePictureDataObservable);
-                }
-            }, new ExceptionAction() {
-                @Override public void onNothingGet() {
+                new Action1<Observable<OnePictureData>>() {
+                    @Override
+                    public void call(Observable<OnePictureData> onePictureDataObservable) {
+                        showFirstPicture(onePictureDataObservable);
+                    }
+                }, new ExceptionAction() {
+                    @Override
+                    public void onNothingGet() {
 
-                }
-            });
+                    }
+                });
     }
 
-    private Observable<OnePictureData> getOnePictureData(String s){
+    private Observable<OnePictureData> getOnePictureData(String s) {
         Observable<OnePictureData> orm = Observable.just(getOnePictureDataByRealm(s)).subscribeOn(Schedulers.io());
         Observable<OnePictureData> net = Requests.getApi().getPictureById(s).map(new Func1<BaseBean<OnePictureData>, OnePictureData>() {
             @Override
@@ -130,11 +135,12 @@ public class PicturePresenterImp extends BasePresenter<PictureView> implements I
             }
         });
     }
-    private void showFirstPicture(Observable<OnePictureData> data){
+
+    private void showFirstPicture(Observable<OnePictureData> data) {
         data.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<OnePictureData>() {
             @Override
             public void call(OnePictureData onePictureData) {
-                if (onePictureData==null) {
+                if (onePictureData == null) {
                     return;
                 }
                 //mView.dismissLoading();
@@ -154,6 +160,7 @@ public class PicturePresenterImp extends BasePresenter<PictureView> implements I
             }
         }, mThrowableAction);
     }
+
     private OnePictureData getOnePictureDataByRealm(String s) {
 
         OnePictureData data = RealmUtil.findByKeyOne(OnePictureData.class, "hpcontent_id", s);
@@ -164,7 +171,7 @@ public class PicturePresenterImp extends BasePresenter<PictureView> implements I
     }
 
     @Override
-    public OnePictureData getPictureById(final String id) {
+    public void getPictureById(final String id) {
 //        mView.showLoading();
         Observable<OnePictureData> orm = Observable.just(getOnePictureDataByRealm(id)).subscribeOn(Schedulers.io());
         Observable<OnePictureData> net = Requests.getApi().getPictureById(id).subscribeOn(Schedulers.io()).map(new Func1<BaseBean<OnePictureData>, OnePictureData>() {
@@ -175,7 +182,6 @@ public class PicturePresenterImp extends BasePresenter<PictureView> implements I
             }
         });
         mCompositeSubscription.add(
-
                 Observable.concat(orm, net).takeFirst(new Func1<OnePictureData, Boolean>() {
                     @Override
                     public Boolean call(OnePictureData onePictureData) {
@@ -197,7 +203,6 @@ public class PicturePresenterImp extends BasePresenter<PictureView> implements I
                         mView.showPicture(id, onePictureData);
                     }
                 }));
-        return null;
     }
 
     @Override

@@ -75,7 +75,7 @@ public class QuestionContentPresenter extends BasePresenter<ReadingContentView<Q
                     public void call(List<Question> questions) {
                         mView.showRelate(questions);
                     }
-                },new ExceptionAction()), Requests.getApi().getQuestionCommentsByIndex(id, "0").compose(new DefaultTransformer<BaseBean<CommentWrapper>, CommentWrapper>()).map(new Func1<CommentWrapper, List<Comment>[]>() {
+                },new ExceptionAction(false)), Requests.getApi().getQuestionCommentsByIndex(id, "0").compose(new DefaultTransformer<BaseBean<CommentWrapper>, CommentWrapper>()).map(new Func1<CommentWrapper, List<Comment>[]>() {
                     @Override
                     public List<Comment>[] call(CommentWrapper comments) {
                         List<Comment> hot = new ArrayList<Comment>();
@@ -104,7 +104,7 @@ public class QuestionContentPresenter extends BasePresenter<ReadingContentView<Q
                         mView.showHotComments(comments[0]);
                         mView.refreshCommentList(comments[1]);
                     }
-                },new ExceptionAction())).subscribeOn(Schedulers.io()).subscribe());
+                },new ExceptionAction(false))).subscribeOn(Schedulers.io()).subscribe());
     }
     private void showCachedData() {
         Observable.just(RealmUtil.findByKeyOne(QuestionContent.class, "question_id", mId)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<QuestionContent>() {

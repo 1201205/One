@@ -1,8 +1,12 @@
 package com.hyc.one.beans.music;
 
-public class MusicStory_author implements java.io.Serializable {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class MusicStory_author extends RealmObject implements java.io.Serializable {
     private static final long serialVersionUID = -3172783166651562483L;
     private String web_url;
+    @PrimaryKey
     private String user_id;
     private String user_name;
 

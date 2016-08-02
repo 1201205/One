@@ -1,7 +1,5 @@
 package com.hyc.one.presenter;
 
-import android.util.Log;
-
 import com.hyc.one.R;
 import com.hyc.one.base.BasePresenter;
 import com.hyc.one.base.DefaultTransformer;
@@ -21,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -65,7 +62,12 @@ public class SerialContentPresenter extends BasePresenter<ReadingContentView<Ser
                     public void call(List<Serial> serials) {
                         mView.showRelate(serials);
                     }
-                }, new ExceptionAction()), Requests.getApi().getSerialCommentsByIndex(id, "0").compose(new DefaultTransformer<BaseBean<CommentWrapper>, CommentWrapper>()).map(new Func1<CommentWrapper, List<Comment>[]>() {
+                }, new ExceptionAction(false){
+                    @Override
+                    protected void onNothingGet() {
+                        mView.showRelate(null);
+                    }
+                }), Requests.getApi().getSerialCommentsByIndex(id, "0").compose(new DefaultTransformer<BaseBean<CommentWrapper>, CommentWrapper>()).map(new Func1<CommentWrapper, List<Comment>[]>() {
                     @Override
                     public List<Comment>[] call(CommentWrapper comments) {
                         List<Comment> hot = new ArrayList<Comment>();
@@ -94,7 +96,7 @@ public class SerialContentPresenter extends BasePresenter<ReadingContentView<Ser
                         mView.showHotComments(comments[0]);
                         mView.refreshCommentList(comments[1]);
                     }
-                }, new ExceptionAction())).subscribeOn(Schedulers.io()).subscribe());
+                }, new ExceptionAction(false))).subscribeOn(Schedulers.io()).subscribe());
     }
 
     private void getCachedData(String id) {

@@ -4,6 +4,8 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.view.View;
 import android.widget.Toast;
 
@@ -131,6 +133,15 @@ public class AppUtil {
         context.startActivity(intent);
     }
 
+    /**
+     * 他人相关的跳转
+     *
+     * @param id      id
+     * @param type    跳转页面对应的type
+     * @param context contex
+     * @param clazz   目标Activity
+     * @param title   title
+     */
     public static void startActivityWithIDAndType(String id, int type, Context context, Class clazz, int title) {
         Intent intent = new Intent(context, clazz);
         intent.putExtra(S.ID, id);
@@ -139,6 +150,11 @@ public class AppUtil {
         context.startActivity(intent);
     }
 
+    /**
+     * @param id      其他人的id
+     * @param context context
+     * @return 获取跳转到Other页面的点击事件
+     */
     public static View.OnClickListener getOtherClickListener(final String id, final Context context) {
         return new View.OnClickListener() {
             @Override
@@ -146,5 +162,18 @@ public class AppUtil {
                 OtherDetailActivity.jumpTo(context, id);
             }
         };
+    }
+
+    /**
+     * @param context context
+     * @return 是否有网络连接
+     */
+    public static boolean hasConnect(Context context) {
+        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeInfo = manager.getActiveNetworkInfo();
+        if (activeInfo != null && activeInfo.isConnected()) {
+            return true;
+        }
+        return false;
     }
 }

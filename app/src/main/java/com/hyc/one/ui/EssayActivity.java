@@ -151,7 +151,7 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
         mCommentAdapter = new CommentAdapter();
         listView.setAdapter(mCommentAdapter);
         swipeToLoadLayout.setOnLoadMoreListener(this);
-        if (!NetWorkChangeEvent.hasNetWork) {
+        if (!AppUtil.hasConnect(this)) {
             changeVisibility(false);
         }
     }
@@ -179,8 +179,8 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
             mHeaderIV.setImageResource(R.drawable.head);
             mAuthorHeaderIV.setImageResource(R.drawable.head);
         }
-        String id=author.getUser_id();
-        View.OnClickListener listener=AppUtil.getOtherClickListener(id,this);
+        String id = author.getUser_id();
+        View.OnClickListener listener = AppUtil.getOtherClickListener(id, this);
         mAuthorTV.setOnClickListener(listener);
         mAuthorNameTV.setOnClickListener(listener);
         mHeaderIV.setOnClickListener(listener);
@@ -342,23 +342,19 @@ public class EssayActivity extends BaseActivity<EssayContentPresenter>
     }
 
 
-
-
     @Subscribe
     public void onEvent(NetWorkChangeEvent event) {
         if (NetWorkChangeEvent.hasNetWork) {
-            ListAdapter adapter=listView.getAdapter();
-            if (adapter==null||adapter.getCount()==0) {
+            if (mCommentLL.getVisibility() != View.VISIBLE) {
+                changeVisibility(true);
+            }
+            if (mCommentAdapter.getCount() == 0) {
                 mPresenter.getAndShowContent(mID);
-            }            if (mHasMoreComments) {
-                swipeToLoadLayout.setLoadMoreEnabled(true);
-            }            if (mHasMoreComments) {
+            }
+            if (mHasMoreComments) {
                 swipeToLoadLayout.setLoadMoreEnabled(true);
             }
             swipeToLoadLayout.setLoadingMore(false);
-            if (mCommentLL.getVisibility()!=View.VISIBLE) {
-                changeVisibility(true);
-            }
         } else {
             swipeToLoadLayout.setLoadMoreEnabled(false);
         }

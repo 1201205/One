@@ -16,6 +16,7 @@ public interface S {
     String TITLE = "title";
     String READING_DATE = "reading_date";
     String DATE = "date";
+    String MUSIC_ID = "picture_id";
 
 
     int MUSIC = 1;

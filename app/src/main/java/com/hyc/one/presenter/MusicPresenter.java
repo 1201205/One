@@ -3,6 +3,7 @@ package com.hyc.one.presenter;
 import android.text.TextUtils;
 
 import com.hyc.one.base.BasePresenter;
+import com.hyc.one.base.ExceptionAction;
 import com.hyc.one.beans.BaseBean;
 import com.hyc.one.beans.Comment;
 import com.hyc.one.beans.CommentWrapper;
@@ -13,11 +14,17 @@ import com.hyc.one.beans.music.MusicRelate;
 import com.hyc.one.beans.music.MusicRelateListBean;
 import com.hyc.one.net.Requests;
 import com.hyc.one.presenter.base.IMusicPresenter;
+import com.hyc.one.utils.RealmUtil;
+import com.hyc.one.utils.S;
+import com.hyc.one.utils.SPUtil;
 import com.hyc.one.view.MusicView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -51,6 +58,12 @@ public class MusicPresenter extends BasePresenter<MusicView> implements IMusicPr
                         for (int i = 0; i < mIDs.size(); i++) {
                             mRelateBeans.add(new MusicRelateListBean(mIDs.get(i), null, null, null));
                         }
+                        StringBuilder builder=new StringBuilder();
+                        for (String s:mIDs) {
+                            builder.append(s).append("-");
+                        }
+                        builder.substring(0,builder.length()-1);
+                        SPUtil.put(S.MUSIC_ID,builder.toString());
                         return Observable.from(mIDs).flatMap(new Func1<String, Observable<BaseBean<Music>>>() {
                             @Override
                             public Observable<BaseBean<Music>> call(String s) {
@@ -65,6 +78,7 @@ public class MusicPresenter extends BasePresenter<MusicView> implements IMusicPr
                             @Override
                             public void call(BaseBean<Music> musicWrapper) {
                                 mMusics.add(musicWrapper.getData());
+                                RealmUtil.saveOrUpdate(musicWrapper.getData());
                                 songs.add(new Song(musicWrapper.getData().getTitle(), musicWrapper.getData().getMusic_id()));
                                 if (mMusics.size() == mIDs.size()) {
                                     mMusics.add(null);
@@ -75,14 +89,44 @@ public class MusicPresenter extends BasePresenter<MusicView> implements IMusicPr
                                     mView.dismissLoading();
                                 }
                             }
-                        });
+                        },new ExceptionAction());
                     }
-                }, new Action1<Throwable>() {
+                }, new ExceptionAction(){
                     @Override
-                    public void call(Throwable throwable) {
-
+                    protected void onNoNetWork() {
+                        showCachedData();
                     }
                 }));
+    }
+
+    private void showCachedData() {
+        String s = SPUtil.get(S.MUSIC_ID, "");
+        if (TextUtils.isEmpty(s)) {
+            return;
+        }
+        String[] ids = s.split("-");
+        mIDs = Arrays.asList(ids);
+        if (mIDs.size() == 0) {
+            return;
+        }
+        mMusics = new ArrayList<Music>();
+        mRelateBeans = new ArrayList<MusicRelateListBean>();
+        for (int i = 0; i < mIDs.size(); i++) {
+            mRelateBeans.add(new MusicRelateListBean(mIDs.get(i), null, null, null));
+        }
+        Realm.getDefaultInstance().where(Music.class).beginsWith("id",mIDs.get(mIDs.size()-1)).findAll().asObservable().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<RealmResults<Music>>() {
+            @Override
+            public void call(RealmResults<Music> musics) {
+                if (musics!=null&&musics.size()>0) {
+                    mMusics.addAll(musics);
+                    mMusics.add(null);
+                    mView.setAdapter(mMusics, mRelateBeans);
+                    showCurrentRelate(0);
+                    showCurrentComment(0);
+                    mView.dismissLoading();
+                }
+            }
+        });
     }
 
     @Override

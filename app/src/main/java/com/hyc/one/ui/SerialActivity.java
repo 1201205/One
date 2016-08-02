@@ -122,7 +122,7 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
         mCommentAdapter = new CommentAdapter();
         listView.setAdapter(mCommentAdapter);
         swipeToLoadLayout.setOnLoadMoreListener(this);
-        if (!NetWorkChangeEvent.hasNetWork) {
+        if (!AppUtil.hasConnect(this)) {
             changeVisibility(false);
         }
     }
@@ -292,17 +292,16 @@ public class SerialActivity extends BaseActivity<SerialContentPresenter> impleme
     @Subscribe
     public void onEvent(NetWorkChangeEvent event) {
         if (NetWorkChangeEvent.hasNetWork) {
-            ListAdapter adapter=listView.getAdapter();
-            if (adapter==null||adapter.getCount()==0) {
+            if (mCommentLL.getVisibility()!=View.VISIBLE) {
+                changeVisibility(true);
+            }
+            if (mCommentAdapter.getCount() == 0) {
                 mPresenter.getAndShowContent(mID);
             }
             if (mHasMoreComments) {
                 swipeToLoadLayout.setLoadMoreEnabled(true);
             }
             swipeToLoadLayout.setLoadingMore(false);
-            if (mCommentLL.getVisibility()!=View.VISIBLE) {
-                changeVisibility(true);
-            }
         } else {
             swipeToLoadLayout.setLoadMoreEnabled(false);
         }

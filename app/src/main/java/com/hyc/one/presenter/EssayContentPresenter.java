@@ -57,7 +57,12 @@ public class EssayContentPresenter extends BasePresenter<ReadingContentView<Essa
                     public void call(List<RealArticle> realArticles) {
                         mView.showRelate(realArticles);
                     }
-                },new ExceptionAction()), Requests.getApi().getEssayCommentsByIndex(id, "0").compose(new DefaultTransformer<BaseBean<CommentWrapper>, CommentWrapper>()).map(new Func1<CommentWrapper, List<Comment>[]>() {
+                },new ExceptionAction(false){
+                    @Override
+                    protected void onNothingGet() {
+                        mView.showRelate(null);
+                    }
+                }), Requests.getApi().getEssayCommentsByIndex(id, "0").compose(new DefaultTransformer<BaseBean<CommentWrapper>, CommentWrapper>()).map(new Func1<CommentWrapper, List<Comment>[]>() {
                     @Override
                     public List<Comment>[] call(CommentWrapper comments) {
                         List<Comment> hot = new ArrayList<Comment>();
@@ -86,7 +91,7 @@ public class EssayContentPresenter extends BasePresenter<ReadingContentView<Essa
                         mView.showHotComments(comments[0]);
                         mView.refreshCommentList(comments[1]);
                     }
-                },new ExceptionAction())).subscribeOn(Schedulers.io()).subscribe());
+                },new ExceptionAction(false))).subscribeOn(Schedulers.io()).subscribe());
     }
 
     private void showCachedData() {

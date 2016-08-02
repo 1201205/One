@@ -8,9 +8,7 @@ import android.support.v4.view.ViewCompat;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -110,7 +108,7 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
         mCommentAdapter = new CommentAdapter();
         listView.setAdapter(mCommentAdapter);
         swipeToLoadLayout.setOnLoadMoreListener(this);
-        if (!NetWorkChangeEvent.hasNetWork) {
+        if (!AppUtil.hasConnect(this)) {
             changeVisibility(false);
         }
     }
@@ -234,16 +232,17 @@ public class QuestionActivity extends BaseActivity<QuestionContentPresenter> imp
     @Subscribe
     public void onEvent(NetWorkChangeEvent event) {
         if (NetWorkChangeEvent.hasNetWork) {
-            ListAdapter adapter=listView.getAdapter();
-            if (adapter==null||adapter.getCount()==0) {
+            if (mCommentLL.getVisibility() != View.VISIBLE) {
+                changeVisibility(true);
+            }
+            if (mCommentAdapter.getCount() == 0) {
                 mPresenter.getAndShowContent(mID);
-            }            if (mHasMoreComments) {
+            }
+            if (mHasMoreComments) {
                 swipeToLoadLayout.setLoadMoreEnabled(true);
             }
             swipeToLoadLayout.setLoadingMore(false);
-            if (mCommentLL.getVisibility()!=View.VISIBLE) {
-                changeVisibility(true);
-            }
+
         } else {
             swipeToLoadLayout.setLoadMoreEnabled(false);
         }

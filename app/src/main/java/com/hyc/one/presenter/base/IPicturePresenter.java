@@ -7,7 +7,7 @@ import com.hyc.one.beans.OnePictureData;
  */
 public interface IPicturePresenter {
     void getPictureIdsAndFirstItem();
-    OnePictureData getPictureById(String id);
+    void getPictureById(String id);
     void checkAndGetPictureIds();
     void gotoPosition(int position);
 

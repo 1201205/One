@@ -2,12 +2,15 @@ package com.hyc.one.beans.music;
 
 import com.hyc.one.beans.RealArticleAuthor;
 
-public class Music implements java.io.Serializable {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class Music extends RealmObject implements java.io.Serializable {
     private static final long serialVersionUID = -1936502058486908912L;
     private String charge_edt;
     private String maketime;
     private String read_num_web;
-    private Object push_id;
+    private String push_id;
     private RealArticleAuthor author;
     private int praisenum;
     private String sort;
@@ -21,6 +24,7 @@ public class Music implements java.io.Serializable {
     private String lyric;
     private String story_title;
     private String music_id;
+    @PrimaryKey
     private String id;
     private String isfirst;
     private MusicStory_author story_author;
@@ -53,11 +57,11 @@ public class Music implements java.io.Serializable {
         this.read_num_web = read_num_web;
     }
 
-    public Object getPush_id() {
+    public String getPush_id() {
         return this.push_id;
     }
 
-    public void setPush_id(Object push_id) {
+    public void setPush_id(String push_id) {
         this.push_id = push_id;
     }
 
