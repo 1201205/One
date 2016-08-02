@@ -1,7 +1,6 @@
 package com.hyc.one.presenter;
 
 import android.text.TextUtils;
-
 import com.hyc.one.base.BasePresenter;
 import com.hyc.one.base.ExceptionAction;
 import com.hyc.one.beans.BaseBean;
@@ -18,13 +17,9 @@ import com.hyc.one.utils.RealmUtil;
 import com.hyc.one.utils.S;
 import com.hyc.one.utils.SPUtil;
 import com.hyc.one.view.MusicView;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import io.realm.Realm;
-import io.realm.RealmResults;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -114,19 +109,35 @@ public class MusicPresenter extends BasePresenter<MusicView> implements IMusicPr
         for (int i = 0; i < mIDs.size(); i++) {
             mRelateBeans.add(new MusicRelateListBean(mIDs.get(i), null, null, null));
         }
-        Realm.getDefaultInstance().where(Music.class).beginsWith("id",mIDs.get(mIDs.size()-1)).findAll().asObservable().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<RealmResults<Music>>() {
-            @Override
-            public void call(RealmResults<Music> musics) {
-                if (musics!=null&&musics.size()>0) {
-                    mMusics.addAll(musics);
-                    mMusics.add(null);
-                    mView.setAdapter(mMusics, mRelateBeans);
-                    showCurrentRelate(0);
-                    showCurrentComment(0);
-                    mView.dismissLoading();
+        //Realm.getDefaultInstance().where(Music.class).beginsWith("id",mIDs.get(mIDs.size()-1)).findAll().asObservable().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<RealmResults<Music>>() {
+        //    @Override
+        //    public void call(RealmResults<Music> musics) {
+        //        if (musics!=null&&musics.size()>0) {
+        //            mMusics.addAll(musics);
+        //            mMusics.add(null);
+        //            mView.setAdapter(mMusics, mRelateBeans);
+        //            showCurrentRelate(0);
+        //            showCurrentComment(0);
+        //            mView.dismissLoading();
+        //        }
+        //    }
+        //});
+        Observable.just(RealmUtil.getListByLower(Music.class, "id", mIDs))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                new Action1<List<Music>>() {
+                    @Override public void call(List<Music> musics) {
+                        if (musics != null && musics.size() > 0) {
+                            mMusics.addAll(musics);
+                            mMusics.add(null);
+                            mView.setAdapter(mMusics, mRelateBeans);
+                            showCurrentRelate(0);
+                            showCurrentComment(0);
+                            mView.dismissLoading();
+                        }
                 }
-            }
-        });
+                }, new ExceptionAction());
     }
 
     @Override
@@ -137,7 +148,7 @@ public class MusicPresenter extends BasePresenter<MusicView> implements IMusicPr
                     public void call(BaseBean<List<MusicRelate>> musicRelateWrapper) {
                         mView.setRelate(page, musicRelateWrapper.getData());
                     }
-                }));
+                }, new ExceptionAction()));
     }
 
     @Override
@@ -176,7 +187,7 @@ public class MusicPresenter extends BasePresenter<MusicView> implements IMusicPr
                         }
                         mView.setComment(page, comments[0], comments[1]);
                     }
-                }));
+                }, new ExceptionAction(false)));
     }
 
     @Override
@@ -190,7 +201,7 @@ public class MusicPresenter extends BasePresenter<MusicView> implements IMusicPr
                     public void call(BaseBean<CommentWrapper> comments) {
                         mView.refreshCommentList(page, comments.getData().getData());
                     }
-                }));
+                }, new ExceptionAction()));
     }
 
     @Override

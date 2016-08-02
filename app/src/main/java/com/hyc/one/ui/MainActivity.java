@@ -1,7 +1,6 @@
 package com.hyc.one.ui;
 
 import android.os.Bundle;
-
 import com.hyc.one.R;
 import com.hyc.one.base.BaseActivity;
 import com.hyc.one.presenter.MainPresenter;
@@ -14,7 +13,6 @@ public class MainActivity extends BaseActivity<MainPresenter> {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override

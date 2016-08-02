@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.hyc.one.R;
@@ -32,19 +31,17 @@ import com.hyc.one.utils.AppUtil;
 import com.hyc.one.utils.DateUtil;
 import com.hyc.one.utils.S;
 import com.hyc.one.view.ReadingView;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Created by Administrator on 2016/5/16.
  */
 public class ReadingActivity extends BaseActivity<ReadingPresenter>
-        implements ReadingView, LoaderManager.LoaderCallbacks<ReadingPresenter>, OnLoadMoreListener {
+    implements ReadingView, LoaderManager.LoaderCallbacks<ReadingPresenter>, OnLoadMoreListener {
     private SwipeToLoadLayout swipeToLoadLayout;
 
     private ListView listView;
@@ -77,7 +74,7 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     if (view.getLastVisiblePosition() == view.getCount() - 1 &&
-                            !ViewCompat.canScrollVertically(view, 1)) {
+                        !ViewCompat.canScrollVertically(view, 1)) {
                         swipeToLoadLayout.setLoadingMore(true);
                     }
                 }
@@ -101,8 +98,8 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
                 if (firstVisibleItem != lastFirstVisibleItem) {
 
                     ViewGroup.MarginLayoutParams params =
-                            (ViewGroup.MarginLayoutParams) titleLayout
-                                    .getLayoutParams();
+                        (ViewGroup.MarginLayoutParams) titleLayout
+                            .getLayoutParams();
                     params.topMargin = 0;
                     titleLayout.setLayoutParams(params);
                     String date = mReadingAdapter.getDateBySection(section);
@@ -124,8 +121,8 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
                     }
                     int bottom = childView.getBottom();
                     ViewGroup.MarginLayoutParams params =
-                            (ViewGroup.MarginLayoutParams) titleLayout
-                                    .getLayoutParams();
+                        (ViewGroup.MarginLayoutParams) titleLayout
+                            .getLayoutParams();
                     if (bottom < titleHeight) {
                         float pushedDistance = bottom - titleHeight;
                         params.topMargin = (int) pushedDistance;
@@ -209,7 +206,6 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
     }
 
 
-
     @Override
     public void showList(List<RealReading> realReadings, LinkedHashMap<Integer, String> indexer, boolean needToClear) {
         if (needToClear) {
@@ -230,6 +226,7 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
     protected void initLoader() {
         getSupportLoaderManager().initLoader(AppUtil.getID(), null, this);
     }
+
 
     @Override
     public Loader<ReadingPresenter> onCreateLoader(int id, Bundle args) {
@@ -261,13 +258,17 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
         mPresenter.getAndShowList(++mIndex);
     }
 
+
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
-        mPagerAdapter.stop();
-        mPagerAdapter.setItemClickListener(null);
+        if (mPagerAdapter != null) {
+            mPagerAdapter.stop();
+            mPagerAdapter.setItemClickListener(null);
+        }
         super.onDestroy();
     }
+
 
     @Subscribe
     public void onEvent(NetWorkChangeEvent event) {
@@ -280,7 +281,8 @@ public class ReadingActivity extends BaseActivity<ReadingPresenter>
          *
          */
         if (NetWorkChangeEvent.hasNetWork) {
-            if (DateUtil.addDay(DateUtil.StringToDate(mReadingAdapter.getItem(0).getTime()), 1).before(new Date())) {
+            if (DateUtil.addDay(DateUtil.StringToDate(mReadingAdapter.getItem(0).getTime()), 1)
+                .before(new Date())) {
                 mPresenter.showContent(NetWorkChangeEvent.hasNetWork);
             } else {
                 mPresenter.getAndShowHead();
